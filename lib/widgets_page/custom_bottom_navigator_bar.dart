@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -13,35 +15,43 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: currentIndex, // Set the current selected index
-      selectedItemColor: Color(0xFF62449D), // Purple color for selected item
-      unselectedItemColor: Colors.grey, // Grey color for unselected items
+      currentIndex: currentIndex,
+      selectedItemColor: Color(0xFF603EA4),
+      unselectedItemColor: Color(0x99000000),
       showSelectedLabels: true,
       showUnselectedLabels: true,
       onTap: onTap,
+      selectedLabelStyle: GoogleFonts.poppins(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
+      unselectedLabelStyle: GoogleFonts.poppins(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+      ),
       items: [
         BottomNavigationBarItem(
           icon: currentIndex == 0
-              ? Image.asset("assets/bottom_navigator_images/home_color.png")
-              : Image.asset("assets/bottom_navigator_images/home_image.png"),
+              ? SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg")
+              : SvgPicture.asset("assets/custom_bottom_navigation/home.svg"),
           label: "Home",
         ),
         BottomNavigationBarItem(
           icon: currentIndex == 1
-              ? Image.asset("assets/bottom_navigator_images/projcet.png")
-              : Image.asset("assets/bottom_navigator_images/projects_image.png"),
+              ? SvgPicture.asset("assets/custom_bottom_navigation/project_color.svg")
+              : SvgPicture.asset("assets/custom_bottom_navigation/project.svg"),
           label: "Projects",
         ),
         BottomNavigationBarItem(
           icon: currentIndex == 2
-              ? Image.asset("assets/bottom_navigator_images/order_color.png")
-              : Image.asset("assets/bottom_navigator_images/orders_images.png"),
+              ? SvgPicture.asset("assets/custom_bottom_navigation/order_color.svg")
+              : SvgPicture.asset("assets/custom_bottom_navigation/order.svg"),
           label: "Orders",
         ),
         BottomNavigationBarItem(
           icon: currentIndex == 3
-              ? Image.asset("assets/bottom_navigator_images/profile_color.png")
-              : Image.asset("assets/bottom_navigator_images/profile_image.png"),
+              ? SvgPicture.asset("assets/custom_bottom_navigation/profile_color.svg")
+              : SvgPicture.asset("assets/custom_bottom_navigation/profile.svg"),
           label: "Profile",
         ),
       ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import 'home_page_controller.dart'; // Import the controller
@@ -35,21 +34,20 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return LinearGradient(
-                          colors: [CustomColor.primaryColor, CustomColor.secondaryColor], // Gradient colors
+                          colors: [CustomColor.primaryColor, CustomColor.secondaryColor],
                         ).createShader(bounds);
                       },
                       child: Text(
                         "MasonPe.",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white, // Keep it white, ShaderMask applies the gradient
+                          color: Colors.white,
                         ),
                       ),
                     ),
-
                     Padding(
-                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02), // Adjust padding based on screen width
+                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
                       child: SvgPicture.asset("assets/images/menu_vector.svg"),
                     ),
                   ],
@@ -64,8 +62,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/images/home_background_image.png'), // Replace with your image path
+                      image: AssetImage('assets/images/home_background_image.png'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(16),
@@ -76,7 +73,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       SizedBox(height: 10),
                       Text(
                         "Want Building Materials?",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF9E9C9C),
@@ -85,7 +82,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       SizedBox(height: 10),
                       Text(
                         "Register Now to",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -94,17 +91,17 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       const SizedBox(height: 5),
                       Text(
                         "• Buy products on credit",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.italic, // Makes the text italic
+                          fontStyle: FontStyle.italic,
                           color: Color(0xFF9E9C9C),
                         ),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         "• Expand your business",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
@@ -128,7 +125,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         ),
                         child: Text(
                           "Register Now",
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF000000),
@@ -147,7 +144,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   children: [
                     Text(
                       "My Projects",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
@@ -155,7 +152,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                     Text(
                       "View all",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF62449D),
@@ -169,16 +166,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 child: Column(
                   children: [
                     Center(
-                      child: Image.asset(
-                        'assets/images/file_image.png',
-                        width: MediaQuery.of(context).size.width * 0.2, // 20% of screen width
+                      child: SvgPicture.asset(
+                        'assets/images/Component 160.svg',
+                        width: MediaQuery.of(context).size.width * 0.2,
                       ),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       "You haven't created any project yet.\nCreate your first project to start with",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         color: Colors.black45,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -186,19 +183,17 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                     const SizedBox(height: 30),
                     Container(
-                      width: 200, // Adjust width as needed
+                      width: 200,
                       height: 50,
                       decoration: BoxDecoration(
                         color: Color(0xFFF0EEF6),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          // Handle create first project action
-                        },
+                        onPressed: () {},
                         child: Text(
                           "+   Create first project",
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF785CB2),
@@ -217,7 +212,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // Update the selected index
+            _currentIndex = index;
           });
         },
       ),
