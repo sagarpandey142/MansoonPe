@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialBinding: SplashPageBinding(),  // Register the controller binding
       home: SplashPageScreen(),  // Navigate to splash screen
+
     );
   }
 }

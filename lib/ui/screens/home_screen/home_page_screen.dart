@@ -10,10 +10,10 @@ class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
 
   @override
-  _HomePageScreenState createState() => _HomePageScreenState();
+  HomePageScreenState createState() => HomePageScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class HomePageScreenState extends State<HomePageScreen> {
   int _currentIndex = 0; // Track the selected index
 
   @override
