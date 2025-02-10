@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/home_screen/home_page_screen.dart';
 import 'login_page_controller.dart'; // Import the controller
 
@@ -74,7 +75,7 @@ class LoginPageScreen extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             "Log in or Sign up",
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color(0xFF000001),
@@ -142,7 +143,7 @@ class LoginPageScreen extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 text: "By continuing, you agree to our ",
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 12,
                   color: Colors.grey,
                   fontWeight: FontWeight.w400,
@@ -150,7 +151,7 @@ class LoginPageScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "Terms of Service",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Color(0xCC4600F2),
                       fontWeight: FontWeight.w400,
@@ -159,7 +160,7 @@ class LoginPageScreen extends StatelessWidget {
                   const TextSpan(text: ", "),
                   TextSpan(
                     text: "\nPrivacy Policy",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Color(0xCC4600F2),
                       fontWeight: FontWeight.w400,
@@ -168,7 +169,7 @@ class LoginPageScreen extends StatelessWidget {
                   const TextSpan(text: " and "),
                   TextSpan(
                     text: "Cookie Policy.",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Color(0xCC4600F2),
                       fontWeight: FontWeight.w400,
