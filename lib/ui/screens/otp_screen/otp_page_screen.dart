@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../register_screen/register_page_screen.dart';
 import 'otp_page_controller.dart';
 
@@ -22,12 +23,16 @@ class OtpPageScreen extends StatelessWidget {
               backgroundColor: Colors.white,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.chevron_left, color: Colors.black, size: 40),
+                icon: const Icon(Icons.chevron_left,
+                    color: Colors.black, size: 40),
                 onPressed: () => Get.back(),
               ),
-              title: const Text(
+              title: Text(
                 "OTP Verification",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Color(0xCC000000)),
+                style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xCC000000)),
               ),
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(1),
@@ -38,20 +43,25 @@ class OtpPageScreen extends StatelessWidget {
               ),
             ),
           ),
-
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 60),
-              const Text(
+              Text(
                 "We have sent a verification code to",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0x99000000)),
+                style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0x99000000)),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
               Text(
                 phoneNumber,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF603EA4)),
+                style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF603EA4)),
                 textAlign: TextAlign.center,
               ),
 
@@ -75,16 +85,22 @@ class OtpPageScreen extends StatelessWidget {
 
               const SizedBox(height: 40),
               // Resend OTP
-              const Text(
+              Text(
                 "Didn’t get the OTP?",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0x99000000)),
+                style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0x99000000)),
               ),
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () => controller.resendOtp(),
-                child: const Text(
+                child: Text(
                   "Resend OTP",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF603EA4)),
+                  style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF603EA4)),
                 ),
               ),
             ],

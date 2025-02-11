@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/ui/screens/after_register_home_screen/after_regi_home_screen.dart';
 import 'register_page_controller.dart';
 
 class RegisterPageScreen extends StatelessWidget {
@@ -20,13 +22,17 @@ class RegisterPageScreen extends StatelessWidget {
               leading: Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: IconButton(
-                  icon: const Icon(Icons.chevron_left_outlined, color: Colors.black, size: 35),
+                  icon: const Icon(Icons.chevron_left_outlined,
+                      color: Colors.black, size: 35),
                   onPressed: () => Get.back(),
                 ),
               ),
-              title: const Text(
+              title: Text(
                 "Register to continue",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Color(0xCC000000)),
+                style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xCC000000)),
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(1),
@@ -37,13 +43,13 @@ class RegisterPageScreen extends StatelessWidget {
               ),
             ),
           ),
-
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTextField("Business Name *", controller.businessNameController),
+                _buildTextField(
+                    "Business Name *", controller.businessNameController),
                 const SizedBox(height: 15),
                 _buildTextField("GST Number *", controller.gstNumberController),
                 const SizedBox(height: 15),
@@ -54,31 +60,47 @@ class RegisterPageScreen extends StatelessWidget {
                 Row(
                   children: [
                     Obx(() => Checkbox(
-                      activeColor: const Color(0xFF603EA4),
-                      value: controller.isChecked.value,
-                      onChanged: (value) => controller.toggleCheckbox(value!),
-                    )),
+                          activeColor: const Color(0xFF603EA4),
+                          value: controller.isChecked.value,
+                          onChanged: (value) =>
+                              controller.toggleCheckbox(value!),
+                        )),
                     Expanded(
                       child: Text.rich(
                         TextSpan(
                           text: "By continuing, you agree to our ",
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Color(0x99000000)),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0x99000000)),
                           children: [
                             TextSpan(
                               text: "Terms of Service, ",
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Color(0xFF603EA4)),
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF603EA4)),
                             ),
                             TextSpan(
                               text: "Privacy Policy ",
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Color(0xFF603EA4)),
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF603EA4)),
                             ),
                             TextSpan(
                               text: "and ",
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black54),
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black54),
                             ),
                             TextSpan(
                               text: "Cookie Policy.",
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Color(0xFF603EA4)),
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF603EA4)),
                             ),
                           ],
                         ),
@@ -90,12 +112,12 @@ class RegisterPageScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 // Continue Button
                 Obx(
-                      () => ElevatedButton(
+                  () => ElevatedButton(
                     onPressed: controller.isChecked.value
                         ? () {
-                      controller.continueRegistration();
-                      // Get.to(() => HomePageScreen());
-                    }
+                            controller.continueRegistration();
+                            Get.to(() => AfterRegiHomeScreen());
+                          }
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF603EA4),
@@ -105,9 +127,12 @@ class RegisterPageScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Continue",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+                      style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -125,7 +150,8 @@ class RegisterPageScreen extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black54),
+        labelStyle: const TextStyle(
+            fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black54),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: Color(0xFFE7E7E7)),

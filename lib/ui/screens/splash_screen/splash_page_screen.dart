@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../utils/custom_colour.dart';
 import 'splash_page_controller.dart';
 
 class SplashPageScreen extends StatelessWidget {
@@ -20,26 +20,20 @@ class SplashPageScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background with no line separating
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  CustomColor.primaryColor,
-                  CustomColor.secondaryColor,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
+          // Background with SVG image
+          SvgPicture.asset(
+            'assets/images/background_screen.svg', // Replace with your SVG image path
+            fit: BoxFit.cover, // Ensures the SVG covers the screen
+            width: double.infinity, // Makes sure the SVG fills the width
+            height: double.infinity, // Makes sure the SVG fills the height
           ),
 
-          // Centered image with increased size
+          // Centered logo (using Center widget)
           Center(
             child: Image.asset(
-              'assets/images/splash screen logo.png', // Replace with your image path
-              width: 350, // Increased size
-              height: 350, // Increased size
+              'assets/images/splash screen logo.png', // Replace with your logo path
+              width: 350, // Adjust the size
+              height: 350, // Adjust the size
             ),
           ),
         ],

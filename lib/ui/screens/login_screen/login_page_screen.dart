@@ -37,11 +37,11 @@ class LoginPageScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding:
-                      EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 4, horizontal: 20),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Skip",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Color(0x99000006),
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
@@ -60,7 +60,7 @@ class LoginPageScreen extends StatelessWidget {
                     Text(
                       "Financing Platform for\nContractors & Builders",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF000001),
@@ -75,7 +75,7 @@ class LoginPageScreen extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             "Log in or Sign up",
-            style: GoogleFonts.inter(
+            style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color(0xFF000001),
@@ -92,7 +92,7 @@ class LoginPageScreen extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: "Mobile Number",
                   floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  labelStyle: const TextStyle(
+                  labelStyle: GoogleFonts.poppins(
                     color: Color(0x99000006),
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
@@ -106,7 +106,7 @@ class LoginPageScreen extends StatelessWidget {
                     borderSide: const BorderSide(color: Colors.grey),
                   ),
                   contentPadding:
-                  const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   isDense: true,
                 ),
                 style: const TextStyle(color: Color(0xCC000008)),
@@ -129,7 +129,7 @@ class LoginPageScreen extends StatelessWidget {
               ),
               child: Text(
                 "Generate OTP",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFFFFFFFF),

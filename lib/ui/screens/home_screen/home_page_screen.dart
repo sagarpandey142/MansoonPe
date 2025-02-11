@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import 'home_page_controller.dart'; // Import the controller
@@ -39,7 +40,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       },
                       child: Text(
                         "MasonPe.",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -91,7 +92,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       const SizedBox(height: 5),
                       Text(
                         "• Buy products on credit",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
@@ -101,7 +102,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       const SizedBox(height: 5),
                       Text(
                         "• Expand your business",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
