@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:projects/ui/screens/after_register_home_screen/home_page_screen.dart';
+import 'package:projects/ui/screens/order_screen/order_page_screen.dart';
+import 'package:projects/ui/screens/profile_screen/profile_page_screen.dart';
+import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
+
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -12,6 +18,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
+  void _navigateToScreen(int index) {
+    switch (index) {
+      case 0:
+        Get.offAll(() => HomePageScreen());
+        break;
+      case 1:
+        Get.offAll(() => ProjectPageScreen());
+        break;
+      case 2:
+        Get.offAll(() => OrderPageScreen());
+        break;
+      case 3:
+        Get.offAll(() => ProfilePageScreen());
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -20,7 +43,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
       unselectedItemColor: Color(0x99000000),
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      onTap: onTap,
+      onTap: (index) {
+        onTap(index);
+        _navigateToScreen(index);
+      },
       selectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,
         fontWeight: FontWeight.w500,

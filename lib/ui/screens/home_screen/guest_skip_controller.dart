@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePageController extends GetxController {
+class GuestSkipController extends GetxController {
   var creditLeft = 0.obs;
   var userName = "Devesh Gupta";
   var creditLimit = 0.obs;

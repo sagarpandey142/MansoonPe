@@ -4,21 +4,21 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
-import 'home_page_controller.dart'; // Import the controller
+import 'guest_skip_controller.dart';
 
-class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+class GuestSkipScreen extends StatefulWidget {
+  const GuestSkipScreen({super.key});
 
   @override
-  _HomePageScreenState createState() => _HomePageScreenState();
+  _GuestSkipScreenState createState() => _GuestSkipScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class _GuestSkipScreenState extends State<GuestSkipScreen> {
   int _currentIndex = 0; // Track the selected index
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomePageController());
+    Get.put(GuestSkipController());
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -112,7 +112,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Get.find<HomePageController>().showRegistrationBottomSheet(context);
+                          Get.find<GuestSkipController>().showRegistrationBottomSheet(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -209,14 +209,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //     });
+      //   },
+      // ),
     );
   }
 }

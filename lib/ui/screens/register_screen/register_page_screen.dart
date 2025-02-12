@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/after_register_home_screen/after_regi_home_screen.dart';
+import 'package:projects/ui/screens/after_register_home_screen/home_page_screen.dart';
 import 'register_page_controller.dart';
 
 class RegisterPageScreen extends StatelessWidget {
@@ -116,7 +116,7 @@ class RegisterPageScreen extends StatelessWidget {
                     onPressed: controller.isChecked.value
                         ? () {
                             controller.continueRegistration();
-                            Get.to(() => AfterRegiHomeScreen());
+                            Get.to(() => HomePageScreen());
                           }
                         : null,
                     style: ElevatedButton.styleFrom(

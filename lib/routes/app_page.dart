@@ -5,8 +5,8 @@ import 'package:projects/ui/screens/otp_screen/otp_page_binding.dart';
 import 'package:projects/ui/screens/otp_screen/otp_page_screen.dart';
 import 'package:projects/ui/screens/splash_screen/splash_page_binding.dart';
 import 'package:projects/ui/screens/splash_screen/splash_page_screen.dart';
-import '../ui/screens/home_screen/home_page_binding.dart';
-import '../ui/screens/home_screen/home_page_screen.dart';
+import '../ui/screens/home_screen/guest_skip_binding.dart';
+import '../ui/screens/home_screen/guest_skip_screen.dart';
 import '../ui/screens/login_screen/login_page_binding.dart';
 import '../ui/screens/login_screen/login_page_screen.dart';
 import '../ui/screens/register_screen/register_page_binding.dart';
@@ -36,9 +36,9 @@ class AppPages {
       binding: RegisterPageBinding(),
     ),
     GetPage(
-      name: Routes.homePageScreen,
-      page: () => const HomePageScreen(),
-      binding: HomePageBinding(),
+      name: Routes.guestSkipScreen,
+      page: () => const GuestSkipScreen(),
+      binding: GuestSkipBinding(),
     ),
   ];
 }

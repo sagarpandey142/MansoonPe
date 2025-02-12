@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/home_screen/home_page_screen.dart';
+import 'package:projects/ui/screens/home_screen/guest_skip_screen.dart';
 import 'login_page_controller.dart'; // Import the controller
 
 class LoginPageScreen extends StatelessWidget {
@@ -27,7 +27,7 @@ class LoginPageScreen extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(() => HomePageScreen());
+                      Get.to(() => GuestSkipScreen());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,

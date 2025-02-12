@@ -6,5 +6,6 @@ mixin Routes {
   static const otpPageScreen = '/otpPageScreen';
   static const registerPageScreen = '/registerPageScreen';
   static const homePageScreen = '/homePageScreen';
+  static const guestSkipScreen = '/guestSkipScreen';
 
 }

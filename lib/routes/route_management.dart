@@ -27,6 +27,11 @@ mixin RouteManagement {
       Get.toNamed(Routes.registerPageScreen);
     }
   }
+  static void goToGuestSkipScreen(){
+    if(Get.currentRoute != Routes.guestSkipScreen){
+      Get.toNamed(Routes.guestSkipScreen);
+    }
+  }
   static void goToHomePageScreen(){
     if(Get.currentRoute != Routes.homePageScreen){
       Get.toNamed(Routes.homePageScreen);

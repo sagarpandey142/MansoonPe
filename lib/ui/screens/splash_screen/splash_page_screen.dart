@@ -30,8 +30,8 @@ class SplashPageScreen extends StatelessWidget {
 
           // Centered logo (using Center widget)
           Center(
-            child: Image.asset(
-              'assets/images/splash screen logo.png', // Replace with your logo path
+            child: SvgPicture.asset(
+              'assets/images/truck_splash_screen_logo1.svg', // Replace with your logo path
               width: 350, // Adjust the size
               height: 350, // Adjust the size
             ),

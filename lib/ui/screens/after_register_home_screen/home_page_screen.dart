@@ -2,21 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
 
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
-class AfterRegiHomeScreen extends StatefulWidget {
-  const AfterRegiHomeScreen({super.key});
+class HomePageScreen extends StatefulWidget {
+  const HomePageScreen({super.key});
 
   @override
-  _AfterRegiHomeScreenState createState() => _AfterRegiHomeScreenState();
+  _HomePageScreenState createState() => _HomePageScreenState();
 }
 
-class _AfterRegiHomeScreenState extends State<AfterRegiHomeScreen> {
+class _HomePageScreenState extends State<HomePageScreen> {
   int _currentIndex = 0;
 
   @override
@@ -62,7 +61,7 @@ class _AfterRegiHomeScreenState extends State<AfterRegiHomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
                 child: Container(
-                  height: 35,
+                  height: 25,
                   decoration: BoxDecoration(
                     color: Colors.blue.shade50,
                     borderRadius: BorderRadius.circular(8),
@@ -71,11 +70,11 @@ class _AfterRegiHomeScreenState extends State<AfterRegiHomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Icon(
                           CupertinoIcons.exclamationmark_circle,
                           color: Color(0xFF1E40AF),
-                          size: 14.0, // Adjust size to fit within the height
+                          size: 13.0, // Adjust size to fit within the height
                         ),
                       ),
                       Expanded(
@@ -120,13 +119,13 @@ class _AfterRegiHomeScreenState extends State<AfterRegiHomeScreen> {
                         children: [
                           Text("Credit Left",
                               style: TextStyle(
-                                  color: Color(0xFFFFFFFF),
+                                  color: Color(0x99FFFFFF),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400)),
                           SizedBox(height: 4),
                           Text("₹ 0",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color(0xFFFFFFFF),
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600)),
                         ],
@@ -141,19 +140,25 @@ class _AfterRegiHomeScreenState extends State<AfterRegiHomeScreen> {
                                 fontWeight: FontWeight.w600,
                               )),
                           SizedBox(height: 4),
-                          Text("Limit: ₹ 0",
-                              style: TextStyle(color: Colors.white)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Limit: ₹ 0",
+                                  style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  )),
+                              Text(
+                                "MasonPe.",
+                                style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         ],
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          "MasonPe.",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
                       ),
                     ],
                   ),
