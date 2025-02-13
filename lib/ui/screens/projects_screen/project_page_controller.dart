@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 
 import '../../../model_class/project_model.dart';
-import '../after_register_home_screen/home_page_screen.dart';
+import '../home_screens/home_page_screen.dart';
 import '../order_screen/order_page_screen.dart';
 import '../profile_screen/profile_page_screen.dart';
 

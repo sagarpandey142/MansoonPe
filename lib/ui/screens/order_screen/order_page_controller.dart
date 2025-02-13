@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../after_register_home_screen/home_page_screen.dart';
+import '../home_screens/home_page_screen.dart';
 import '../profile_screen/profile_page_screen.dart';
 import '../projects_screen/project_page_screen.dart';
 import 'order_page_screen.dart';

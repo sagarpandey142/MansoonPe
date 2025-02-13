@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
-import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import 'guest_skip_controller.dart';
 
 class GuestSkipScreen extends StatefulWidget {
@@ -14,7 +14,6 @@ class GuestSkipScreen extends StatefulWidget {
 }
 
 class _GuestSkipScreenState extends State<GuestSkipScreen> {
-  int _currentIndex = 0; // Track the selected index
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +111,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Get.find<GuestSkipController>().showRegistrationBottomSheet(context);
+                          Get.to(() => LoginPageScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -191,7 +190,9 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => LoginPageScreen());
+                        },
                         child: Text(
                           "+   Create first project",
                           style: TextStyle(
@@ -209,14 +210,43 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
           ),
         ),
       ),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //   },
-      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Prevents items from shifting
+        selectedItemColor: Color(0xFF603EA4),
+        unselectedItemColor: Color(0x99000000),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        onTap: (index) {
+          // onTap(index);
+          // _navigateToScreen(index);
+        },
+        selectedLabelStyle: GoogleFonts.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+        unselectedLabelStyle: GoogleFonts.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg"),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/project.svg"),
+            label: "Projects",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/order.svg"),
+            label: "Orders",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/profile.svg"),
+            label: "Profile",
+          ),
+        ],
+      ),
     );
   }
 }

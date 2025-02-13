@@ -8,32 +8,42 @@ class SplashPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Register SplashPageController before using it
-    Get.put(SplashPageController());  // Registers the controller
-
-    // Instantiate the controller after registration
+    // Register and find the controller
+    Get.put(SplashPageController());
     final SplashPageController controller = Get.find<SplashPageController>();
 
-    // Call the method to navigate after 3 seconds
+    // Start the navigation after animation
     controller.navigateToNextScreen(context);
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background with SVG image
+          // Background SVG
           SvgPicture.asset(
-            'assets/images/background_screen.svg', // Replace with your SVG image path
-            fit: BoxFit.cover, // Ensures the SVG covers the screen
-            width: double.infinity, // Makes sure the SVG fills the width
-            height: double.infinity, // Makes sure the SVG fills the height
+            'assets/images/background_screen.svg',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
 
-          // Centered logo (using Center widget)
+          // Fast Animated Truck Logo
           Center(
-            child: SvgPicture.asset(
-              'assets/images/truck_splash_screen_logo1.svg', // Replace with your logo path
-              width: 350, // Adjust the size
-              height: 350, // Adjust the size
+            child: TweenAnimationBuilder(
+              duration: const Duration(milliseconds: 800), // Fast animation
+              curve: Curves.fastOutSlowIn, // Fast start, smooth stop
+              tween: Tween<double>(begin: 0.2, end: 1.2), // Start small, grow big
+              builder: (context, double scale, child) {
+                return Transform.scale(
+                  scale: scale,
+                  alignment: Alignment.center, // Keep centered
+                  child: child,
+                );
+              },
+              child: SvgPicture.asset(
+                'assets/images/truck_splash_screen_logo1.svg',
+                width: 300,
+                height: 300,
+              ),
             ),
           ),
         ],

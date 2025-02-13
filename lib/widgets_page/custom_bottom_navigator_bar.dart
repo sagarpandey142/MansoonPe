@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-import 'package:projects/ui/screens/after_register_home_screen/home_page_screen.dart';
 import 'package:projects/ui/screens/order_screen/order_page_screen.dart';
 import 'package:projects/ui/screens/profile_screen/profile_page_screen.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
+
+import '../ui/screens/home_screens/home_page_screen.dart';
 
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -38,6 +39,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed, // Prevents items from shifting
       currentIndex: currentIndex,
       selectedItemColor: Color(0xFF603EA4),
       unselectedItemColor: Color(0x99000000),
@@ -57,27 +59,35 @@ class CustomBottomNavigationBar extends StatelessWidget {
       ),
       items: [
         BottomNavigationBarItem(
-          icon: currentIndex == 0
-              ? SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg")
-              : SvgPicture.asset("assets/custom_bottom_navigation/home.svg"),
+          icon: SvgPicture.asset(
+            currentIndex == 0
+                ? "assets/custom_bottom_navigation/home_color.svg"
+                : "assets/custom_bottom_navigation/home.svg",
+          ),
           label: "Home",
         ),
         BottomNavigationBarItem(
-          icon: currentIndex == 1
-              ? SvgPicture.asset("assets/custom_bottom_navigation/project_color.svg")
-              : SvgPicture.asset("assets/custom_bottom_navigation/project.svg"),
+          icon: SvgPicture.asset(
+            currentIndex == 1
+                ? "assets/custom_bottom_navigation/project_color.svg"
+                : "assets/custom_bottom_navigation/project.svg",
+          ),
           label: "Projects",
         ),
         BottomNavigationBarItem(
-          icon: currentIndex == 2
-              ? SvgPicture.asset("assets/custom_bottom_navigation/order_color.svg")
-              : SvgPicture.asset("assets/custom_bottom_navigation/order.svg"),
+          icon: SvgPicture.asset(
+            currentIndex == 2
+                ? "assets/custom_bottom_navigation/order_color.svg"
+                : "assets/custom_bottom_navigation/order.svg",
+          ),
           label: "Orders",
         ),
         BottomNavigationBarItem(
-          icon: currentIndex == 3
-              ? SvgPicture.asset("assets/custom_bottom_navigation/profile_color.svg")
-              : SvgPicture.asset("assets/custom_bottom_navigation/profile.svg"),
+          icon: SvgPicture.asset(
+            currentIndex == 3
+                ? "assets/custom_bottom_navigation/profile_color.svg"
+                : "assets/custom_bottom_navigation/profile.svg",
+          ),
           label: "Profile",
         ),
       ],

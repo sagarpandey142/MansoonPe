@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/after_register_home_screen/home_page_screen.dart';
+import '../home_screens/home_page_screen.dart';
 import 'register_page_controller.dart';
 
 class RegisterPageScreen extends StatelessWidget {
@@ -30,7 +30,7 @@ class RegisterPageScreen extends StatelessWidget {
               title: Text(
                 "Register to continue",
                 style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.w800,
                     color: Color(0xCC000000)),
               ),

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
 import 'package:projects/utils/custom_colour.dart';
-import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
 class CreateProjectScreen extends StatefulWidget {
   const CreateProjectScreen({super.key});
@@ -14,7 +13,6 @@ class CreateProjectScreen extends StatefulWidget {
 }
 
 class _CreateProjectScreenState extends State<CreateProjectScreen> {
-  int _currentIndex = 0; // Track the selected index
   bool _isButtonPressed = false; // Track button press state
 
   @override
@@ -111,13 +109,42 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Prevents items from shifting
+        selectedItemColor: Color(0xFF603EA4),
+        unselectedItemColor: Color(0x99000000),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          // onTap(index);
+          // _navigateToScreen(index);
         },
+        selectedLabelStyle: GoogleFonts.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+        unselectedLabelStyle: GoogleFonts.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg"),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/project.svg"),
+            label: "Projects",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/order.svg"),
+            label: "Orders",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/profile.svg"),
+            label: "Profile",
+          ),
+        ],
       ),
     );
   }

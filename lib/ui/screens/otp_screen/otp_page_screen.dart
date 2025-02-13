@@ -18,7 +18,7 @@ class OtpPageScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
+            preferredSize: const Size.fromHeight(60),
             child: AppBar(
               backgroundColor: Colors.white,
               elevation: 0,
@@ -30,80 +30,86 @@ class OtpPageScreen extends StatelessWidget {
               title: Text(
                 "OTP Verification",
                 style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xCC000000)),
+                    color: const Color(0xCC000000)),
               ),
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(1),
+                preferredSize: const Size.fromHeight(1),
                 child: Container(
-                  color: Color(0xFFEFEFEF),
+                  color: const Color(0xFFEFEFEF),
                   height: 3,
                 ),
               ),
             ),
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 60),
-              Text(
-                "We have sent a verification code to",
-                style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0x99000000)),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                phoneNumber,
-                style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF603EA4)),
-                textAlign: TextAlign.center,
-              ),
+          body: SingleChildScrollView( // 👈 Overflow fix: Add scroll view
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20), // 👈 Add padding
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 60),
+                  Text(
+                    "We have sent a verification code to",
+                    style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0x99000000)),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    phoneNumber,
+                    style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF603EA4)),
+                    textAlign: TextAlign.center,
+                  ),
 
-              const SizedBox(height: 40),
-              // OTP Input Field
-              OtpTextField(
-                numberOfFields: 4,
-                borderColor: Colors.black38,
-                focusedBorderColor: Color(0x33000000),
-                showFieldAsBox: true,
-                fieldWidth: 60,
-                fieldHeight: 60,
-                borderRadius: BorderRadius.circular(14),
-                onSubmit: (String otp) {
-                  controller.setOtp(otp);
-                  if (otp.length == 4) {
-                    Get.to(() => RegisterPageScreen());
-                  }
-                },
-              ),
-
-              const SizedBox(height: 40),
-              // Resend OTP
-              Text(
-                "Didn’t get the OTP?",
-                style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0x99000000)),
-              ),
-              const SizedBox(height: 10),
-              GestureDetector(
-                onTap: () => controller.resendOtp(),
-                child: Text(
-                  "Resend OTP",
-                  style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF603EA4)),
+                  const SizedBox(height: 40),
+                  // OTP Input Field
+                OtpTextField(
+                  numberOfFields: 6,
+                  borderColor: Colors.black38,
+                  focusedBorderColor: const Color(0x33000000),
+                  showFieldAsBox: true,
+                  fieldWidth: 45,
+                  fieldHeight: 55,
+                  borderRadius: BorderRadius.circular(14),
+                  onSubmit: (String otp) {
+                    controller.setOtp(otp);
+                    if (otp.length == 6) { // ✅ Change condition to 6
+                      Get.to(() => RegisterPageScreen());
+                    }
+                  },
                 ),
+
+                  const SizedBox(height: 40),
+                  // Resend OTP
+                  Text(
+                    "Didn’t get the OTP?",
+                    style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0x99000000)),
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () => controller.resendOtp(),
+                    child: Text(
+                      "Resend OTP",
+                      style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF603EA4)),
+                    ),
+                  ),
+                  const SizedBox(height: 20), // 👈 Extra space to prevent cut-off
+                ],
               ),
-            ],
+            ),
           ),
         );
       },

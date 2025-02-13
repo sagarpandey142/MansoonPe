@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/after_register_home_screen/home_page_screen.dart';
-
+import '../home_screens/home_page_screen.dart';
 
 class CreateProjectController extends ChangeNotifier {
 
@@ -153,8 +153,8 @@ class CreateProjectController extends ChangeNotifier {
                           mainAxisAlignment:
                           MainAxisAlignment.center,
                           children: [
-                            Image.asset(
-                                'assets/images/uplaod_attch.png'),
+                            SvgPicture.asset(
+                                'assets/images/upload_attach.svg'),
                             SizedBox(width: 5),
                             Text(
                               "Upload Contract",

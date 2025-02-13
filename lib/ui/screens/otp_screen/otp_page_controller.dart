@@ -8,7 +8,7 @@ class OtpPageController extends GetxController {
   }
 
   void submitOtp() {
-    if (otp.value.length == 4) {
+    if (otp.value.length == 6) {
       print("OTP Entered: ${otp.value}");
       // Add API logic or navigation after OTP verification
     } else {
