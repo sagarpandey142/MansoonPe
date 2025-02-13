@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
+import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
 import 'package:projects/utils/custom_colour.dart';
-import 'guest_skip_controller.dart';
+import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
 class GuestSkipScreen extends StatefulWidget {
   const GuestSkipScreen({super.key});
@@ -14,10 +14,11 @@ class GuestSkipScreen extends StatefulWidget {
 }
 
 class _GuestSkipScreenState extends State<GuestSkipScreen> {
+  int _currentIndex = 0; // Track the selected index
 
   @override
   Widget build(BuildContext context) {
-    Get.put(GuestSkipController());
+    Get.put(HomePageController());
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -34,7 +35,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                     ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return LinearGradient(
-                          colors: [CustomColor.primaryColor, CustomColor.secondaryColor],
+                          colors: [CustomColor.primaryColor, CustomColor.secondaryColor], // Gradient colors
                         ).createShader(bounds);
                       },
                       child: Text(
@@ -42,12 +43,13 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: Colors.white, // Keep it white, ShaderMask applies the gradient
                         ),
                       ),
                     ),
+
                     Padding(
-                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02), // Adjust padding based on screen width
                       child: SvgPicture.asset("assets/images/menu_vector.svg"),
                     ),
                   ],
@@ -62,7 +64,8 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/home_background_image.png'),
+                      image: AssetImage(
+                          'assets/images/home_background_image.png'), // Replace with your image path
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(16),
@@ -73,7 +76,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       SizedBox(height: 10),
                       Text(
                         "Want Building Materials?",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF9E9C9C),
@@ -82,7 +85,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       SizedBox(height: 10),
                       Text(
                         "Register Now to",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -94,7 +97,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.italic,
+                          fontStyle: FontStyle.italic, // Makes the text italic
                           color: Color(0xFF9E9C9C),
                         ),
                       ),
@@ -111,7 +114,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Get.to(() => LoginPageScreen());
+                          // Get.find<HomePageController>().showRegistrationBottomSheet(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -125,7 +128,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                         ),
                         child: Text(
                           "Register Now",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF000000),
@@ -144,7 +147,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                   children: [
                     Text(
                       "My Projects",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
@@ -152,7 +155,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                     ),
                     Text(
                       "View all",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF62449D),
@@ -166,16 +169,16 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                 child: Column(
                   children: [
                     Center(
-                      child: SvgPicture.asset(
-                        'assets/images/Component 160.svg',
-                        width: MediaQuery.of(context).size.width * 0.2,
+                      child: Image.asset(
+                        'assets/images/file_image.png',
+                        width: MediaQuery.of(context).size.width * 0.2, // 20% of screen width
                       ),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       "You haven't created any project yet.\nCreate your first project to start with",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Colors.black45,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -183,7 +186,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                     ),
                     const SizedBox(height: 30),
                     Container(
-                      width: 200,
+                      width: 200, // Adjust width as needed
                       height: 50,
                       decoration: BoxDecoration(
                         color: Color(0xFFF0EEF6),
@@ -191,11 +194,11 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(() => LoginPageScreen());
+                          // Handle create first project action
                         },
                         child: Text(
                           "+   Create first project",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF785CB2),
@@ -210,42 +213,13 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Prevents items from shifting
-        selectedItemColor: Color(0xFF603EA4),
-        unselectedItemColor: Color(0x99000000),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
         onTap: (index) {
-          // onTap(index);
-          // _navigateToScreen(index);
+          setState(() {
+            _currentIndex = index; // Update the selected index
+          });
         },
-        selectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-        unselectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-        ),
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg"),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/project.svg"),
-            label: "Projects",
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/order.svg"),
-            label: "Orders",
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/profile.svg"),
-            label: "Profile",
-          ),
-        ],
       ),
     );
   }
