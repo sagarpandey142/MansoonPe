@@ -23,7 +23,7 @@ class LoginPageScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 310,
+                  height: MediaQuery.of(context).size.height * 0.45,//310,
                   width: double.infinity,
                   color: Color(0xFFE1ECFD),
                   padding: const EdgeInsets.only(top: 40, left: 20, right: 20),

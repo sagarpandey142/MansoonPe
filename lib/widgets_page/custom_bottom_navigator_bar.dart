@@ -46,8 +46,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
       showSelectedLabels: true,
       showUnselectedLabels: true,
       onTap: (index) {
-        onTap(index);
-        _navigateToScreen(index);
+        // print("vskingII:>>>$index");
+        // onTap(index);
+        // _navigateToScreen(index);
       },
       selectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,

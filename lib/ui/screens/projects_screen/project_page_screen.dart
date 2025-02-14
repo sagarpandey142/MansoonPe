@@ -31,7 +31,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Obx(() => ListView.builder(
+      body:
+      Obx(() => ListView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: controller.projects.length,
         itemBuilder: (context, index) {
@@ -98,14 +99,14 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
           );
         },
       )),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //     });
+      //   },
+      // ),
     );
   }
 }

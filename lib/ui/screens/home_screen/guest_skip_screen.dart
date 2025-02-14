@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
 import 'package:projects/utils/custom_colour.dart';
+import '../../../model_class/project_model.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
+import '../projects_screen/project_page_controller.dart';
 
 class GuestSkipScreen extends StatefulWidget {
   const GuestSkipScreen({super.key});
@@ -14,6 +16,7 @@ class GuestSkipScreen extends StatefulWidget {
 }
 
 class _GuestSkipScreenState extends State<GuestSkipScreen> {
+  final ProjectPageController controller = Get.put(ProjectPageController());
   int _currentIndex = 0; // Track the selected index
 
   @override
@@ -21,7 +24,9 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
     Get.put(HomePageController());
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body:
+      _currentIndex == 0 ?
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 60),
           child: Column(
@@ -212,15 +217,158 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index; // Update the selected index
-          });
-        },
-      ),
+      )
+          :
+      _currentIndex == 1 ?
+      getProjectPage(context)
+      :
+      _currentIndex == 2 ?
+          Text("2")
+      :
+      _currentIndex == 3 ?
+      Text("3")
+          :
+          Container()
+        ,
+      bottomNavigationBar:getBottomBar(context)
+      // CustomBottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index; // Update the selected index
+      //     });
+      //   },
+      // ),
     );
+  }
+
+  getBottomBar(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed, // Prevents items from shifting
+      currentIndex: _currentIndex,
+      selectedItemColor: Color(0xFF603EA4),
+      unselectedItemColor: Color(0x99000000),
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      onTap: (index) {
+        print("vskingII000:>>>$index");
+        setState(() {
+          _currentIndex = index;
+        });
+        // _navigateToScreen(index);
+      },
+      selectedLabelStyle: GoogleFonts.poppins(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
+      unselectedLabelStyle: GoogleFonts.poppins(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+      ),
+      items: [
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            _currentIndex == 0
+                ? "assets/custom_bottom_navigation/home_color.svg"
+                : "assets/custom_bottom_navigation/home.svg",
+          ),
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            _currentIndex == 1
+                ? "assets/custom_bottom_navigation/project_color.svg"
+                : "assets/custom_bottom_navigation/project.svg",
+          ),
+          label: "Projects",
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            _currentIndex == 2
+                ? "assets/custom_bottom_navigation/order_color.svg"
+                : "assets/custom_bottom_navigation/order.svg",
+          ),
+          label: "Orders",
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            _currentIndex == 3
+                ? "assets/custom_bottom_navigation/profile_color.svg"
+                : "assets/custom_bottom_navigation/profile.svg",
+          ),
+          label: "Profile",
+        ),
+      ],
+    );
+  }
+
+  Widget getProjectPage(BuildContext context){
+    return Obx(() => ListView.builder(
+      padding: const EdgeInsets.all(10),
+      itemCount: controller.projects.length,
+      itemBuilder: (context, index) {
+        final ProjectModel project = controller.projects[index];
+        return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 70,
+                  height: 90,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.file_present, size: 40, color: Colors.grey),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(project.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text("Date: ${project.date}", style: TextStyle(color: Colors.grey[600])),
+                      Text("Project Cost: ${project.cost}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Text("Consumption: ${project.consumption}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 5),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Color(project.statusColor).withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          project.status,
+                          style: TextStyle(color: Color(project.statusColor), fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      if (project.statusType == "active") ...[
+                        const SizedBox(height: 5),
+                        Text("Pending: ${project.pending}", style: const TextStyle(color: Colors.red, fontSize: 14)),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: Text(project.buttonText ?? ""),
+                          ),
+                        )
+                      ],
+                      if (project.statusType != "active") ...[
+                        const SizedBox(height: 5),
+                        Text(project.message ?? "", style: TextStyle(color: Colors.grey[700], fontSize: 14)),
+                      ]
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ));
   }
 }
