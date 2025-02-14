@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/home_screen/guest_skip_screen.dart';
+import '../guest_screen/guest_skip_screen.dart';
 import 'login_page_controller.dart'; // Import the controller
 
 class LoginPageScreen extends StatelessWidget {
-  const LoginPageScreen({super.key});
+  final LoginPageController controller = Get.put(LoginPageController());
 
   @override
   Widget build(BuildContext context) {
-    final LoginPageController controller = LoginPageController();
-
     return Scaffold(
       resizeToAvoidBottomInset: true, // Prevents overflow due to the keyboard
-      body: SingleChildScrollView( // Allows scrolling when the keyboard appears
+      body: SingleChildScrollView(
+        // Allows scrolling when the keyboard appears
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
           ),
-          child: IntrinsicHeight( // Ensures content fits within the available space
+          child: IntrinsicHeight(
+            // Ensures content fits within the available space
             child: Column(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.45,//310,
+                  height: MediaQuery.of(context).size.height * 0.45, //310,
                   width: double.infinity,
                   color: Color(0xFFE1ECFD),
                   padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
@@ -105,8 +105,8 @@ class LoginPageScreen extends StatelessWidget {
                         height: 60,
                         width: 350,
                         child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          keyboardType: TextInputType.text, // Mobile number input
+                          controller: controller.phoneController,
+                          keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             labelText: "Mobile Number",
                             floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -127,7 +127,8 @@ class LoginPageScreen extends StatelessWidget {
                                 vertical: 20, horizontal: 20),
                             isDense: true,
                           ),
-                          style: GoogleFonts.poppins( // Sets the text inside TextField to size 20
+                          style: GoogleFonts.poppins(
+                            // Sets the text inside TextField to size 20
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Color(0xCC000008),
@@ -136,25 +137,17 @@ class LoginPageScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        width: 350,
+                        width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {
-                            controller.generateOtp(context);
-                          },
+                          onPressed: () => controller.generateOTP(),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF603EA4),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                           child: Text(
                             "Generate OTP",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFFFFFFFF),
-                            ),
+                            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
                           ),
                         ),
                       ),

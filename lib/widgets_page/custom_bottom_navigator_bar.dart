@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
-import 'package:projects/ui/screens/order_screen/order_page_screen.dart';
-import 'package:projects/ui/screens/profile_screen/profile_page_screen.dart';
-import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
-
-import '../ui/screens/home_screens/home_page_screen.dart';
-
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -19,44 +12,25 @@ class CustomBottomNavigationBar extends StatelessWidget {
     required this.onTap,
   });
 
-  void _navigateToScreen(int index) {
-    switch (index) {
-      case 0:
-        Get.offAll(() => HomePageScreen());
-        break;
-      case 1:
-        Get.offAll(() => ProjectPageScreen());
-        break;
-      case 2:
-        Get.offAll(() => OrderPageScreen());
-        break;
-      case 3:
-        Get.offAll(() => ProfilePageScreen());
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed, // Prevents items from shifting
+      type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
-      selectedItemColor: Color(0xFF603EA4),
-      unselectedItemColor: Color(0x99000000),
+      selectedItemColor: Color(0xFF603EA4), // Purple color for selected text
+      unselectedItemColor: Colors.black54,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      onTap: (index) {
-        // print("vskingII:>>>$index");
-        // onTap(index);
-        // _navigateToScreen(index);
-      },
+      onTap: (index) {},
       selectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,
         fontWeight: FontWeight.w500,
+        color: Color(0xFF603EA4), // Ensuring selected text color is purple
       ),
       unselectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,
         fontWeight: FontWeight.w400,
+        color: Colors.black54,
       ),
       items: [
         BottomNavigationBarItem(

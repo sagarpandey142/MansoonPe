@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://pamrdemo.netcarrots.in/';
+    baseUrl ??= 'http://ec2-13-127-91-221.ap-south-1.compute.amazonaws.com:8080/';
   }
 
   final Dio _dio;

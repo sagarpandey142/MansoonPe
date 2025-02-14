@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../home_screens/home_page_screen.dart';
 import 'register_page_controller.dart';
 
 class RegisterPageScreen extends StatelessWidget {
@@ -114,10 +113,7 @@ class RegisterPageScreen extends StatelessWidget {
                 Obx(
                   () => ElevatedButton(
                     onPressed: controller.isChecked.value
-                        ? () {
-                            controller.continueRegistration();
-                            Get.to(() => HomePageScreen());
-                          }
+                        ? () => controller.continueRegistration()
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF603EA4),
@@ -130,9 +126,10 @@ class RegisterPageScreen extends StatelessWidget {
                     child: Text(
                       "Continue",
                       style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

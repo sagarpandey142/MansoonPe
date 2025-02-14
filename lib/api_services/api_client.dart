@@ -1,10 +1,7 @@
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-
 import '../modals/modal.dart';
 import 'apis.dart';
-
 part 'api_client.g.dart';
 
 @RestApi(baseUrl: Apis.baseUrl)

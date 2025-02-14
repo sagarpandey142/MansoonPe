@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
-
 import 'apis.dart';
 
 class DioConfig{

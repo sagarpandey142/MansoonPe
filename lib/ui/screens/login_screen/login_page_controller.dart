@@ -1,51 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:projects/api_services/api_service.dart';
-import '../../../modals/modal.dart';
-import '../otp_screen/otp_page_screen.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../otp_screen/otp_page_screen.dart'; // Import OTP screen
 
-class LoginPageController extends ChangeNotifier {
-  TextEditingController mobileController = TextEditingController();
+class LoginPageController extends GetxController {
+  TextEditingController phoneController =
+      TextEditingController(); // Text Field Controller
 
-  // This method can be used to retrieve the entered mobile number
-  String getMobileNumber() {
-    return mobileController.text;
-  }
+  Future<void> generateOTP() async {
+    String phoneNumber = phoneController.text.trim();
 
-  // You can add any other methods related to OTP generation here
-  void generateOtp(BuildContext context) async {
-    String mobileNumber = getMobileNumber();
-    await getApiRes();
-    print("Entered Mobile Number: $mobileNumber");
-
-    // You can navigate to OTP page or do anything here
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const OtpPageScreen()),
-    );
-  }
-
-  getApiRes()async {
-    // Api integrate
-    bool isConnected = await InternetService.getInstance().isInternetConnected();
-    Repository repository = Repository();
-    KnowledgeReq req = KnowledgeReq(loginMobileNo: '989439473947');
-    if (isConnected) {
-      try {
-        final res = await repository.getKnowledgeCenter(req);
-        if (res.getKnowledgeCenterAPI?.errorCode == "0") {
-          print("API_RES:>> ${res.getKnowledgeCenterAPI!.response!}");
-
-        } else {
-          print("API_RES_ERR:>> ${res.getKnowledgeCenterAPI!.response!}");
-        }
-      } catch (e) {
-        print("API_RES_ERR_Exception:>> ${e.toString()}");
-      }
-    } else {
-      print("API_RES_ERR_No_Internet:>>");
+    if (phoneNumber.isEmpty) {
+      Get.snackbar("Error", "Phone number cannot be empty",
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
     }
-    // Api int end
 
+    if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber)) {
+      Get.snackbar("Error", "Please enter a valid 10-digit phone number",
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    }
 
+    final String apiUrl =
+        "http://ec2-13-127-91-221.ap-south-1.compute.amazonaws.com:8080/api/auth/send-otp";
+
+    Map<String, dynamic> requestBody = {
+      "phoneNumber": phoneNumber,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        print("OTP Sent Successfully: ${response.body}");
+        Get.to(() => OtpPageScreen(phoneNumber: phoneNumber));
+      } else {
+        print("Failed to send OTP: ${response.body}");
+        Get.snackbar("Error", "Failed to send OTP. Try again!",
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } catch (e) {
+      print("Error: $e");
+      Get.snackbar("Error", "Something went wrong!",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 }

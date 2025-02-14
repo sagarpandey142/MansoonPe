@@ -16,4 +16,5 @@ class GuestSkipController extends GetxController {
   void updateCreditLimit(int newLimit) {
     creditLimit.value = newLimit;
   }
+
 }

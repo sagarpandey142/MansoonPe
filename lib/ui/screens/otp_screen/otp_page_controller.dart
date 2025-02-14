@@ -1,23 +1,66 @@
+import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../register_screen/register_page_screen.dart';
 
 class OtpPageController extends GetxController {
-  var otp = "".obs;
+  final String phoneNumber;
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  void setOtp(String value) {
-    otp.value = value;
-  }
+  OtpPageController({required this.phoneNumber});
 
-  void submitOtp() {
-    if (otp.value.length == 6) {
-      print("OTP Entered: ${otp.value}");
-      // Add API logic or navigation after OTP verification
-    } else {
-      print("Invalid OTP");
+  Future<void> verifyOtp(String otp) async {
+    try {
+      final url = Uri.parse('http://ec2-13-127-91-221.ap-south-1.compute.amazonaws.com:8080/api/auth/verify-otp');
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: '{"phoneNumber": "$phoneNumber", "otp": "$otp"}',
+      );
+
+      if (response.statusCode == 200) {
+        String token = response.body.trim();
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("auth_token", token);
+
+        await storage.write(key: "auth_token", value: token);
+
+        Get.snackbar(
+          "Success", "OTP verified successfully!",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: const Color(0xFF4CAF50),
+          colorText: const Color(0xFFFFFFFF),
+        );
+
+        Get.offAll(() => RegisterPageScreen());
+      } else {
+        Get.snackbar("Verification Failed", "Invalid OTP. Please try again.");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Something went wrong: $e");
     }
   }
 
-  void resendOtp() {
-    print("Resending OTP...");
-    // Implement OTP resend logic here
+  Future<String?> getAuthToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("auth_token");
+    token ??= await storage.read(key: "auth_token");
+    return token;
+  }
+
+  Future<bool> isUserAuthenticated() async {
+    String? token = await getAuthToken();
+    return token != null;
+  }
+
+  Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("auth_token");
+    await storage.delete(key: "auth_token");
+
+    Get.offAll(() => RegisterPageScreen());
   }
 }

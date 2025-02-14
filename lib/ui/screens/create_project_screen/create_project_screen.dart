@@ -110,38 +110,26 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Prevents items from shifting
         selectedItemColor: Color(0xFF603EA4),
-        unselectedItemColor: Color(0x99000000),
+        unselectedItemColor: Colors.black54,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        onTap: (index) {
-          // onTap(index);
-          // _navigateToScreen(index);
-        },
-        selectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-        unselectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-        ),
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg"),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/project.svg"),
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/project.svg",),
             label: "Projects",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/order.svg"),
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/order.svg",),
             label: "Orders",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/profile.svg"),
+            icon: SvgPicture.asset("assets/custom_bottom_navigation/profile.svg",),
             label: "Profile",
           ),
         ],
