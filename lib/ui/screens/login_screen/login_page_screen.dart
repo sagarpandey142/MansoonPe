@@ -5,9 +5,35 @@ import 'package:google_fonts/google_fonts.dart';
 import '../guest_screen/guest_skip_screen.dart';
 import 'login_page_controller.dart'; // Import the controller
 
-class LoginPageScreen extends StatelessWidget {
+class LoginPageScreen extends StatefulWidget {
+  @override
+  State<LoginPageScreen> createState() => _LoginPageScreenState();
+}
+
+class _LoginPageScreenState extends State<LoginPageScreen> {
   final LoginPageController controller = Get.put(LoginPageController());
+
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        Future.delayed(Duration(milliseconds: 300), () {
+          _scrollToBottom();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +41,7 @@ class LoginPageScreen extends StatelessWidget {
       body: SingleChildScrollView(
         // Allows scrolling when the keyboard appears
         controller: _scrollController,
-        reverse: true,
+        // reverse: true,
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -103,41 +129,45 @@ class LoginPageScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 60,
-                        width: 350,
-                        child: TextField(
-                          controller: controller.phoneController,
-                          keyboardType: TextInputType.text,
-                          onTap: _scrollToBottom,
-                          decoration: InputDecoration(
-                            labelText: "Mobile Number",
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            labelStyle: GoogleFonts.poppins(
-                              color: Color(0x99000006),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
+                      Obx(()=>
+                          SizedBox(
+                            height: 60,
+                            width: 350,
+                            child: TextField(
+                              controller: controller.phoneController,
+                              keyboardType: TextInputType.text,
+                              // onTap: _scrollToBottom,
+                              focusNode: _focusNode,
+                              decoration: InputDecoration(
+                                labelText: "Mobile Number",
+                                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                labelStyle: GoogleFonts.poppins(
+                                  color: Color(0x99000006),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:   BorderSide(color: controller.isError.value ? Colors.red : Colors.grey),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: controller.isError.value ? Colors.red : Colors.grey),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 20, horizontal: 20),
+                                isDense: true,
+                              ),
+                              style: GoogleFonts.poppins(
+                                // Sets the text inside TextField to size 20
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xCC000008),
+                              ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:   BorderSide(color: controller.isError ? Colors.red : Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color:  Colors.grey),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            isDense: true,
-                          ),
-                          style: GoogleFonts.poppins(
-                            // Sets the text inside TextField to size 20
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xCC000008),
-                          ),
-                        ),
-                      ),
+                          )
+                      )
+                      ,
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
@@ -207,10 +237,11 @@ class LoginPageScreen extends StatelessWidget {
       ),
     );
   }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+        250.0 ,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );

@@ -10,7 +10,7 @@ class LoginPageController extends GetxController {
   TextEditingController phoneController =
       TextEditingController(); // Text Field Controller
 
-  bool isError=false;
+  var isError=false.obs;
   Future<void> generateOTP() async {
     String phoneNumber = phoneController.text.trim();
 
@@ -18,17 +18,17 @@ class LoginPageController extends GetxController {
       Get.snackbar("Error", "Phone number cannot be empty",
           backgroundColor: Colors.red, colorText: Colors.white);
 
-      isError=true;
+      isError.value=true;
       return;
     }
 
     if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber)) {
       Get.snackbar("Error", "Please enter a valid 10-digit phone number",
           backgroundColor: Colors.red, colorText: Colors.white);
-      isError=true;
+      isError.value=true;
       return;
     }
-    isError=false;
+    isError.value=false;
 
     try{
       OtpReq req=OtpReq();
@@ -46,6 +46,7 @@ class LoginPageController extends GetxController {
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     }catch(e){
+      isError.value=true;
       print("Error: $e");
       Get.snackbar("Error", "Something went wrong!",
           backgroundColor: Colors.red, colorText: Colors.white);
