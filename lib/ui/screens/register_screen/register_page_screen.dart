@@ -42,98 +42,100 @@ class RegisterPageScreen extends StatelessWidget {
               ),
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTextField(
-                    "Business Name *", controller.businessNameController),
-                const SizedBox(height: 15),
-                _buildTextField("GST Number *", controller.gstNumberController),
-                const SizedBox(height: 15),
-                _buildTextField("PAN Number *", controller.panNumberController),
-                const SizedBox(height: 20),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTextField(
+                      "Business Name *", controller.businessNameController),
+                  const SizedBox(height: 15),
+                  _buildTextField("GST Number *", controller.gstNumberController),
+                  const SizedBox(height: 15),
+                  _buildTextField("PAN Number *", controller.panNumberController),
+                  const SizedBox(height: 20),
 
-                // Terms & Conditions Checkbox
-                Row(
-                  children: [
-                    Obx(() => Checkbox(
-                          activeColor: const Color(0xFF603EA4),
-                          value: controller.isChecked.value,
-                          onChanged: (value) =>
-                              controller.toggleCheckbox(value!),
-                        )),
-                    Expanded(
-                      child: Text.rich(
-                        TextSpan(
-                          text: "By continuing, you agree to our ",
-                          style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0x99000000)),
-                          children: [
-                            TextSpan(
-                              text: "Terms of Service, ",
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF603EA4)),
-                            ),
-                            TextSpan(
-                              text: "Privacy Policy ",
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF603EA4)),
-                            ),
-                            TextSpan(
-                              text: "and ",
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black54),
-                            ),
-                            TextSpan(
-                              text: "Cookie Policy.",
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF603EA4)),
-                            ),
-                          ],
+                  // Terms & Conditions Checkbox
+                  Row(
+                    children: [
+                      Obx(() => Checkbox(
+                            activeColor: const Color(0xFF603EA4),
+                            value: controller.isChecked.value,
+                            onChanged: (value) =>
+                                controller.toggleCheckbox(value!),
+                          )),
+                      Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            text: "By continuing, you agree to our ",
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0x99000000)),
+                            children: [
+                              TextSpan(
+                                text: "Terms of Service, ",
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF603EA4)),
+                              ),
+                              TextSpan(
+                                text: "Privacy Policy ",
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF603EA4)),
+                              ),
+                              TextSpan(
+                                text: "and ",
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black54),
+                              ),
+                              TextSpan(
+                                text: "Cookie Policy.",
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF603EA4)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+                  // Continue Button
+                  Obx(
+                    () => ElevatedButton(
+                      onPressed: controller.isChecked.value
+                          ? () => controller.continueRegistration()
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF603EA4),
+                        disabledBackgroundColor: Colors.grey,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        "Continue",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-                // Continue Button
-                Obx(
-                  () => ElevatedButton(
-                    onPressed: controller.isChecked.value
-                        ? () => controller.continueRegistration()
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF603EA4),
-                      disabledBackgroundColor: Colors.grey,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      "Continue",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

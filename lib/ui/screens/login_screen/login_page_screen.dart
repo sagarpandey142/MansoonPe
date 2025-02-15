@@ -7,13 +7,15 @@ import 'login_page_controller.dart'; // Import the controller
 
 class LoginPageScreen extends StatelessWidget {
   final LoginPageController controller = Get.put(LoginPageController());
-
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true, // Prevents overflow due to the keyboard
       body: SingleChildScrollView(
         // Allows scrolling when the keyboard appears
+        controller: _scrollController,
+        reverse: true,
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -107,6 +109,7 @@ class LoginPageScreen extends StatelessWidget {
                         child: TextField(
                           controller: controller.phoneController,
                           keyboardType: TextInputType.text,
+                          onTap: _scrollToBottom,
                           decoration: InputDecoration(
                             labelText: "Mobile Number",
                             floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -117,11 +120,11 @@ class LoginPageScreen extends StatelessWidget {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.grey),
+                              borderSide:   BorderSide(color: controller.isError ? Colors.red : Colors.grey),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.grey),
+                              borderSide: BorderSide(color:  Colors.grey),
                             ),
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 20),
@@ -203,5 +206,14 @@ class LoginPageScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 }

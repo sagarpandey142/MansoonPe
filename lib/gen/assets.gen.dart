@@ -9,56 +9,56 @@
 
 import 'package:flutter/widgets.dart';
 
-class $AssetsBottomNavigatorImagesGen {
-  const $AssetsBottomNavigatorImagesGen();
+class $AssetsCustomBottomNavigationGen {
+  const $AssetsCustomBottomNavigationGen();
 
-  /// File path: assets/bottom_navigator_images/home_color.png
-  AssetGenImage get homeColor =>
-      const AssetGenImage('assets/bottom_navigator_images/home_color.png');
+  /// File path: assets/custom_bottom_navigation/home.svg
+  String get home => 'assets/custom_bottom_navigation/home.svg';
 
-  /// File path: assets/bottom_navigator_images/home_image.png
-  AssetGenImage get homeImage =>
-      const AssetGenImage('assets/bottom_navigator_images/home_image.png');
+  /// File path: assets/custom_bottom_navigation/home_color.svg
+  String get homeColor => 'assets/custom_bottom_navigation/home_color.svg';
 
-  /// File path: assets/bottom_navigator_images/order_color.png
-  AssetGenImage get orderColor =>
-      const AssetGenImage('assets/bottom_navigator_images/order_color.png');
+  /// File path: assets/custom_bottom_navigation/order.svg
+  String get order => 'assets/custom_bottom_navigation/order.svg';
 
-  /// File path: assets/bottom_navigator_images/orders_images.png
-  AssetGenImage get ordersImages =>
-      const AssetGenImage('assets/bottom_navigator_images/orders_images.png');
+  /// File path: assets/custom_bottom_navigation/order_color.svg
+  String get orderColor => 'assets/custom_bottom_navigation/order_color.svg';
 
-  /// File path: assets/bottom_navigator_images/profile_color.png
-  AssetGenImage get profileColor =>
-      const AssetGenImage('assets/bottom_navigator_images/profile_color.png');
+  /// File path: assets/custom_bottom_navigation/profile.svg
+  String get profile => 'assets/custom_bottom_navigation/profile.svg';
 
-  /// File path: assets/bottom_navigator_images/profile_image.png
-  AssetGenImage get profileImage =>
-      const AssetGenImage('assets/bottom_navigator_images/profile_image.png');
+  /// File path: assets/custom_bottom_navigation/profile_color.svg
+  String get profileColor =>
+      'assets/custom_bottom_navigation/profile_color.svg';
 
-  /// File path: assets/bottom_navigator_images/projcet.png
-  AssetGenImage get projcet =>
-      const AssetGenImage('assets/bottom_navigator_images/projcet.png');
+  /// File path: assets/custom_bottom_navigation/project.svg
+  String get project => 'assets/custom_bottom_navigation/project.svg';
 
-  /// File path: assets/bottom_navigator_images/projects_image.png
-  AssetGenImage get projectsImage =>
-      const AssetGenImage('assets/bottom_navigator_images/projects_image.png');
+  /// File path: assets/custom_bottom_navigation/project_color.svg
+  String get projectColor =>
+      'assets/custom_bottom_navigation/project_color.svg';
 
   /// List of all assets
-  List<AssetGenImage> get values => [
+  List<String> get values => [
+        home,
         homeColor,
-        homeImage,
+        order,
         orderColor,
-        ordersImages,
+        profile,
         profileColor,
-        profileImage,
-        projcet,
-        projectsImage
+        project,
+        projectColor
       ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/Component 160.svg
+  String get component160 => 'assets/images/Component 160.svg';
+
+  /// File path: assets/images/background_screen.svg
+  String get backgroundScreen => 'assets/images/background_screen.svg';
 
   /// File path: assets/images/constructor_img.svg
   String get constructorImg => 'assets/images/constructor_img.svg';
@@ -71,47 +71,53 @@ class $AssetsImagesGen {
   AssetGenImage get homeBackgroundImage =>
       const AssetGenImage('assets/images/home_background_image.png');
 
-  /// File path: assets/images/img.png
-  AssetGenImage get img => const AssetGenImage('assets/images/img.png');
+  /// File path: assets/images/home_regi_container.png
+  AssetGenImage get homeRegiContainer =>
+      const AssetGenImage('assets/images/home_regi_container.png');
 
-  /// File path: assets/images/menu_bar.png
-  AssetGenImage get menuBar =>
-      const AssetGenImage('assets/images/menu_bar.png');
+  /// File path: assets/images/jj.png
+  AssetGenImage get jj => const AssetGenImage('assets/images/jj.png');
 
   /// File path: assets/images/menu_vector.svg
   String get menuVector => 'assets/images/menu_vector.svg';
 
-  /// File path: assets/images/register-removebg-preview.png
-  AssetGenImage get registerRemovebgPreview =>
-      const AssetGenImage('assets/images/register-removebg-preview.png');
-
-  /// File path: assets/images/register_construction.png
-  AssetGenImage get registerConstruction =>
-      const AssetGenImage('assets/images/register_construction.png');
+  /// File path: assets/images/oreder_icon.png
+  AssetGenImage get orederIcon =>
+      const AssetGenImage('assets/images/oreder_icon.png');
 
   /// File path: assets/images/splash screen logo.png
   AssetGenImage get splashScreenLogo =>
       const AssetGenImage('assets/images/splash screen logo.png');
 
+  /// File path: assets/images/truck_splash_screen_logo1.svg
+  String get truckSplashScreenLogo1 =>
+      'assets/images/truck_splash_screen_logo1.svg';
+
+  /// File path: assets/images/upload_attach.svg
+  String get uploadAttach => 'assets/images/upload_attach.svg';
+
   /// List of all assets
   List<dynamic> get values => [
+        component160,
+        backgroundScreen,
         constructorImg,
         fileImage,
         homeBackgroundImage,
-        img,
-        menuBar,
+        homeRegiContainer,
+        jj,
         menuVector,
-        registerRemovebgPreview,
-        registerConstruction,
-        splashScreenLogo
+        orederIcon,
+        splashScreenLogo,
+        truckSplashScreenLogo1,
+        uploadAttach
       ];
 }
 
 class Assets {
   const Assets._();
 
-  static const $AssetsBottomNavigatorImagesGen bottomNavigatorImages =
-      $AssetsBottomNavigatorImagesGen();
+  static const $AssetsCustomBottomNavigationGen customBottomNavigation =
+      $AssetsCustomBottomNavigationGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

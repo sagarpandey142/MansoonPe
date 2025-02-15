@@ -1,14 +1,28 @@
 import 'package:dio/dio.dart';
+import 'package:projects/modals/otp_req.dart';
+import 'package:projects/modals/verify_otp_req.dart';
+import 'package:projects/modals/verify_otp_res.dart';
 import 'package:retrofit/retrofit.dart';
 import '../modals/modal.dart';
+import '../modals/reg_profile_req.dart';
 import 'apis.dart';
 part 'api_client.g.dart';
 
 @RestApi(baseUrl: Apis.baseUrl)
-abstract class ApiClient{
-  factory ApiClient(Dio dio,{String baseUrl}) = _ApiClient;
+abstract class ApiClient {
+  factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
   @POST(Apis.knowledgeCenterApi)
   Future<KnowledgeRes> getKnowledgeCenter(@Body() KnowledgeReq kr);
+
+  @POST(Apis.generateOTPApi)
+  Future<dynamic> generateOtp(@Body() OtpReq kr);
+
+  @POST(Apis.verifyOTPApi)
+  Future<dynamic> verifyOtp(@Body() VerifyOtpReq kr);
+
+
+  @POST(Apis.registerProfileApi)
+  Future<RegProfileRes> registerProfile(@Body() RegProfileReq kr);
 
 }

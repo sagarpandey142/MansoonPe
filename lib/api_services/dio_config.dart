@@ -11,14 +11,15 @@ class DioConfig{
   }
   DioConfig._();
 
-  Dio getDio(){
+  Dio getDio({String token = ''}){
     String username = 'lakshya';
     String password = 'lakshya@001';
     String basicAuth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+    String bearerToken = 'Bearer $token';
     Map<String, String> kHeaders = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Accept': 'application/json; charset=utf-8',
-      "Authorization": basicAuth
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      "Authorization": token.isEmpty ? basicAuth : bearerToken
     };
     final options= BaseOptions(
         baseUrl: Apis.baseUrl,
@@ -26,7 +27,8 @@ class DioConfig{
         receiveTimeout: const Duration(minutes: 2),
         sendTimeout: const Duration(minutes: 2),
         receiveDataWhenStatusError: true,
-        headers:kHeaders
+        headers:kHeaders,
+      responseType: ResponseType.plain,
     );
     var dio = Dio(options);
     dio.interceptors.add(LogInterceptor(
@@ -34,7 +36,8 @@ class DioConfig{
         requestBody: true,
         requestHeader: true,
         responseHeader: true,
-        responseBody: true
+        responseBody: true,
+      error: true
     ));
     return dio;
   }
