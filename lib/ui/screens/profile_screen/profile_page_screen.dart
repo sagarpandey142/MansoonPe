@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/profile_screen/profile_page_controller.dart';
-
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
 class ProfilePageScreen extends StatefulWidget {
@@ -13,44 +13,46 @@ class ProfilePageScreen extends StatefulWidget {
 }
 
 class _ProfilePageScreenState extends State<ProfilePageScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 3;
 
   @override
   Widget build(BuildContext context) {
     final ProfilePageController controller = Get.put(ProfilePageController());
-
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          'Profile',
-          style: GoogleFonts.poppins(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+      body: Column(
+        children: [
+          // Profile Card
+          Padding(
+            padding: const EdgeInsets.only(top: 50, left: 15),
+            child: Row(
+              children: [
+                Text(
+                  "Orders",
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xCC000000),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        centerTitle: false,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Profile Card
-            Container(
-              padding: EdgeInsets.all(16.0),
+          Divider(
+            color: Colors.grey.shade200,
+            thickness: 2,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+            child: Container(
+              padding: EdgeInsets.all(20.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade200,
-                    blurRadius: 5,
-                    spreadRadius: 2,
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Colors.grey.shade300, // Grey border color
+                  width: 1, // Adjust width as needed
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,71 +63,203 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                         radius: 30,
                         backgroundColor: Color(0xFFEDE7F6),
                         child: Obx(() => Text(
-                          controller.userName.value[0],
-                          style: GoogleFonts.poppins(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF603EA4),
-                          ),
-                        )),
+                              controller.userName.value[0],
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF603EA4),
+                              ),
+                            )),
                       ),
                       SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                            controller.userName.value,
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF603EA4),
-                            ),
-                          )),
+                                controller.userName.value,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF603EA4),
+                                ),
+                              )),
                           SizedBox(height: 4),
                           Obx(() => Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFEDE7F6),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              'GSTIN: ${controller.gstin.value}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF603EA4),
-                              ),
-                            ),
-                          )),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF8F9FC),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  'GSTIN: ${controller.gstin.value}',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF603EA4),
+                                  ),
+                                ),
+                              )),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Obx(() => InfoRow(label: 'PAN Number:', value: controller.panNumber.value)),
+                  SizedBox(height: 20),
+                  Obx(() => Align(
+                        alignment: Alignment
+                            .centerLeft, // Aligns container to the left
+                        child: Container(
+                          width: MediaQuery.of(context).size.width *
+                              0.60, // Reduced width
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: InfoRow(
+                            label: 'PAN Number:',
+                            value: controller.panNumber.value,
+                          ),
+                        ),
+                      )),
                   SizedBox(height: 5),
-                  Obx(() => InfoRow(label: 'Mob No:', value: controller.mobileNumber.value)),
+                  Obx(() => Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width *
+                              0.55, // Reduced width
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: InfoRow(
+                            label: 'Mob No:',
+                            value: controller.mobileNumber.value,
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            OptionTile(icon: Icons.receipt_long, title: 'Orders Placed'),
-            OptionTile(icon: Icons.account_balance, title: 'Bank Accounts'),
-            GestureDetector(
-                onTap: () => controller.logout(),
-                child: OptionTile(icon: Icons.logout, title: 'Logout')),
-          ],
-        ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Colors.grey.shade300, // Grey border color
+                  width: 1, // Adjust width as needed
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.start, // Align items to the start (left)
+                children: [
+                  SvgPicture.asset("assets/images/profile_receipt.svg"),
+                  SizedBox(width: 15),
+                  Expanded(
+                    // Use Expanded to make the Text occupy less space
+                    child: Text(
+                      "Orders Placed",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xCC000000),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Colors.grey.shade300, // Grey border color
+                  width: 1, // Adjust width as needed
+                ),
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.asset("assets/images/profile_bank.svg"),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    "Bank Accounts",
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xCC000000),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
+            child: InkWell(
+              onTap: () {
+                // Call the showLogoutBottomSheet method when the button is pressed
+                Get.put(ProfilePageController())
+                    .showLogoutBottomSheet(context);
+              },
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Colors.grey.shade300, // Grey border color
+                    width: 1, // Adjust width as needed
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 25,
+                    ),
+                    SvgPicture.asset("assets/images/profile_log.svg"),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      "Logout",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xCC000000),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //   },
-      // ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
     );
   }
 }
@@ -148,7 +282,8 @@ class InfoRow extends StatelessWidget {
             children: [
               TextSpan(
                 text: ' $label ',
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black54),
               ),
               TextSpan(
                 text: value,

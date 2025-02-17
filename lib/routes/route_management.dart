@@ -37,6 +37,11 @@ mixin RouteManagement {
       Get.toNamed(Routes.homePageScreen);
     }
   }
+  static void goToProfilePageScreen(){
+    if(Get.currentRoute != Routes.profilePageScreen){
+      Get.offAndToNamed(Routes.profilePageScreen);
+    }
+  }
 // b connect routes management function all available here
 
 }

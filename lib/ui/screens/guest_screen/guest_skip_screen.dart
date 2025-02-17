@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
+import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
@@ -114,7 +115,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // Get.find<HomePageController>().showRegistrationBottomSheet(context);
+                          Get.to(() => LoginPageScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -194,7 +195,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          // Handle create first project action
+                          Get.to(() => LoginPageScreen());// Handle create first project action
                         },
                         child: Text(
                           "+   Create first project",

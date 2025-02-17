@@ -7,6 +7,7 @@ import 'package:projects/ui/screens/create_project_screen/create_project_screen.
 
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
+import '../profile_screen/profile_page_screen.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -51,9 +52,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width * 0.02),
-                      child: SvgPicture.asset("assets/images/menu_vector.svg"),
+                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to ProfilePageScreen
+                          Get.to(() => ProfilePageScreen());
+                        },
+                        child: SvgPicture.asset("assets/images/menu_vector.svg"),
+                      ),
                     ),
                   ],
                 ),

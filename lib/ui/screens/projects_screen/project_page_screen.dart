@@ -13,7 +13,7 @@ class ProjectPageScreen extends StatefulWidget {
 
 class _ProjectPageScreenState extends State<ProjectPageScreen> {
   final ProjectPageController controller = Get.put(ProjectPageController());
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +99,14 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
           );
         },
       )),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //   },
-      // ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
     );
   }
 }

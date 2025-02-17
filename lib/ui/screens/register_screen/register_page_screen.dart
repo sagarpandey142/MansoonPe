@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
 import 'register_page_controller.dart';
 
 class RegisterPageScreen extends StatelessWidget {
@@ -51,9 +52,11 @@ class RegisterPageScreen extends StatelessWidget {
                   _buildTextField(
                       "Business Name *", controller.businessNameController),
                   const SizedBox(height: 15),
-                  _buildTextField("GST Number *", controller.gstNumberController),
+                  _buildTextField(
+                      "GST Number *", controller.gstNumberController),
                   const SizedBox(height: 15),
-                  _buildTextField("PAN Number *", controller.panNumberController),
+                  _buildTextField(
+                      "PAN Number *", controller.panNumberController),
                   const SizedBox(height: 20),
 
                   // Terms & Conditions Checkbox
@@ -112,13 +115,17 @@ class RegisterPageScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   // Continue Button
                   Obx(
-                    () => ElevatedButton(
+                        () => ElevatedButton(
                       onPressed: controller.isChecked.value
-                          ? () => controller.continueRegistration()
-                          : null,
+                          ? () {
+                        controller.continueRegistration();
+                        Get.to(() => HomePageScreen());
+                      }
+                          : null, // Disable if not checked
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF603EA4),
-                        disabledBackgroundColor: Colors.grey,
+                        backgroundColor: controller.isChecked.value
+                            ? const Color(0xFF603EA4) // Purple when enabled
+                            : Colors.grey, // Grey when disabled
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -134,6 +141,7 @@ class RegisterPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
                 ],
               ),
             ),

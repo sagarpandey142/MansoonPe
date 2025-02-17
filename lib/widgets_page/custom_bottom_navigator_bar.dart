@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+
+import '../ui/screens/home_screens/home_page_screen.dart';
+import '../ui/screens/order_screen/order_page_screen.dart';
+import '../ui/screens/profile_screen/profile_page_screen.dart';
+import '../ui/screens/projects_screen/project_page_screen.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -21,7 +27,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
       unselectedItemColor: Colors.black54,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      onTap: (index) {},
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            Get.to(() => HomePageScreen());
+            break;
+          case 1:
+            Get.to(() => ProjectPageScreen());
+            break;
+          case 2:
+            Get.to(() => OrderPageScreen());
+            break;
+          case 3:
+            Get.to(() => ProfilePageScreen());
+            break;
+        }
+        onTap(index);
+      },
       selectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,
         fontWeight: FontWeight.w500,

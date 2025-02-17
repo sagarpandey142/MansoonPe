@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
@@ -14,7 +15,7 @@ class OrderPageScreen extends StatefulWidget {
 }
 
 class _OrderPageScreenState extends State<OrderPageScreen> {
-  int _currentIndex = 0; // Track the selected index
+  int _currentIndex = 2; // Track the selected index
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +62,8 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                 child: Column(
                   children: [
                     Center(
-                      child: Image.asset(
-                        'assets/images/oreder_icon.png',
+                      child: SvgPicture.asset(
+                        'assets/images/order_file.svg',
                         width: MediaQuery.of(context).size.width * 0.2,
                       ),
                     ),
@@ -93,7 +94,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color:Color(0xFF785CB2),
+                            color: Color(0xFF785CB2),
                           ),
                         ),
                       ),
@@ -105,14 +106,14 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
           ),
         ),
       ),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //   },
-      // ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
     );
   }
 }
