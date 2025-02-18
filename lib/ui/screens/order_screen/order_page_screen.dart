@@ -65,6 +65,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                       child: SvgPicture.asset(
                         'assets/images/order_file.svg',
                         width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.10,
                       ),
                     ),
                     const SizedBox(height: 20),

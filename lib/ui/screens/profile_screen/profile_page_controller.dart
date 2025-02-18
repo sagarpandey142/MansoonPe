@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
-import 'package:projects/ui/screens/profile_screen/profile_page_screen.dart';
 
 class ProfilePageController extends GetxController {
   // Sample user details
@@ -149,5 +148,4 @@ class ProfilePageController extends GetxController {
     );
   }
 
-  int currentIndex = 2;
 }

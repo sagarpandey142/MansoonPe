@@ -10,6 +10,8 @@ class LoginPageController extends GetxController {
   TextEditingController phoneController =
       TextEditingController(); // Text Field Controller
 
+  // Inside LoginPageController
+  final RxBool isTyping = false.obs;
   var isError=false.obs;
   Future<void> generateOTP() async {
     String phoneNumber = phoneController.text.trim();

@@ -9,6 +9,7 @@ class ProjectModel {
   String? buttonText;
   String? message;
   String statusType;
+  String image;
 
   ProjectModel({
     required this.title,
@@ -21,5 +22,6 @@ class ProjectModel {
     this.buttonText,
     this.message,
     required this.statusType,
+    required this.image
   });
 }

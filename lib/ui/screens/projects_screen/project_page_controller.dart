@@ -1,12 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
-
 import '../../../model_class/project_model.dart';
-import '../home_screens/home_page_screen.dart';
-import '../order_screen/order_page_screen.dart';
-import '../profile_screen/profile_page_screen.dart';
+
 
 class ProjectPageController extends GetxController {
   var projects = <ProjectModel>[
@@ -20,6 +14,7 @@ class ProjectPageController extends GetxController {
       pending: "\$23000",
       buttonText: "Pay Now",
       statusType: "active",
+      image: "assets/images/proj_imag_1.png",
     ),
     ProjectModel(
       title: "JMD Building, Gurgaon",
@@ -30,6 +25,7 @@ class ProjectPageController extends GetxController {
       statusColor: 0xFFFFA500, // Orange
       message: "Please wait while we are reviewing it",
       statusType: "review",
+      image: "assets/images/proj_imag_2.png",
     ),
     ProjectModel(
       title: "JMD Building, Gurgaon",
@@ -40,33 +36,9 @@ class ProjectPageController extends GetxController {
       statusColor: 0xFFDC3545, // Red
       message: "This project is not approved yet",
       statusType: "not_approved",
+      image: "assets/images/proj_imag_3.png",
     ),
   ].obs;
 
-  int currentIndex = 0;
-
-  void updateIndex(int index, BuildContext context) {
-    currentIndex = index;
-    // notifyListeners();
-
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePageScreen()));
-        break;
-      case 1:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ProjectPageScreen()));
-        break;
-      case 2:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => OrderPageScreen()));
-        break;
-      case 3:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ProfilePageScreen()));
-        break;
-    }
-  }
 
 }
