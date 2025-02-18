@@ -271,283 +271,212 @@ class LoginPageScreen extends StatefulWidget {
 
 class _LoginPageScreenState extends State<LoginPageScreen> {
   final LoginPageController controller = Get.put(LoginPageController());
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus(); // Dismiss keyboard
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: true, // Prevent resizing
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                // Top Section
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFE2EEFF),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: screenHeight * 0.04),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.to(() => GuestSkipScreen());
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                side: BorderSide(color: Colors.grey, width: 1.1),
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 4, horizontal: 20),
-                              ),
-                              child: Text(
-                                "Skip",
-                                style: GoogleFonts.poppins(
-                                  color: Color(0x99000006),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SvgPicture.asset(
-                        'assets/images/constructor_img.svg',
-                        height: screenHeight * 0.2,
-                        width: screenWidth * 0.6,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(height: screenHeight * 0.02),
-                      Text(
-                        "Financing Platform for\nContractors & Builders",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF000001),
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.04),
-                    ],
-                  ),
+    return Scaffold(
+      resizeToAvoidBottomInset:
+      false, // Prevent screen resizing when keyboard appears
+      body: Stack(
+        // Use Stack to fix bottom text at the bottom
+        children: [
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(0xFFE2EEFF),
                 ),
-
-                // ✅ Wrap only the Form in a Scrollable View
-
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: SingleChildScrollView(
-                    reverse: true, // Ensures the view scrolls up
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white, // Change to any color you need
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: screenHeight * 0.04),
+                    Padding(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SizedBox(height: screenHeight * 0.02),
-                          Text(
-                            "Log in or Sign up",
-                            style: GoogleFonts.poppins(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF000001),
-                            ),
-                          ),
-                          SizedBox(height: screenHeight * 0.02),
-                          Obx(() => SizedBox(
-                            height: 60,
-                            width: 350,
-                            child: TextField(
-                              controller: controller.phoneController,
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                labelText: "Mobile Number",
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                labelStyle: GoogleFonts.poppins(
-                                  color: Color(0x99000006),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      color: controller.isError.value
-                                          ? Colors.red
-                                          : Colors.grey),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      color: controller.isError.value
-                                          ? Colors.red
-                                          : Colors.grey),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 20),
-                                isDense: true,
+                          ElevatedButton(
+                            onPressed: () {
+                              Get.to(() => GuestSkipScreen());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              side: BorderSide(color: Colors.grey, width: 1.1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 20),
+                            ),
+                            child: Text(
+                              "Skip",
                               style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xCC000008),
-                              ),
-                            ),
-                          )),
-
-                          SizedBox(height: screenHeight * 0.03),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: () => controller.generateOTP(),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF603EA4),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                                child: Text(
-                                  "Generate OTP",
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
+                                color: Color(0x99000006),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
                               ),
                             ),
                           ),
-
-                          // SizedBox(height: screenHeight * 0.3), // Space before bottom text
                         ],
                       ),
                     ),
-                  ),
+                    SvgPicture.asset(
+                      'assets/images/constructor_img.svg',
+                      height: screenHeight * 0.2,
+                      width: screenWidth * 0.6,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    Text(
+                      "Financing Platform for\nContractors & Builders",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF000001),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.04),
+                  ],
                 ),
-                Expanded(
-                  flex: 2,
-                    child: Container())
-              ],
-            ),
-            // ✅ Keeps the text fixed at the bottom
-            // Positioned(
-            //   bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 10.0 : 20.0,
-            //   left: 0,
-            //   right: 0,
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //     child: Text.rich(
-            //       TextSpan(
-            //         text: "By continuing, you agree to our ",
-            //         style: GoogleFonts.inter(
-            //           fontSize: 12,
-            //           color: Colors.grey,
-            //           fontWeight: FontWeight.w400,
-            //         ),
-            //         children: [
-            //           TextSpan(
-            //             text: "Terms of Service",
-            //             style: GoogleFonts.inter(
-            //               fontSize: 12,
-            //               color: Color(0xCC4600F2),
-            //               fontWeight: FontWeight.w400,
-            //             ),
-            //           ),
-            //           const TextSpan(text: ", "),
-            //           TextSpan(
-            //             text: "\nPrivacy Policy",
-            //             style: GoogleFonts.inter(
-            //               fontSize: 12,
-            //               color: Color(0xCC4600F2),
-            //               fontWeight: FontWeight.w400,
-            //             ),
-            //           ),
-            //           const TextSpan(text: " and "),
-            //           TextSpan(
-            //             text: "Cookie Policy.",
-            //             style: GoogleFonts.inter(
-            //               fontSize: 12,
-            //               color: Color(0xCC4600F2),
-            //               fontWeight: FontWeight.w400,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       textAlign: TextAlign.center,
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-
-          bottomNavigationBar:Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text.rich(
-              TextSpan(
-                text: "By continuing, you agree to our ",
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-                ),
-                children: [
-                  TextSpan(
-                    text: "Terms of Service",
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: Color(0xCC4600F2),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const TextSpan(text: ", "),
-                  TextSpan(
-                    text: "\nPrivacy Policy",
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: Color(0xCC4600F2),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const TextSpan(text: " and "),
-                  TextSpan(
-                    text: "Cookie Policy.",
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: Color(0xCC4600F2),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
               ),
-              textAlign: TextAlign.center,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: screenHeight * 0.02),
+                    Text(
+                      "Log in or Sign up",
+                      style: GoogleFonts.poppins(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF000001),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    Obx(() => SizedBox(
+                      height: 60,
+                      width: 350,
+                      child: TextField(
+                        controller: controller.phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          labelText: "Mobile Number",
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          labelStyle: GoogleFonts.poppins(
+                            color: Color(0x99000006),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                color: controller.isError.value
+                                    ? Colors.red
+                                    : Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                color: controller.isError.value
+                                    ? Colors.red
+                                    : Colors.grey),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          isDense: true,
+                        ),
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xCC000008),
+                        ),
+                      ),
+                    )),
+
+                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () => controller.generateOTP(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF603EA4),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Text(
+                          "Generate OTP",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                        height: screenHeight * 0.1), // Space for bottom text
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            // Position the bottom text at the bottom of the screen
+            bottom: 20.0,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text.rich(
+                TextSpan(
+                  text: "By continuing, you agree to our ",
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Terms of Service",
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Color(0xCC4600F2),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const TextSpan(text: ", "),
+                    TextSpan(
+                      text: "\nPrivacy Policy",
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Color(0xCC4600F2),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const TextSpan(text: " and "),
+                    TextSpan(
+                      text: "Cookie Policy.",
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Color(0xCC4600F2),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
+        ],
       ),
-    )
-    ;
+    );
   }
 }
