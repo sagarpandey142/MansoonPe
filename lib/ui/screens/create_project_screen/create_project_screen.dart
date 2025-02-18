@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
 import 'package:projects/utils/custom_colour.dart';
 
+import '../../../widgets_page/custom_bottom_navigator_bar.dart';
+
 class CreateProjectScreen extends StatefulWidget {
   const CreateProjectScreen({super.key});
 
@@ -14,6 +16,7 @@ class CreateProjectScreen extends StatefulWidget {
 
 class _CreateProjectScreenState extends State<CreateProjectScreen> {
   bool _isButtonPressed = false; // Track button press state
+  int _currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -109,30 +112,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0xFF603EA4),
-        unselectedItemColor: Colors.black54,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/home_color.svg"),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/project.svg",),
-            label: "Projects",
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/order.svg",),
-            label: "Orders",
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/custom_bottom_navigation/profile.svg",),
-            label: "Profile",
-          ),
-        ],
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index; // Update the selected index
+          });
+        },
       ),
     );
   }

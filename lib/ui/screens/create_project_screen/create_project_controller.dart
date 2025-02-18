@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import '../home_screens/home_page_screen.dart';
 
 class CreateProjectController extends ChangeNotifier {
@@ -177,7 +178,7 @@ class CreateProjectController extends ChangeNotifier {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          Get.to(() => HomePageScreen());
+                          Get.to(() => ProjectPageScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF603EA4),
