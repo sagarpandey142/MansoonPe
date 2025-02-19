@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/otp_req.dart';
-import 'dart:convert';
 import '../otp_screen/otp_page_screen.dart'; // Import OTP screen
 
 class LoginPageController extends GetxController {

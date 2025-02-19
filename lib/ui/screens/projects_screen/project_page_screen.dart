@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_controller.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
@@ -57,182 +58,191 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: Colors.grey.shade300, width: 1.1),
+                            border: Border.all(color: Colors.grey.shade300, width: 1.1),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10, right: 20),
-                            child: Row(
-                              children: [
-                                Image.asset(project.image,
-                                    width: 140, height: 160),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                          child: InkWell(
+                            onTap: () {
+                              // controller.showProjectPopup(context); // Popup function call
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10, right: 20),
+                              child: Row(
+                                children: [
+                                  Stack(
                                     children: [
-                                      Text(
-                                        project.title,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        "Date: ${project.date}",
-                                        style: TextStyle(
-                                            color: Color(0xFF363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                          text:
-                                              "Project Cost: ", // Grey color text
-                                          style: const TextStyle(
-                                            color: Color(0xFF363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
+                                      Image.asset(project.image, width: 130, height: 160),
+                                      Positioned(
+                                        bottom: 5,
+                                        right: 5,
+                                        child: Container(
+                                          height: 25,
+                                          width: 25,
+                                          decoration: BoxDecoration(
+                                            color: Color(0x66000000),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  "${project.cost}", // Red color text
-                                              style: const TextStyle(
-                                                color: Color(0xFF363F72),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                          child: InkWell(
+                                            onTap: () {
+                                              // Add your save functionality here
+                                            },
+                                            child: SvgPicture.asset(
+                                              'assets/images/save_button.svg',
+                                              width: 15,
+                                              height: 15,
+                                              fit: BoxFit.scaleDown,
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                          text:
-                                              "Consumption: ", // Grey color text
-                                          style: const TextStyle(
-                                            color: Color(0xFF363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  "${project.consumption}", // Red color text
-                                              style: const TextStyle(
-                                                color: Color(0xFF363F72),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: Color(project.statusColor)
-                                              .withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border: Border.all(
-                                            color: Color(project
-                                                .statusColor), // Same color as text for the border
                                           ),
                                         ),
-                                        child: Text(
-                                          project.status,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          project.title,
+                                          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Date: ${project.date}",
                                           style: TextStyle(
-                                            color: Color(project.statusColor),
+                                            color: Color(0xFF363F72),
                                             fontSize: 10,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Divider(
-                                        color: Colors.grey.shade300,
-                                      ),
-                                      if (project.statusType == "active") ...[
-                                        Row(
-                                          children: [
-                                            Text.rich(
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Project Cost: ",
+                                            style: const TextStyle(
+                                              color: Color(0xFF363F72),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            children: [
                                               TextSpan(
-                                                text:
-                                                    "Pending: ", // Grey color text
+                                                text: project.cost,
                                                 style: const TextStyle(
                                                   color: Color(0xFF363F72),
                                                   fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        "${project.pending}", // Red color text
-                                                    style: const TextStyle(
-                                                      color: Color(0xFFB42318),
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
                                               ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Consumption: ",
+                                            style: const TextStyle(
+                                              color: Color(0xFF363F72),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
                                             ),
-                                            const Spacer(),
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                side: const BorderSide(
-                                                  color: Color(0xFF603EA4),
-                                                ),
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical:
-                                                      3, // Reduced padding for less height
-                                                  horizontal: 8,
-                                                ),
-                                                minimumSize: Size(0,
-                                                    24), // Set a minimum height if needed
-                                              ),
-                                              child: Text(
-                                                project.buttonText ?? "",
+                                            children: [
+                                              TextSpan(
+                                                text: project.consumption,
                                                 style: const TextStyle(
+                                                  color: Color(0xFF363F72),
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: Color(project.statusColor).withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(15),
+                                            border: Border.all(color: Color(project.statusColor)),
+                                          ),
+                                          child: Text(
+                                            project.status,
+                                            style: TextStyle(
+                                              color: Color(project.statusColor),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Divider(color: Colors.grey.shade300),
+                                        if (project.statusType == "active") ...[
+                                          Row(
+                                            children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: "Pending: ",
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF363F72),
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "${project.pending}",
+                                                      style: const TextStyle(
+                                                        color: Color(0xFFB42318),
+                                                        fontSize: 10,
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.transparent,
+                                                  side: const BorderSide(color: Color(0xFF603EA4)),
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(6),
+                                                  ),
+                                                  padding: const EdgeInsets.symmetric(
+                                                    vertical: 3,
+                                                    horizontal: 8,
+                                                  ),
+                                                  minimumSize: Size(0, 24),
+                                                ),
+                                                child: Text(
+                                                  project.buttonText ?? "",
+                                                  style: const TextStyle(
                                                     color: Color(0xFF603EA4),
                                                     fontWeight: FontWeight.w500,
-                                                    fontSize: 10),
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ] else ...[
-                                        Text(
-                                          project.message ?? "",
-                                          style: TextStyle(
+                                            ],
+                                          ),
+                                        ] else ...[
+                                          Text(
+                                            project.message ?? "",
+                                            style: TextStyle(
                                               color: Color(0xFF363F72),
                                               fontWeight: FontWeight.w400,
-                                              fontSize: 10),
-                                        ),
-                                        const SizedBox(height: 10),
-                                      ]
-                                    ],
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                        ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
+
                         const SizedBox(
                             height: 20), // Space added between containers
                       ],
