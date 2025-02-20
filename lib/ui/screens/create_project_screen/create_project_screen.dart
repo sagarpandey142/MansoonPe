@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
+import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
 
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
@@ -53,7 +54,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         ),
                       ),
                     ),
-                    Icon(Icons.search, color: Color(0x66000000)),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProjectPageScreen()),
+                        );
+                      },
+                      child: Icon(Icons.search, color: Color(0x66000000)),
+                    )
                   ],
                 ),
               ),
@@ -84,7 +94,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       width: 200,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: _isButtonPressed ? Color(0xFF603EA4) : Color(0xFFF0EEF6),
+                        color: _isButtonPressed
+                            ? Color(0xFF603EA4)
+                            : Color(0xFFF0EEF6),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextButton(
@@ -93,14 +105,17 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             _isButtonPressed = true;
                           });
 
-                          Get.put(CreateProjectController()).showCreateProjectBottomSheet(context);
+                          Get.put(CreateProjectController())
+                              .showCreateProjectBottomSheet(context);
                         },
                         child: Text(
                           "+   Create first project",
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: _isButtonPressed ? Colors.white : Color(0xFF785CB2),
+                            color: _isButtonPressed
+                                ? Colors.white
+                                : Color(0xFF785CB2),
                           ),
                         ),
                       ),

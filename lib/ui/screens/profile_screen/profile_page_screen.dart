@@ -80,7 +80,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF603EA4),
+                                  color: Color(0xFF402387),
                                 ),
                               )),
                           SizedBox(height: 4),
@@ -106,11 +106,9 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                   ),
                   SizedBox(height: 20),
                   Obx(() => Align(
-                        alignment: Alignment
-                            .centerLeft, // Aligns container to the left
+                        alignment: Alignment.centerLeft,
                         child: Container(
-                          width: MediaQuery.of(context).size.width *
-                              0.60, // Reduced width
+                          width: MediaQuery.of(context).size.width * 0.60,
                           padding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
@@ -120,6 +118,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                           child: InfoRow(
                             label: 'PAN Number:',
                             value: controller.panNumber.value,
+                            labelColor: Color(0xFF603EA4), // Now this will work
                           ),
                         ),
                       )),
@@ -138,6 +137,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                           child: InfoRow(
                             label: 'Mob No:',
                             value: controller.mobileNumber.value,
+                            labelColor: Color(0xFF603EA4),
                           ),
                         ),
                       )),
@@ -148,75 +148,80 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Colors.grey.shade300, // Grey border color
-                  width: 1, // Adjust width as needed
+            child: GestureDetector(
+              onTap: () {
+                // Handle "Orders Placed" button tap
+              },
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset("assets/images/profile_receipt.svg"),
+                    SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        "Orders Placed",
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xCC000000),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, // Align items to the start (left)
-                children: [
-                  SvgPicture.asset("assets/images/profile_receipt.svg"),
-                  SizedBox(width: 15),
-                  Expanded(
-                    // Use Expanded to make the Text occupy less space
-                    child: Text(
-                      "Orders Placed",
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
+            child: GestureDetector(
+              onTap: () {
+                // Handle "Bank Accounts" button tap
+              },
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset("assets/images/profile_bank.svg"),
+                    SizedBox(width: 15),
+                    Text(
+                      "Bank Accounts",
                       style: GoogleFonts.poppins(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                         color: Color(0xCC000000),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Colors.grey.shade300, // Grey border color
-                  width: 1, // Adjust width as needed
+                  ],
                 ),
               ),
-              child: Row(
-                children: [
-                  SvgPicture.asset("assets/images/profile_bank.svg"),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    "Bank Accounts",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xCC000000),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
+
 
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
             child: InkWell(
               onTap: () {
                 // Call the showLogoutBottomSheet method when the button is pressed
-                Get.put(ProfilePageController())
-                    .showLogoutBottomSheet(context);
+                Get.put(ProfilePageController()).showLogoutBottomSheet(context);
               },
               child: Container(
                 height: 60,
@@ -267,8 +272,13 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 class InfoRow extends StatelessWidget {
   final String label;
   final String value;
+  final Color labelColor; // Change type from String to Color
 
-  InfoRow({required this.label, required this.value});
+  const InfoRow({
+    required this.label,
+    required this.value,
+    required this.labelColor, // Now accepts a Color directly
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +293,7 @@ class InfoRow extends StatelessWidget {
               TextSpan(
                 text: ' $label ',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
+                    fontWeight: FontWeight.bold, color: labelColor), // Use labelColor here
               ),
               TextSpan(
                 text: value,
@@ -296,6 +306,7 @@ class InfoRow extends StatelessWidget {
     );
   }
 }
+
 
 class OptionTile extends StatelessWidget {
   final IconData icon;

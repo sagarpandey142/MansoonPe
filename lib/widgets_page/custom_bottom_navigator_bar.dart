@@ -3,11 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
-import '../ui/screens/home_screens/home_page_screen.dart';
-import '../ui/screens/order_screen/order_page_screen.dart';
-import '../ui/screens/profile_screen/profile_page_screen.dart';
-import '../ui/screens/projects_screen/project_page_screen.dart';
-
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -23,23 +18,25 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
-      selectedItemColor: Color(0xFF603EA4), // Purple color for selected text
+      selectedItemColor: Color(0xFF603EA4),
       unselectedItemColor: Colors.black54,
       showSelectedLabels: true,
       showUnselectedLabels: true,
       onTap: (index) {
+        if (index == currentIndex) return; // Prevent unnecessary rebuilds
+
         switch (index) {
           case 0:
-            Get.to(() => HomePageScreen());
+            Get.offNamed('/home');
             break;
           case 1:
-            Get.to(() => ProjectPageScreen());
+            Get.offNamed('/projects');
             break;
           case 2:
-            Get.to(() => OrderPageScreen());
+            Get.offNamed('/orders');
             break;
           case 3:
-            Get.to(() => ProfilePageScreen());
+            Get.offNamed('/profile');
             break;
         }
         onTap(index);
@@ -47,7 +44,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
       selectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF603EA4), // Ensuring selected text color is purple
+        color: Color(0xFF603EA4),
       ),
       unselectedLabelStyle: GoogleFonts.poppins(
         fontSize: 12,
