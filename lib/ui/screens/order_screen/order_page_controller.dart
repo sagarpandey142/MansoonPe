@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../home_screens/home_page_screen.dart';
 import '../profile_screen/profile_page_screen.dart';
 import '../projects_screen/project_page_screen.dart';
 import 'order_page_screen.dart';
 
 class OrderPageController extends GetxController {
-
   int currentIndex = 1;
 
   void updateIndex(int index, BuildContext context) {
@@ -21,16 +18,16 @@ class OrderPageController extends GetxController {
             context, MaterialPageRoute(builder: (context) => HomePageScreen()));
         break;
       case 1:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ProjectPageScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => ProjectPageScreen()));
         break;
       case 2:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => OrderPageScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => OrderPageScreen()));
         break;
       case 3:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ProfilePageScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => ProfilePageScreen()));
         break;
     }
   }

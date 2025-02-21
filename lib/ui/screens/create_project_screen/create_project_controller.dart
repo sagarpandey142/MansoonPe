@@ -134,21 +134,28 @@ class CreateProjectController extends ChangeNotifier {
 
   Widget textFieldWidget(String label) {
     return SizedBox(
-      height: 60,
+      height: 50,
       child: TextField(
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade200),
+            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade200),
+            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border when focused
           ),
-          labelStyle: TextStyle(color: Color(0x99000000)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border for normal state
+          ),
+          labelStyle: TextStyle(color: Color(0xCC000000),
+              fontWeight: FontWeight.w400,
+              fontSize: 14
+          ),
         ),
-        style: TextStyle(color: Color(0x99000000)),
+        style: TextStyle(color: Colors.black), // Changed text color for visibility
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
 
 import 'package:projects/ui/screens/splash_screen/splash_page_binding.dart';
 import 'package:projects/ui/screens/splash_screen/splash_page_screen.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           binding: SplashPageBinding(),
         ),
         GetPage(name: '/home', page: () => HomePageScreen()),
-        GetPage(name: '/projects', page: () => ProjectPageScreen()),
+        GetPage(name: '/Createproject', page: () => CreateProjectScreen()),
         GetPage(name: '/orders', page: () => OrderPageScreen()),
         GetPage(name: '/profile', page: () => ProfilePageScreen()),
       ],

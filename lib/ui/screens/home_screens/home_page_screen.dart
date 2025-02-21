@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
-
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
+import '../create_project_screen/create_project_controller.dart';
 import '../profile_screen/profile_page_screen.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -52,13 +52,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width * 0.02),
                       child: GestureDetector(
                         onTap: () {
                           // Navigate to ProfilePageScreen
                           Get.to(() => ProfilePageScreen());
                         },
-                        child: SvgPicture.asset("assets/images/menu_vector.svg"),
+                        child:
+                            SvgPicture.asset("assets/images/menu_vector.svg"),
                       ),
                     ),
                   ],
@@ -225,7 +227,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(() => CreateProjectScreen());
+                          Get.to(() => CreateProjectScreen()); // Navigate to CreateProjectScreen
+                          Future.delayed(Duration(milliseconds: 300), () {
+                            // Delay to ensure screen transition before showing bottom sheet
+                            Get.put(CreateProjectController()).showCreateProjectBottomSheet(Get.context!);
+                          });
                         },
                         child: Text(
                           "+   Create first project",
@@ -237,6 +243,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),

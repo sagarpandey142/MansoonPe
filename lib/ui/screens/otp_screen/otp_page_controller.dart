@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/verify_otp_req.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../register_screen/register_page_screen.dart';
@@ -15,69 +13,32 @@ class OtpPageController extends GetxController {
   OtpPageController({required this.phoneNumber});
 
   Future<void> verifyOtp(String otp) async {
-
-
-    try{
-
-      VerifyOtpReq req=VerifyOtpReq();
-      req.phoneNumber=phoneNumber;
-      req.otp=otp;
+    try {
+      VerifyOtpReq req = VerifyOtpReq();
+      req.phoneNumber = phoneNumber;
+      req.otp = otp;
       Repository repo = Repository();
-      var res=await repo.verifyOTP(req);
+      var res = await repo.verifyOTP(req);
 
-      if(!res.toString().contains("error")){
+      if (!res.toString().contains("error")) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("auth_token", res);
         Get.snackbar(
-          "Success", "OTP verified successfully!",
+          "Success",
+          "OTP verified successfully!",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: const Color(0xFF4CAF50),
           colorText: const Color(0xFFFFFFFF),
         );
 
         Get.offAll(() => RegisterPageScreen());
-      }else{
+      } else {
         Get.snackbar("Error", "Something went wrong");
       }
-
-    }catch(e){
+    } catch (e) {
       print("Something went wrong: $e");
       Get.snackbar("Error!", "Something went wrong!");
     }
-
-
-
-    //
-    // try {
-    //   final url = Uri.parse('http://ec2-13-127-91-221.ap-south-1.compute.amazonaws.com:8080/api/auth/verify-otp');
-    //   final response = await http.post(
-    //     url,
-    //     headers: {"Content-Type": "application/json"},
-    //     body: '{"phoneNumber": "$phoneNumber", "otp": "$otp"}',
-    //   );
-    //
-    //   if (response.statusCode == 200) {
-    //     String token = response.body.trim();
-    //
-    //     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //     await prefs.setString("auth_token", token);
-    //
-    //     await storage.write(key: "auth_token", value: token);
-    //
-    //     Get.snackbar(
-    //       "Success", "OTP verified successfully!",
-    //       snackPosition: SnackPosition.BOTTOM,
-    //       backgroundColor: const Color(0xFF4CAF50),
-    //       colorText: const Color(0xFFFFFFFF),
-    //     );
-    //
-    //     Get.offAll(() => RegisterPageScreen());
-    //   } else {
-    //     Get.snackbar("Verification Failed", "Invalid OTP. Please try again.");
-    //   }
-    // } catch (e) {
-    //   Get.snackbar("Error", "Something went wrong: $e");
-    // }
   }
 
   Future<String?> getAuthToken() async {
