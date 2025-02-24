@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/verify_otp_req.dart';
+import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../register_screen/register_page_screen.dart';
@@ -20,9 +21,9 @@ class OtpPageController extends GetxController {
       Repository repo = Repository();
       var res = await repo.verifyOTP(req);
 
-      if (!res.toString().contains("error")) {
+      if(res.status == 200){
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString("auth_token", res);
+        await prefs.setString("auth_token", res.data!.token!);
         Get.snackbar(
           "Success",
           "OTP verified successfully!",
@@ -30,11 +31,32 @@ class OtpPageController extends GetxController {
           backgroundColor: const Color(0xFF4CAF50),
           colorText: const Color(0xFFFFFFFF),
         );
-
-        Get.offAll(() => RegisterPageScreen());
-      } else {
+        if(res.data!.user!.userProfile != null){
+        //   registered
+          Get.offAll(() => HomePageScreen());
+        }else{
+        //   not registered
+          Get.offAll(() => RegisterPageScreen());
+        }
+      }else{
         Get.snackbar("Error", "Something went wrong");
       }
+
+      // if (!res.toString().contains("error")) {
+      //   SharedPreferences prefs = await SharedPreferences.getInstance();
+      //   await prefs.setString("auth_token", res);
+      //   Get.snackbar(
+      //     "Success",
+      //     "OTP verified successfully!",
+      //     snackPosition: SnackPosition.BOTTOM,
+      //     backgroundColor: const Color(0xFF4CAF50),
+      //     colorText: const Color(0xFFFFFFFF),
+      //   );
+      //
+      //   Get.offAll(() => RegisterPageScreen());
+      // } else {
+      //   Get.snackbar("Error", "Something went wrong");
+      // }
     } catch (e) {
       print("Something went wrong: $e");
       Get.snackbar("Error!", "Something went wrong!");

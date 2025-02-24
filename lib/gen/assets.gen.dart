@@ -78,12 +78,38 @@ class $AssetsImagesGen {
   /// File path: assets/images/jj.png
   AssetGenImage get jj => const AssetGenImage('assets/images/jj.png');
 
+  /// File path: assets/images/logout_icon.svg
+  String get logoutIcon => 'assets/images/logout_icon.svg';
+
   /// File path: assets/images/menu_vector.svg
   String get menuVector => 'assets/images/menu_vector.svg';
 
-  /// File path: assets/images/oreder_icon.png
-  AssetGenImage get orederIcon =>
-      const AssetGenImage('assets/images/oreder_icon.png');
+  /// File path: assets/images/order_file.svg
+  String get orderFile => 'assets/images/order_file.svg';
+
+  /// File path: assets/images/profile_bank.svg
+  String get profileBank => 'assets/images/profile_bank.svg';
+
+  /// File path: assets/images/profile_log.svg
+  String get profileLog => 'assets/images/profile_log.svg';
+
+  /// File path: assets/images/profile_receipt.svg
+  String get profileReceipt => 'assets/images/profile_receipt.svg';
+
+  /// File path: assets/images/proj_img_1.png
+  AssetGenImage get projImg1 =>
+      const AssetGenImage('assets/images/proj_img_1.png');
+
+  /// File path: assets/images/proj_img_2.png
+  AssetGenImage get projImg2 =>
+      const AssetGenImage('assets/images/proj_img_2.png');
+
+  /// File path: assets/images/proj_img_3.png
+  AssetGenImage get projImg3 =>
+      const AssetGenImage('assets/images/proj_img_3.png');
+
+  /// File path: assets/images/save_button.svg
+  String get saveButton => 'assets/images/save_button.svg';
 
   /// File path: assets/images/splash screen logo.png
   AssetGenImage get splashScreenLogo =>
@@ -105,8 +131,16 @@ class $AssetsImagesGen {
         homeBackgroundImage,
         homeRegiContainer,
         jj,
+        logoutIcon,
         menuVector,
-        orederIcon,
+        orderFile,
+        profileBank,
+        profileLog,
+        profileReceipt,
+        projImg1,
+        projImg2,
+        projImg3,
+        saveButton,
         splashScreenLogo,
         truckSplashScreenLogo1,
         uploadAttach

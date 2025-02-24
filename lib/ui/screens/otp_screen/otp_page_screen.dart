@@ -82,7 +82,7 @@ class OtpPageScreen extends StatelessWidget {
               onSubmit: (String otp) async {
                 if (otp.length == 6) {
                   await controller.verifyOtp(otp); // Verify OTP
-                  Get.to(() => RegisterPageScreen()); // Navigate to RegisterScreen
+                  // Get.to(() => RegisterPageScreen()); // Navigate to RegisterScreen
                 }
               },
             ),

@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:projects/modals/otp_req.dart';
+import 'package:projects/modals/otp_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
 import 'package:projects/modals/verify_otp_res.dart';
 import 'package:retrofit/retrofit.dart';
 import '../modals/modal.dart';
 import '../modals/reg_profile_req.dart';
+import '../modals/reg_profile_res.dart';
 import 'apis.dart';
 part 'api_client.g.dart';
 
@@ -16,10 +18,10 @@ abstract class ApiClient {
   Future<KnowledgeRes> getKnowledgeCenter(@Body() KnowledgeReq kr);
 
   @POST(Apis.generateOTPApi)
-  Future<dynamic> generateOtp(@Body() OtpReq kr);
+  Future<OtpRes> generateOtp(@Body() OtpReq kr);
 
   @POST(Apis.verifyOTPApi)
-  Future<dynamic> verifyOtp(@Body() VerifyOtpReq kr);
+  Future<VerifyOtpRes> verifyOtp(@Body() VerifyOtpReq kr);
 
 
   @POST(Apis.registerProfileApi)

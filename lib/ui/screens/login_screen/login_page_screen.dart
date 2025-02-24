@@ -408,7 +408,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           controller.generateOTP(); // Generate OTP
-                          Get.to(() => OtpPageScreen(phoneNumber: "phoneNumber")); // Navigate to OTP Screen
+                          // Get.to(() => OtpPageScreen(phoneNumber: "phoneNumber")); // Navigate to OTP Screen
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF603EA4),

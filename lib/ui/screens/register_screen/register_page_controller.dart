@@ -53,7 +53,7 @@ class RegisterPageController extends GetxController {
         Repository repo = Repository(token: token);
         var res = await repo.registerProfile(req);
 
-        if (res.id != null) {
+        if (res.status == 201) {
           Get.snackbar("Success", "Successfully Registered!",
               snackPosition: SnackPosition.TOP);
           Get.to(() => HomePageScreen());

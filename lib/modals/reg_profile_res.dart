@@ -1,15 +1,12 @@
-
-
-
-class VerifyOtpRes {
+class RegProfileRes {
   int? status;
   String? message;
   Data? data;
   String? timestamp;
 
-  VerifyOtpRes({this.status, this.message, this.data, this.timestamp});
+  RegProfileRes({this.status, this.message, this.data, this.timestamp});
 
-  VerifyOtpRes.fromJson(Map<String, dynamic> json) {
+  RegProfileRes.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -29,63 +26,25 @@ class VerifyOtpRes {
 }
 
 class Data {
-  User? user;
-  String? token;
+  Profile? profile;
 
-  Data({this.user, this.token});
+  Data({this.profile});
 
   Data.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
-    token = json['token'];
+    profile =
+    json['profile'] != null ? Profile.fromJson(json['profile']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (user != null) {
-      data['user'] = user!.toJson();
-    }
-    data['token'] = token;
-    return data;
-  }
-}
-
-class User {
-  int? id;
-  int? phoneNumber;
-  UserProfile? userProfile;
-  List<dynamic>? projects;
-
-  User({this.id, this.phoneNumber, this.userProfile, this.projects});
-
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    phoneNumber = json['phoneNumber'];
-    userProfile = json['userProfile'] != null
-        ? UserProfile.fromJson(json['userProfile'])
-        : null;
-    if (json['projects'] != null) {
-      projects = <dynamic>[];
-      json['projects'].forEach((v) {
-        projects!.add(v);
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['phoneNumber'] = phoneNumber;
-    if (userProfile != null) {
-      data['userProfile'] = userProfile!.toJson();
-    }
-    if (projects != null) {
-      data['projects'] = projects!.map((v) => v.toJson()).toList();
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
     }
     return data;
   }
 }
 
-class UserProfile {
+class Profile {
   int? id;
   String? gstNumber;
   String? panNumber;
@@ -93,7 +52,7 @@ class UserProfile {
   String? createdOn;
   String? updatedOn;
 
-  UserProfile(
+  Profile(
       {this.id,
         this.gstNumber,
         this.panNumber,
@@ -101,7 +60,7 @@ class UserProfile {
         this.createdOn,
         this.updatedOn});
 
-  UserProfile.fromJson(Map<String, dynamic> json) {
+  Profile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     gstNumber = json['gstNumber'];
     panNumber = json['panNumber'];
@@ -121,4 +80,3 @@ class UserProfile {
     return data;
   }
 }
-

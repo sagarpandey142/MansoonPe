@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -74,7 +77,10 @@ class CreateProjectController extends ChangeNotifier {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+
+                              pickAndUploadPDF();
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -130,6 +136,20 @@ class CreateProjectController extends ChangeNotifier {
         );
       },
     );
+  }
+
+  Future<void> pickAndUploadPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File file =  File(result.files.single.path!);
+      print("FileData:${file.path}");
+    } else {
+      print("No file selected");
+    }
   }
 
   Widget textFieldWidget(String label) {

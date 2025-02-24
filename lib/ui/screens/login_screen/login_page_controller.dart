@@ -39,7 +39,7 @@ class LoginPageController extends GetxController {
       var res = await repo.generateOTP(req);
 
       print("VskingGenOTP:>>>$res");
-      if (res == "true") {
+      if (res.status == 200) {
         Get.to(() => OtpPageScreen(phoneNumber: phoneNumber));
       } else {
         Get.snackbar("Error", "Failed to generate OTP!",

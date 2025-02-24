@@ -59,13 +59,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> generateOtp(OtpReq kr) async {
+  Future<OtpRes> generateOtp(OtpReq kr) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(kr.toJson());
-    final _options = _setStreamType<dynamic>(Options(
+    final _options = _setStreamType<OtpRes>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -81,19 +81,25 @@ class _ApiClient implements ApiClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch(_options);
-    final _value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OtpRes _value;
+    try {
+      _value = OtpRes.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
   @override
-  Future<dynamic> verifyOtp(VerifyOtpReq kr) async {
+  Future<VerifyOtpRes> verifyOtp(VerifyOtpReq kr) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(kr.toJson());
-    final _options = _setStreamType<dynamic>(Options(
+    final _options = _setStreamType<VerifyOtpRes>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -109,8 +115,14 @@ class _ApiClient implements ApiClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch(_options);
-    final _value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late VerifyOtpRes _value;
+    try {
+      _value = VerifyOtpRes.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
