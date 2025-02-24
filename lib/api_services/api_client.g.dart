@@ -189,4 +189,45 @@ class _ApiClient implements ApiClient {
 
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
+
+  @override
+  Future<CreateProjectRes> createProject(CreateProjectReq kr) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+
+    FormData _data = FormData.fromMap({
+      if (kr.uploadedFile != null)
+        'file': await MultipartFile.fromFile(kr.uploadedFile!.path),
+      // Add other required fields if needed
+    });
+
+    final _options = _setStreamType<CreateProjectRes>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/createProject', // Update this if needed
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CreateProjectRes _value;
+
+    try {
+      _value = CreateProjectRes.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
 }

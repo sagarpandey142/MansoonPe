@@ -119,7 +119,7 @@ class RegisterPageScreen extends StatelessWidget {
                       onPressed: controller.isChecked.value
                           ? () {
                         controller.continueRegistration();
-                        // Get.to(() => HomePageScreen());
+                        Get.to(() => HomePageScreen());
                       }
                           : null, // Disable if not checked
                       style: ElevatedButton.styleFrom(

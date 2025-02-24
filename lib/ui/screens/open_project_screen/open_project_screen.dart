@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../projects_screen/project_page_controller.dart';
 
 class OpenProjectScreen extends StatelessWidget {
@@ -228,43 +229,134 @@ class OpenProjectScreen extends StatelessWidget {
   }
 
   Widget buildOrderCard(String status) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: Colors.grey.shade300, // Grey border color
+            width: 1, // Adjust width as needed
+          ),
+        ),
+        height: 250,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F9FC),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
                     "Order ID: 1234",
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF603EA4),
                     ),
                   ),
-                ),
-                Chip(label: Text(status)),
-              ],
+                  Chip(
+                    label: Text(status),
+                    labelStyle: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    backgroundColor:
+                        Color(0xFFF2F4F7), // Adjust color as needed
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(20), // Border radius of 20
+                      side: BorderSide(
+                          color: Color(0xFF344054)), // Optional border color
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 8),
-            Text("Material Name: TMT Bars",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("Cost of material: ₹8,500"),
-            Text("Requested payment due date: 25 Oct, 2024"),
-            if (status == "In-Progress") ...[
-              SizedBox(height: 8),
-              ElevatedButton(onPressed: () {}, child: Text("Pay Now")),
-            ]
+            Padding(
+              padding: const EdgeInsets.only(top: 10, right: 50, left: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFF7F5F9),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "You",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            DateFormat('dd-MM-yyyy hh:mm a').format(
+                                DateTime.now()), // Formats date and time
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text("Material Name: TMT Bars",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          )),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [],
+                      ),
+                      Text("Cost of material: ₹8,500",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          )),
+                      Text("Requested payment due date: 25 Oct, 2024",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          )),
+                      if (status == "In-Progress") ...[
+                        SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 45,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(() =>
+                                  OpenProjectScreen()); // Correct way to navigate
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF603EA4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              "Pay",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

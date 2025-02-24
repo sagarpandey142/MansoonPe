@@ -32,14 +32,17 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const Spacer(),
-
                 TextButton(
-                  onPressed: (){
+                  onPressed: () {
                     Get.to(() => CreateProjectScreen());
                   },
                   child: Row(
                     children: [
-                      const Icon(Icons.add, color: Color(0xFF603EA4),size: 20,),
+                      const Icon(
+                        Icons.add,
+                        color: Color(0xFF603EA4),
+                        size: 20,
+                      ),
                       const Text(
                         "New project",
                         style: TextStyle(

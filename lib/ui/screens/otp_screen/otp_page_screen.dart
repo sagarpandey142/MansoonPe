@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/register_screen/register_page_screen.dart';
 import 'otp_page_controller.dart';
 
 class OtpPageScreen extends StatelessWidget {
@@ -81,12 +80,10 @@ class OtpPageScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               onSubmit: (String otp) async {
                 if (otp.length == 6) {
-                  await controller.verifyOtp(otp); // Verify OTP
-                  // Get.to(() => RegisterPageScreen()); // Navigate to RegisterScreen
+                  await controller.verifyOtp(otp);
                 }
               },
             ),
-
 
             const SizedBox(height: 40),
 
@@ -118,3 +115,4 @@ class OtpPageScreen extends StatelessWidget {
     );
   }
 }
+

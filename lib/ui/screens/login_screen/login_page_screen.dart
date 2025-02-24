@@ -259,7 +259,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/otp_screen/otp_page_screen.dart';
 import '../guest_screen/guest_skip_screen.dart';
 import 'login_page_controller.dart';
 
@@ -406,27 +405,21 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
-                          controller.generateOTP(); // Generate OTP
-                          // Get.to(() => OtpPageScreen(phoneNumber: "phoneNumber")); // Navigate to OTP Screen
-                        },
+                        onPressed: () => controller.generateOTP(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF603EA4),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                              borderRadius: BorderRadius.circular(10)),
                         ),
                         child: Text(
                           "Generate OTP",
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
                         ),
                       ),
                     ),
-
                     SizedBox(
                         height: screenHeight * 0.1), // Space for bottom text
                   ],

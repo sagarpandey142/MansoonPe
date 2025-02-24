@@ -5,6 +5,7 @@ class Apis{
   static const String generateOTPApi='api/auth/send-otp';
   static const String verifyOTPApi='api/auth/verify-otp';
   static const String registerProfileApi='api/profile';
+  static const String createProjectApi = '/api/upload';
 
 
 

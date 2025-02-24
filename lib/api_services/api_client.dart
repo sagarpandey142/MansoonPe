@@ -4,6 +4,8 @@ import 'package:projects/modals/otp_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
 import 'package:projects/modals/verify_otp_res.dart';
 import 'package:retrofit/retrofit.dart';
+import '../modals/create_project_req.dart';
+import '../modals/create_project_res.dart';
 import '../modals/modal.dart';
 import '../modals/reg_profile_req.dart';
 import '../modals/reg_profile_res.dart';
@@ -23,8 +25,10 @@ abstract class ApiClient {
   @POST(Apis.verifyOTPApi)
   Future<VerifyOtpRes> verifyOtp(@Body() VerifyOtpReq kr);
 
-
   @POST(Apis.registerProfileApi)
   Future<RegProfileRes> registerProfile(@Body() RegProfileReq kr);
+
+  @POST(Apis.createProjectApi)
+  Future<CreateProjectRes> createProject(@Body() CreateProjectReq kr);
 
 }

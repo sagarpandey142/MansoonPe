@@ -41,22 +41,6 @@ class OtpPageController extends GetxController {
       }else{
         Get.snackbar("Error", "Something went wrong");
       }
-
-      // if (!res.toString().contains("error")) {
-      //   SharedPreferences prefs = await SharedPreferences.getInstance();
-      //   await prefs.setString("auth_token", res);
-      //   Get.snackbar(
-      //     "Success",
-      //     "OTP verified successfully!",
-      //     snackPosition: SnackPosition.BOTTOM,
-      //     backgroundColor: const Color(0xFF4CAF50),
-      //     colorText: const Color(0xFFFFFFFF),
-      //   );
-      //
-      //   Get.offAll(() => RegisterPageScreen());
-      // } else {
-      //   Get.snackbar("Error", "Something went wrong");
-      // }
     } catch (e) {
       print("Something went wrong: $e");
       Get.snackbar("Error!", "Something went wrong!");

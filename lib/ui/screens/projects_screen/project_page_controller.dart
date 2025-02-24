@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
 import '../../../model_class/project_model.dart';
+import '../open_project_screen/open_project_screen.dart';
 
 class ProjectPageController extends GetxController {
   TextEditingController dateController = TextEditingController();
@@ -179,7 +180,8 @@ class ProjectPageController extends GetxController {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Get.to(() => OpenProjectScreen()); // Correct way to navigate
+                                  Get.to(() =>
+                                      OpenProjectScreen()); // Correct way to navigate
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(0xFF603EA4),
