@@ -1,24 +1,24 @@
-import 'dart:io';
-
-// Model for request
 class CreateProjectReq {
-  File? uploadedFile;
+  String? name;
+  String? location;
+  String? budget;
+  String? contractFile;
 
-  CreateProjectReq({this.uploadedFile});
+  CreateProjectReq({this.name, this.location, this.budget, this.contractFile});
 
-  // Deserialize JSON
-  factory CreateProjectReq.fromJson(Map<String, dynamic> json) {
-    return CreateProjectReq(
-      uploadedFile:
-          json['uploadedImage'] != null ? File(json['uploadedImage']) : null,
-    );
+  CreateProjectReq.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    location = json['location'];
+    budget = json['budget'];
+    contractFile = json['contractFile'];
   }
 
-  // Serialize to JSON
   Map<String, dynamic> toJson() {
-    return {
-      'uploadedImage': uploadedFile
-          ?.path, // Only passing the path as API might require a multipart file upload
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['location'] = location;
+    data['budget'] = budget;
+    data['contractFile'] = contractFile;
+    return data;
   }
 }

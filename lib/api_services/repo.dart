@@ -1,7 +1,9 @@
 import 'package:projects/modals/create_project_req.dart';
+import 'package:dio/dio.dart';
 import 'package:projects/modals/otp_req.dart';
 import 'package:projects/modals/otp_res.dart';
 import 'package:projects/modals/reg_profile_req.dart';
+import 'package:projects/modals/upload_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
 import 'package:projects/modals/verify_otp_res.dart';
 
@@ -34,6 +36,9 @@ class Repository {
 
   Future<RegProfileRes> registerProfile(RegProfileReq kr) async {
     return await _apiReq.registerProfile(kr);
+  }
+  Future<UploadRes> uploadFile(FormData kr) async {
+    return await _apiReq.upload(kr);
   }
 
   Future<CreateProjectRes> createProject(CreateProjectReq kr) async {

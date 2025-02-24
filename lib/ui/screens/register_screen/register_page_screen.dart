@@ -119,7 +119,7 @@ class RegisterPageScreen extends StatelessWidget {
                       onPressed: controller.isChecked.value
                           ? () {
                         controller.continueRegistration();
-                        Get.to(() => HomePageScreen());
+
                       }
                           : null, // Disable if not checked
                       style: ElevatedButton.styleFrom(
@@ -155,6 +155,7 @@ class RegisterPageScreen extends StatelessWidget {
     return TextField(
       style: const TextStyle(height: 2.5),
       controller: controller,
+      textCapitalization: TextCapitalization.characters,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(

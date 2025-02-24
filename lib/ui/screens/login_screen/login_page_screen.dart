@@ -366,6 +366,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       child: TextField(
                         controller: controller.phoneController,
                         keyboardType: TextInputType.phone,
+                        maxLength: 10, // Set max length
                         decoration: InputDecoration(
                           labelText: "Mobile Number",
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -377,20 +378,16 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
-                                color: controller.isError.value
-                                    ? Colors.red
-                                    : Colors.grey),
+                                color: controller.isError.value ? Colors.red : Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
-                                color: controller.isError.value
-                                    ? Colors.red
-                                    : Colors.grey),
+                                color: controller.isError.value ? Colors.red : Colors.grey),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 20),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                           isDense: true,
+                          counterText: "", // This removes the default counter
                         ),
                         style: GoogleFonts.poppins(
                           fontSize: 16,
@@ -398,6 +395,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                           color: Color(0xCC000008),
                         ),
                       ),
+
                     )),
 
                     SizedBox(height: screenHeight * 0.03),

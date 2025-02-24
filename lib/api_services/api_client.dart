@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:projects/modals/otp_req.dart';
 import 'package:projects/modals/otp_res.dart';
+import 'package:projects/modals/upload_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
 import 'package:projects/modals/verify_otp_res.dart';
 import 'package:retrofit/retrofit.dart';
@@ -30,5 +31,8 @@ abstract class ApiClient {
 
   @POST(Apis.createProjectApi)
   Future<CreateProjectRes> createProject(@Body() CreateProjectReq kr);
+
+  @POST(Apis.uploadApi)
+  Future<UploadRes> upload(@Body() FormData kr);
 
 }

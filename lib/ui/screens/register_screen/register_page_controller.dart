@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/reg_profile_req.dart';
@@ -33,12 +34,12 @@ class RegisterPageController extends GetxController {
         businessName.isNotEmpty) {
       if (!isValidGST(gstNumber)) {
         Get.snackbar("Error", "Invalid GST Number. Please enter a valid GST.",
-            snackPosition: SnackPosition.TOP);
+            snackPosition: SnackPosition.TOP,colorText: Colors.red);
         return;
       }
       if (!isValidPAN(panNumber)) {
         Get.snackbar("Error", "Invalid PAN Number. Please enter a valid PAN.",
-            snackPosition: SnackPosition.TOP);
+            snackPosition: SnackPosition.TOP,colorText: Colors.red);
         return;
       }
 
@@ -67,7 +68,7 @@ class RegisterPageController extends GetxController {
       }
     } else {
       Get.snackbar("Error", "Please fill all fields correctly.",
-          snackPosition: SnackPosition.TOP);
+          snackPosition: SnackPosition.TOP,colorText: Colors.red);
     }
   }
 

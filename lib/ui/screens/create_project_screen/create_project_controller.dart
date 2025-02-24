@@ -1,115 +1,21 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+import 'package:projects/modals/create_project_req.dart';
+import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_services/repo.dart';
-import '../../../modals/create_project_req.dart';
-import '../../../modals/create_project_res.dart';
-import '../projects_screen/project_page_screen.dart';
 
-class CreateProjectController extends GetxController {
-  var selectedProject = RxnString();
-  var selectedLocation = RxnString();
-  TextEditingController costController = TextEditingController();
-
-  final List<String> projectOptions = [
-    "Project 1",
-    "Project 2",
-    "Project 3",
-    "Project 4",
-    "Project 5",
-    "Project 6",
-    "Project 7",
-    "Project 8",
-    "Project 9",
-    "Project 10"
-  ];
-
-  final List<String> locationOptions = [
-    "Mumbai",
-    "Delhi",
-    "Bangalore",
-    "Hyderabad",
-    "Chennai",
-    "Kolkata",
-    "Pune",
-    "Ahmedabad",
-    "Jaipur",
-    "Lucknow"
-  ];
-
-  void formatCost(String value) {
-    String formattedValue =
-        NumberFormat("#,##0").format(int.tryParse(value) ?? 0);
-    costController.value = TextEditingValue(
-      text: formattedValue,
-      selection: TextSelection.collapsed(offset: formattedValue.length),
-    );
-  }
-
-  @override
-  void onClose() {
-    costController.dispose();
-    super.onClose();
-  }
-
-  final Repository _repository = Repository();
-
-  var isLoading = false.obs;
-  Rx<File?> selectedFile = Rx<File?>(null);
-
-  Future<void> pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'], // Only allow PDF files
-    );
-
-    if (result != null && result.files.single.path != null) {
-      File pickedFile = File(result.files.single.path!);
-
-      // Check file size (limit to 5MB)
-      if (pickedFile.lengthSync() > 5 * 1024 * 1024) {
-        Get.snackbar("Error", "File size must be less than 5MB.");
-        return;
-      }
-
-      selectedFile.value = pickedFile;
-      Get.snackbar("Success", "PDF file selected successfully.");
-    } else {
-      Get.snackbar("Error", "No file selected.");
-    }
-  }
-
-  Future<void> uploadContract() async {
-    if (selectedFile.value == null) {
-      Get.snackbar("Error", "Please select a PDF file first.");
-      return;
-    }
-
-    try {
-      isLoading.value = true;
-
-      CreateProjectReq request =
-          CreateProjectReq(uploadedFile: selectedFile.value);
-      CreateProjectRes response = await _repository.createProject(request);
-
-      if (response.success) {
-        Get.snackbar("Success", response.message);
-      } else {
-        Get.snackbar("Error", response.message);
-      }
-    } catch (e) {
-      Get.snackbar("Error", "Something went wrong!");
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
+class CreateProjectController extends ChangeNotifier {
+  TextEditingController projectNameController = TextEditingController();
+  TextEditingController projectCostController = TextEditingController();
+  TextEditingController projectLocationController = TextEditingController();
+  String fileName="";
   void showCreateProjectBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -122,16 +28,13 @@ class CreateProjectController extends GetxController {
           builder: (context, setModalState) {
             return Padding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context)
-                    .viewInsets
-                    .bottom, // Adjust for keyboard
+                bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
               ),
               child: SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Column(
@@ -164,13 +67,11 @@ class CreateProjectController extends GetxController {
                         padding: const EdgeInsets.all(15),
                         child: Column(
                           children: [
-                            dropdownWidget("Select Project", selectedProject,
-                                projectOptions),
+                            textFieldWidget("Enter Project Name",projectNameController),
                             SizedBox(height: 10),
-                            costInputField(),
+                            textFieldWidget("Overall Project Cost",projectCostController),
                             SizedBox(height: 10),
-                            dropdownWidget("Select Location", selectedLocation,
-                                locationOptions),
+                            textFieldWidget("Enter Location",projectLocationController),
                           ],
                         ),
                       ),
@@ -184,23 +85,14 @@ class CreateProjectController extends GetxController {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
-                            onPressed: () async {
-                              final controller =
-                                  Get.find<CreateProjectController>();
+                            onPressed: () {
 
-                              await controller
-                                  .pickFile(); // Pehle file picker open hoga
-
-                              if (controller.selectedFile.value != null) {
-                                await controller
-                                    .uploadContract(); // Agar file select ho gayi toh upload hoga
-                              }
+                              pickAndUploadPDF(context, setModalState);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SvgPicture.asset(
-                                    'assets/images/upload_attach.svg'),
+                                SvgPicture.asset('assets/images/upload_attach.svg'),
                                 SizedBox(width: 5),
                                 Text(
                                   "Upload Contract",
@@ -217,13 +109,18 @@ class CreateProjectController extends GetxController {
                       ),
                       SizedBox(height: 20),
                       Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Text(fileName),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(() => ProjectPageScreen());
+                              // Get.to(() => ProjectPageScreen());
+                              createProject(context);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF603EA4),
@@ -254,42 +151,162 @@ class CreateProjectController extends GetxController {
     );
   }
 
-  Widget dropdownWidget(
-      String label, RxnString selectedValue, List<String> options) {
-    return Obx(() => SizedBox(
-          height: 50,
-          child: DropdownButtonFormField<String>(
-            value: selectedValue.value,
-            decoration: InputDecoration(
-              labelText: label,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+  createProject(context) async {
+    if(projectNameController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please fill project name"),
+          backgroundColor: Colors.grey,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }else if(projectCostController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please fill project cost"),
+          backgroundColor: Colors.grey,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }else if(projectNameController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please fill project location"),
+          backgroundColor: Colors.grey,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }else if(fileName.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please upload contract in pdf."),
+          backgroundColor: Colors.grey,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }else{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token").toString();
+
+      try {
+        CreateProjectReq req = CreateProjectReq();
+        req.name = projectNameController.text;
+        req.budget = projectCostController.text;
+        req.location = projectLocationController.text;
+        req.contractFile = fileName;
+        Repository repo = Repository(token: token);
+        var res = await repo.createProject(req);
+
+        if (res.status == 201) {
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Project Successfully Created!"),
+              backgroundColor: Colors.grey,
+              behavior: SnackBarBehavior.floating,
             ),
-            items: options.map((option) {
-              return DropdownMenuItem(
-                value: option,
-                child: Text(option),
-              );
-            }).toList(),
-            onChanged: (value) => selectedValue.value = value,
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProjectPageScreen()),
+          );
+          // Get.to(() => ProjectPageScreen());
+        } else {
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Something went wrong!"),
+              backgroundColor: Colors.grey,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Something went wrong!"),
+            backgroundColor: Colors.grey,
+            behavior: SnackBarBehavior.floating,
           ),
-        ));
+        );
+      }
+    }
   }
 
-  Widget costInputField() {
+
+  Future<void> pickAndUploadPDF(context, setModalState) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File file =  File(result.files.single.path!);
+      uploadPDF(file,context, setModalState);
+      print("FileData:${file.path}");
+    } else {
+      print("No file selected");
+    }
+  }
+
+  Future<void> uploadPDF(File file,context, setModalState) async {
+
+    try {
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(
+          file.path,
+          filename: file.path.split('/').last,
+          contentType: DioMediaType("application","pdf"),
+        ),
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token").toString();
+
+      Repository repo = Repository(token: token,isRequestTypeMultipart: true);
+      var response = await repo.uploadFile(formData);
+      if (response.status == 200) {
+        print("Upload Successful: ${response.data!.fileName!}");
+
+
+        setModalState((){
+          fileName=response.data!.fileName!;
+          notifyListeners();
+        });
+      } else {
+        print("Upload failed with status: ${response.status}");
+      }
+    } catch (e) {
+      print("Error uploading file: $e");
+    }
+  }
+
+  Widget textFieldWidget(String label, TextEditingController controller) {
     return SizedBox(
       height: 50,
       child: TextField(
-        controller: costController,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        controller: controller,
         decoration: InputDecoration(
-          labelText: "Overall Project Cost",
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          prefixText: "\$ ",
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border when focused
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border for normal state
+          ),
+          labelStyle: TextStyle(color: Color(0xCC000000),
+              fontWeight: FontWeight.w400,
+              fontSize: 14
+          ),
         ),
-        onChanged: formatCost,
+        style: TextStyle(color: Colors.black), // Changed text color for visibility
       ),
     );
   }
+
 }
