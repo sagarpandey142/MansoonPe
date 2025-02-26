@@ -7,6 +7,7 @@ class Apis{
   static const String registerProfileApi='api/profile';
   static const String createProjectApi='api/project';
   static const String uploadApi='api/upload';
+  static const String downloadApi='api/download';
 
 
 

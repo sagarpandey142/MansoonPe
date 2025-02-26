@@ -16,8 +16,17 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   int _currentIndex = 3;
 
   @override
+  void initState() {
+    super.initState();
+
+
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     final ProfilePageController controller = Get.put(ProfilePageController());
+    controller.getProfile();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(

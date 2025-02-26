@@ -1,52 +1,83 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../api_services/repo.dart';
+import '../../../modals/project_res.dart';
 import '../../../model_class/project_model.dart';
 import '../open_project_screen/open_project_screen.dart';
+
 
 class ProjectPageController extends GetxController {
   TextEditingController dateController = TextEditingController();
 
-  var projects = <ProjectModel>[
-    ProjectModel(
-      title: "JMD Building, Gurgaon",
-      date: "16 Sep 23, 11:36 am",
-      cost: "₹ 1,00,000",
-      consumption: "₹ 1,00,000/₹ 5,00,000",
-      status: "Active",
-      statusColor: 0xFF28A745, // Green
-      pending: "\$23000",
-      buttonText: "Pay Now",
-      statusType: "active",
-      image: "assets/images/proj_img_1.png",
-    ),
-    ProjectModel(
-      title: "JMD Building, Gurgaon",
-      date: "16 Sep 23, 11:36 am",
-      cost: "₹ 1,00,000",
-      consumption: "₹ 1,00,000/₹ 5,00,000",
-      status: "In-review",
-      statusColor: 0xFFFFA500, // Orange
-      message: "Please wait while we are reviewing it",
-      statusType: "review",
-      image: "assets/images/proj_img_2.png",
-    ),
-    ProjectModel(
-      title: "JMD Building, Gurgaon",
-      date: "16 Sep 23, 11:36 am",
-      cost: "₹ 1,00,000",
-      consumption: "₹ 1,00,000/₹ 5,00,000",
-      status: "Not Approved",
-      statusColor: 0xFFDC3545, // Red
-      message: "This project is not approved yet",
-      statusType: "not_approved",
-      image: "assets/images/proj_img_3.png",
-    ),
-  ].obs;
+  var projects = <Projects>[].obs;
+  //     <ProjectModel>[
+  //   ProjectModel(
+  //     title: "JMD Building, Gurgaon",
+  //     date: "16 Sep 23, 11:36 am",
+  //     cost: "₹ 1,00,000",
+  //     consumption: "₹ 1,00,000/₹ 5,00,000",
+  //     status: "Active",
+  //     statusColor: 0xFF28A745, // Green
+  //     pending: "\$23000",
+  //     buttonText: "Pay Now",
+  //     statusType: "active",
+  //     image: "assets/images/proj_img_1.png",
+  //   ),
+  //   ProjectModel(
+  //     title: "JMD Building, Gurgaon",
+  //     date: "16 Sep 23, 11:36 am",
+  //     cost: "₹ 1,00,000",
+  //     consumption: "₹ 1,00,000/₹ 5,00,000",
+  //     status: "In-review",
+  //     statusColor: 0xFFFFA500, // Orange
+  //     message: "Please wait while we are reviewing it",
+  //     statusType: "review",
+  //     image: "assets/images/proj_img_2.png",
+  //   ),
+  //   ProjectModel(
+  //     title: "JMD Building, Gurgaon",
+  //     date: "16 Sep 23, 11:36 am",
+  //     cost: "₹ 1,00,000",
+  //     consumption: "₹ 1,00,000/₹ 5,00,000",
+  //     status: "Not Approved",
+  //     statusColor: 0xFFDC3545, // Red
+  //     message: "This project is not approved yet",
+  //     statusType: "not_approved",
+  //     image: "assets/images/proj_img_3.png",
+  //   ),
+  // ].obs;
+  getProjects() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+      // var mob= prefs.getString("phone") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getProjects({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        projects.value=res.data!.projects!;
+
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      Get.snackbar("Error", "Something went wrong!",
+          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+    }
+  }
 
   void showAddMaterialPopup(BuildContext context) {
     showModalBottomSheet(
@@ -213,7 +244,7 @@ class ProjectPageController extends GetxController {
     );
   }
 
-  void showProjectPopup(BuildContext context) {
+  void showProjectPopup(BuildContext context,Projects project) {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -236,7 +267,7 @@ class ProjectPageController extends GetxController {
                           onPressed: () => Navigator.pop(context),
                         ),
                         Text(
-                          "JMD Build...",
+                          "${project.name}",
                           style: TextStyle(
                             color: Color(0xCC000000),
                             fontSize: 20,
@@ -271,13 +302,15 @@ class ProjectPageController extends GetxController {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total Purchases: 0",
+                          Text("Total Purchases: ${project.budget}",
                               style: TextStyle(
                                   color: Color(0xFF363F72),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600)),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              downloadPDF(project);
+                            },
                             child: Text("Download Contract",
                                 style: TextStyle(
                                     color: Color(0xFF603EA4),
@@ -302,7 +335,7 @@ class ProjectPageController extends GetxController {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "16 Sep 23, 11:36 AM",
+                                  text: "${project.createdOn}",
                                   style: TextStyle(
                                     color: Color(0xCC000000), // Black color
                                     fontSize: 10,
@@ -326,12 +359,12 @@ class ProjectPageController extends GetxController {
                             decoration: BoxDecoration(
                               color: Color(0xFFECFDF3),
                               borderRadius: BorderRadius.circular(15),
-                              border: Border.all(color: Colors.green),
+                              border: Border.all(color: Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545)),
                             ),
                             child: Text(
-                              "Active",
+                              "${project.status}",
                               style: TextStyle(
-                                color: Colors.green,
+                                color: Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -352,7 +385,7 @@ class ProjectPageController extends GetxController {
                               ),
                             ),
                             TextSpan(
-                              text: "₹8,00,00",
+                              text: "${project.budget}",
                               style: TextStyle(
                                 color: Color(0xCC000000), // Black color
                                 fontSize: 12,
@@ -379,7 +412,7 @@ class ProjectPageController extends GetxController {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "₹0",
+                                  text: "${project.budget}",
                                   style: TextStyle(
                                     color: Color(0xCC000000), // Black color
                                     fontSize: 10,
@@ -401,7 +434,7 @@ class ProjectPageController extends GetxController {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "₹7,00,00",
+                                  text: "${project.budget}",
                                   style: TextStyle(
                                     color: Color(0xCC000000), // Black color
                                     fontSize: 10,
@@ -562,5 +595,57 @@ class ProjectPageController extends GetxController {
         style: TextStyle(color: Colors.black),
       ),
     );
+  }
+
+  Future<void> downloadPDF(Projects project) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+      // var mob= prefs.getString("phone") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.downloadApi("${project.contractFile}",{});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        String base64String = res.data!.fileBytes!;
+        decodeAndSaveBase64(base64String, "${project.contractFile}");
+
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      Get.snackbar("Error", "Something went wrong!",
+          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+    }
+
+
+
+  }
+
+
+  Future<void> decodeAndSaveBase64(String base64String, String fileName) async {
+    try {
+      // Request storage permission (for Android)
+      if (Platform.isAndroid) {
+        await Permission.storage.request();
+      }
+
+      // Decode Base64 string
+      Uint8List bytes = base64Decode(base64String);
+
+      // Get the app's documents directory
+      Directory directory = await getApplicationDocumentsDirectory();
+      String filePath = '${directory.path}/$fileName';
+
+      // Save file
+      File file = File(filePath);
+      await file.writeAsBytes(bytes);
+
+      // Share or notify user
+      print("File saved at: $filePath");
+      // Share.shareXFiles([XFile(filePath)], text: "Here is your downloaded file");
+      await OpenFilex.open(filePath);
+    } catch (e) {
+      print("Error saving file: $e");
+    }
   }
 }

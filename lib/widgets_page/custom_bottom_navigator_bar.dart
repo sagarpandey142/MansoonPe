@@ -30,7 +30,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Get.offNamed('/home');
             break;
           case 1:
-            Get.offNamed('/Createproject');
+            Get.offNamed('/project');
             break;
           case 2:
             Get.offNamed('/orders');

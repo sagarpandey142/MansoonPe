@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:projects/modals/download_res.dart';
 import 'package:projects/modals/otp_req.dart';
 import 'package:projects/modals/otp_res.dart';
+import 'package:projects/modals/profile_res.dart';
+import 'package:projects/modals/project_res.dart';
 import 'package:projects/modals/upload_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
 import 'package:projects/modals/verify_otp_res.dart';
@@ -35,4 +38,12 @@ abstract class ApiClient {
   @POST(Apis.uploadApi)
   Future<UploadRes> upload(@Body() FormData kr);
 
+  @GET(Apis.registerProfileApi)
+  Future<ProfileRes> getProfile(@Body() dynamic kr);
+
+  @GET(Apis.createProjectApi)
+  Future<ProjectRes> getProjects(@Body() dynamic kr);
+
+  @GET("${Apis.downloadApi}/{endpoint}")
+  Future<DownloadRes> downloadFile(@Path("endpoint") String endpoint,@Body() dynamic kr);
 }

@@ -1,7 +1,10 @@
 import 'package:projects/modals/create_project_req.dart';
 import 'package:dio/dio.dart';
+import 'package:projects/modals/download_res.dart';
 import 'package:projects/modals/otp_req.dart';
 import 'package:projects/modals/otp_res.dart';
+import 'package:projects/modals/profile_res.dart';
+import 'package:projects/modals/project_res.dart';
 import 'package:projects/modals/reg_profile_req.dart';
 import 'package:projects/modals/upload_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
@@ -43,5 +46,16 @@ class Repository {
 
   Future<CreateProjectRes> createProject(CreateProjectReq kr) async {
     return await _apiReq.createProject(kr);
+  }
+
+
+  Future<ProfileRes> getProfile(dynamic kr) async {
+    return await _apiReq.getProfile(kr);
+  }
+  Future<ProjectRes> getProjects(dynamic kr) async {
+    return await _apiReq.getProjects(kr);
+  }
+  Future<DownloadRes> downloadApi(String endpoint,dynamic kr) async {
+    return await _apiReq.downloadFile(endpoint,kr);
   }
 }

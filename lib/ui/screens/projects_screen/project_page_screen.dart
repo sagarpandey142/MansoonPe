@@ -17,6 +17,12 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
   int _currentIndex = 1;
 
   @override
+  void initState() {
+    super.initState();
+    controller.getProjects();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -77,7 +83,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                           child: InkWell(
                             onTap: () {
                               controller.showProjectPopup(
-                                  context); // Popup function call
+                                  context,project); // Popup function call
                             },
                             child: Padding(
                               padding:
@@ -86,7 +92,9 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                 children: [
                                   Stack(
                                     children: [
-                                      Image.asset(project.image,
+                                      Image.asset(
+                                          // project.image ??
+                                              "assets/images/proj_img_1.png",
                                           width: 130, height: 160),
                                       Positioned(
                                         bottom: 5,
@@ -102,6 +110,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           child: InkWell(
                                             onTap: () {
                                               // Add your save functionality here
+                                              controller.downloadPDF(project);
                                             },
                                             child: SvgPicture.asset(
                                               'assets/images/save_button.svg',
@@ -121,14 +130,14 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          project.title,
+                                          project.name!,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 14),
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          "Date: ${project.date}",
+                                          "Date: ${project.createdOn}",
                                           style: TextStyle(
                                             color: Color(0xFF363F72),
                                             fontSize: 10,
@@ -145,7 +154,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                             ),
                                             children: [
                                               TextSpan(
-                                                text: project.cost,
+                                                text: "${project.budget}",
                                                 style: const TextStyle(
                                                   color: Color(0xFF363F72),
                                                   fontSize: 10,
@@ -165,7 +174,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                             ),
                                             children: [
                                               TextSpan(
-                                                text: project.consumption,
+                                                text: "",
                                                 style: const TextStyle(
                                                   color: Color(0xFF363F72),
                                                   fontSize: 10,
@@ -180,18 +189,18 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 8, vertical: 4),
                                           decoration: BoxDecoration(
-                                            color: Color(project.statusColor)
+                                            color: Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545)
                                                 .withOpacity(0.2),
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             border: Border.all(
                                                 color:
-                                                    Color(project.statusColor)),
+                                                    Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545)),
                                           ),
                                           child: Text(
-                                            project.status,
+                                            "${project.status}",
                                             style: TextStyle(
-                                              color: Color(project.statusColor),
+                                              color: Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545),
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -199,7 +208,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         ),
                                         const SizedBox(height: 5),
                                         Divider(color: Colors.grey.shade300),
-                                        if (project.statusType == "active") ...[
+                                        if ("${project.status}" == "ACTIVE") ...[
                                           Row(
                                             children: [
                                               Text.rich(
@@ -213,7 +222,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   children: [
                                                     TextSpan(
                                                       text:
-                                                          "${project.pending}",
+                                                          "${project.budget}",
                                                       style: const TextStyle(
                                                         color:
                                                             Color(0xFFB42318),
@@ -247,7 +256,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   minimumSize: Size(0, 24),
                                                 ),
                                                 child: Text(
-                                                  project.buttonText ?? "",
+                                                  "Pay Now",
                                                   style: const TextStyle(
                                                     color: Color(0xFF603EA4),
                                                     fontWeight: FontWeight.w500,
@@ -259,7 +268,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           ),
                                         ] else ...[
                                           Text(
-                                            project.message ?? "",
+                                            "${project.status}" == "IN_REVIEW" ? "Please wait while we are reviewing it" : "This project is not approved yet",
                                             style: TextStyle(
                                               color: Color(0xFF363F72),
                                               fontWeight: FontWeight.w400,

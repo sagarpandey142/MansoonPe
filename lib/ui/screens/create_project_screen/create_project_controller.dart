@@ -153,37 +153,17 @@ class CreateProjectController extends ChangeNotifier {
 
   createProject(context) async {
     if(projectNameController.text.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Please fill project name"),
-          backgroundColor: Colors.grey,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      showSnackMessage(context,"Please fill project name");
+
     }else if(projectCostController.text.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Please fill project cost"),
-          backgroundColor: Colors.grey,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    }else if(projectNameController.text.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Please fill project location"),
-          backgroundColor: Colors.grey,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      showSnackMessage(context,"Please fill project cost");
+
+    }else if(projectLocationController.text.isEmpty){
+      showSnackMessage(context,"Please fill project location.");
+
     }else if(fileName.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Please upload contract in pdf."),
-          backgroundColor: Colors.grey,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      showSnackMessage(context,"Please upload contract in pdf.");
+
     }else{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("auth_token").toString();
@@ -274,10 +254,23 @@ class CreateProjectController extends ChangeNotifier {
         });
       } else {
         print("Upload failed with status: ${response.status}");
+        showSnackMessage(context,"${response.message}");
       }
     } catch (e) {
-      print("Error uploading file: $e");
+      print("Error uploading file: ${e.toString()}");
+      showSnackMessage(context,"Please check file size.");
+
     }
+  }
+  showSnackMessage(context,message){
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.grey,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   Widget textFieldWidget(String label, TextEditingController controller) {

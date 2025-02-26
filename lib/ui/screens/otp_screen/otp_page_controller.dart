@@ -24,6 +24,8 @@ class OtpPageController extends GetxController {
       if(res.status == 200){
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("auth_token", res.data!.token!);
+        await prefs.setString("id", "${res.data!.user!.id}");
+        await prefs.setString("phone", "${res.data!.user!.phoneNumber}");
         Get.snackbar(
           "Success",
           "OTP verified successfully!",

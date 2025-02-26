@@ -3,13 +3,44 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../api_services/repo.dart';
 
 class ProfilePageController extends GetxController {
   // Sample user details
-  var userName = "Singh Construction".obs;
-  var gstin = "09VBUEV92B4B".obs;
-  var panNumber = "DFTRJ5467D".obs;
-  var mobileNumber = "+91 9876543210".obs;
+  var userName = "0".obs;
+  var gstin = "".obs;
+  var panNumber = "".obs;
+  var mobileNumber = "".obs;
+  getProfile() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+
+      Repository repo = Repository(token: token);
+      var res = await repo.getProfile({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+
+        var data=res.data!.profile;
+        userName.value=data!.businessName!;
+        gstin.value=data.gstNumber!;
+        panNumber.value=data.panNumber!;
+        var mob= prefs.getString("phone") ?? '';
+        mobileNumber.value=mob;
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      Get.snackbar("Error", "Something went wrong!",
+          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+    }
+
+  }
+
+
+
 
   void showLogoutBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -119,7 +150,7 @@ class ProfilePageController extends GetxController {
                         height: 50, // Adjust height as per your requirement
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => LoginPageScreen());
+                            logout(context);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFFC31812),
@@ -146,6 +177,18 @@ class ProfilePageController extends GetxController {
         );
       },
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("auth_token");
+    if(!context.mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPageScreen()),
+          (Route<dynamic> route) => false,
+    );
+
   }
 
 }

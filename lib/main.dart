@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/Createproject', page: () => CreateProjectScreen()),
         GetPage(name: '/orders', page: () => OrderPageScreen()),
         GetPage(name: '/profile', page: () => ProfilePageScreen()),
+        GetPage(name: '/project', page: () => ProjectPageScreen()),
       ],
     );
   }
