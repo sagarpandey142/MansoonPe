@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projects/api_services/api_service.dart';
@@ -11,6 +10,18 @@ class RegisterPageController extends GetxController {
   final TextEditingController gstNumberController = TextEditingController();
   final TextEditingController panNumberController = TextEditingController();
   var isChecked = false.obs;
+  RxBool isGstValid = true.obs;
+  RxBool isPanValid = true.obs;
+  RxBool isBusinessNameValid = true.obs;
+
+  // Validate fields in real-time
+  void validateFields() {
+    isBusinessNameValid.value = businessNameController.text.isNotEmpty;
+    isGstValid.value = gstNumberController.text.isNotEmpty &&
+        isValidGST(gstNumberController.text);
+    isPanValid.value =
+        panNumberController.text.isNotEmpty && isValidPAN(panNumberController.text);
+  }
 
   bool isValidGST(String gst) {
     final regex = RegExp(r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{3}$');
@@ -28,47 +39,45 @@ class RegisterPageController extends GetxController {
     String panNumber = panNumberController.text.trim();
     String businessName = businessNameController.text.trim();
 
-    // Check if fields are filled
-    if (gstNumber.isNotEmpty &&
-        panNumber.isNotEmpty &&
-        businessName.isNotEmpty) {
-      if (!isValidGST(gstNumber)) {
-        Get.snackbar("Error", "Invalid GST Number. Please enter a valid GST.",
-            snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
-        return;
-      }
-      if (!isValidPAN(panNumber)) {
-        Get.snackbar("Error", "Invalid PAN Number. Please enter a valid PAN.",
-            snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
-        return;
-      }
+    // Validate fields before proceeding
+    validateFields();
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString("auth_token").toString();
-
-      try {
-        RegProfileReq req = RegProfileReq();
-        req.businessName = businessName;
-        req.gstNumber = gstNumber;
-        req.panNumber = panNumber;
-        Repository repo = Repository(token: token);
-        var res = await repo.registerProfile(req);
-
-        if (res.status == 201) {
-          Get.snackbar("Success", "Successfully Registered!",
-              snackPosition: SnackPosition.TOP,backgroundColor: Colors.green, colorText: Colors.white);
-          Get.to(() => HomePageScreen());
-        } else {
-          Get.snackbar("Error", "Something went wrong: ",
-              snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
-        }
-      } catch (e) {
-        Get.snackbar("Error", "Something went wrong:$e ",
-            snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
-      }
-    } else {
+    if (!isBusinessNameValid.value || !isGstValid.value || !isPanValid.value) {
       Get.snackbar("Error", "Please fill all fields correctly.",
-          snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+      return;
+    }
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("auth_token") ?? "";
+
+    try {
+      RegProfileReq req = RegProfileReq();
+      req.businessName = businessName;
+      req.gstNumber = gstNumber;
+      req.panNumber = panNumber;
+      Repository repo = Repository(token: token);
+      var res = await repo.registerProfile(req);
+
+      if (res.status == 201) {
+        Get.snackbar("Success", "Successfully Registered!",
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+        Get.to(() => HomePageScreen());
+      } else {
+        Get.snackbar("Error", "Something went wrong: ${res.message}",
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Something went wrong: $e",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
     }
   }
 

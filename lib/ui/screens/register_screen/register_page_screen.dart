@@ -48,26 +48,38 @@ class RegisterPageScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildTextField(
-                      "Business Name *", controller.businessNameController),
+                    "Business Name *",
+                    controller.businessNameController,
+                    controller.isBusinessNameValid,
+                  ),
                   const SizedBox(height: 15),
                   _buildTextField(
-                      "GST Number *", controller.gstNumberController,
-                      isUpperCase: true, maxLength: 15),
+                    "GST Number *",
+                    controller.gstNumberController,
+                    controller.isGstValid,
+                    isUpperCase: true,
+                    maxLength: 15,
+                  ),
                   const SizedBox(height: 15),
                   _buildTextField(
-                      "PAN Number *", controller.panNumberController,
-                      isUpperCase: true, maxLength: 10),
+                    "PAN Number *",
+                    controller.panNumberController,
+                    controller.isPanValid,
+                    isUpperCase: true,
+                    maxLength: 10,
+                  ),
+
                   const SizedBox(height: 20),
 
                   // Terms & Conditions Checkbox
                   Row(
                     children: [
                       Obx(() => Checkbox(
-                            activeColor: const Color(0xFF603EA4),
-                            value: controller.isChecked.value,
-                            onChanged: (value) =>
-                                controller.toggleCheckbox(value!),
-                          )),
+                        activeColor: const Color(0xFF603EA4),
+                        value: controller.isChecked.value,
+                        onChanged: (value) =>
+                            controller.toggleCheckbox(value!),
+                      )),
                       Expanded(
                         child: Text.rich(
                           TextSpan(
@@ -115,11 +127,11 @@ class RegisterPageScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   // Continue Button
                   Obx(
-                    () => ElevatedButton(
+                        () => ElevatedButton(
                       onPressed: controller.isChecked.value
                           ? () {
-                              controller.continueRegistration();
-                            }
+                        controller.continueRegistration();
+                      }
                           : null, // Disable if not checked
                       style: ElevatedButton.styleFrom(
                         backgroundColor: controller.isChecked.value
@@ -149,13 +161,18 @@ class RegisterPageScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller,
-      {bool isUpperCase = false, int? maxLength}) {
-    return TextField(
+  Widget _buildTextField(
+      String label,
+      TextEditingController controller,
+      RxBool isValid, {
+        bool isUpperCase = false,
+        int? maxLength,
+      }) {
+    return Obx(() => TextField(
       style: const TextStyle(height: 2.5),
       controller: controller,
       textCapitalization:
-          isUpperCase ? TextCapitalization.characters : TextCapitalization.none,
+      isUpperCase ? TextCapitalization.characters : TextCapitalization.none,
       maxLength: maxLength, // Restrict max input length
       onChanged: (value) {
         if (isUpperCase) {
@@ -177,9 +194,17 @@ class RegisterPageScreen extends StatelessWidget {
             fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black54),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE7E7E7)),
+          borderSide: BorderSide(
+              color: isValid.value ? Color(0xFFE7E7E7) : Colors.red),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+              color: isValid.value ? Colors.purple : Colors.red, width: 2),
+        ),
+        errorText: isValid.value ? null : "Invalid $label",
       ),
-    );
+    ));
   }
+
 }

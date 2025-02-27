@@ -45,7 +45,7 @@ class CreateProjectController extends ChangeNotifier {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+                    BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Column(
@@ -302,15 +302,15 @@ class CreateProjectController extends ChangeNotifier {
 
   Widget textFieldWidget(String label, TextEditingController controller,
       {bool showDropdownIcon = false,
-      bool isNumeric = false,
-      String? prefixText}) {
+        bool isNumeric = false,
+        String? prefixText}) {
     return SizedBox(
       height: 50,
       child: TextField(
         controller: controller,
         keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
         inputFormatters:
-            isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
+        isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
