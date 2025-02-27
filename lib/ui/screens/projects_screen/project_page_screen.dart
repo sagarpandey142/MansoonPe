@@ -69,7 +69,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
           Divider(color: Colors.grey.shade200, thickness: 2),
           const SizedBox(height: 10),
           Expanded(
-            child: Obx(() => ListView.builder(
+            child: Obx(() =>
+                ListView.builder(
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 8),
                   itemCount: controller.projects.length,
                   itemBuilder: (context, index) {
@@ -97,7 +98,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                     children: [
                                       Image.asset(
                                           // project.image ??
-                                          "assets/images/proj_img_1.png",
+                                          "assets/images/proj_img_2.png",
                                           width: 130,
                                           height: 160),
                                       Positioned(

@@ -36,9 +36,7 @@ class CreateProjectController extends ChangeNotifier {
           builder: (context, setModalState) {
             return Padding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context)
-                    .viewInsets
-                    .bottom, // Adjust for keyboard
+                bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
               ),
               child: SingleChildScrollView(
                 child: Container(
