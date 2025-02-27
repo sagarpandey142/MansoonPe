@@ -70,17 +70,17 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "You haven't place any order yet.\nGo to project to add your order",
+                      "You haven't place any order yet.\nGo to project section to add your order",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                        color: Colors.black45,
+                        color: Color(0x99000000),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 30),
                     Container(
-                      width: 200,
+                      width: 150,
                       height: 50,
                       decoration: BoxDecoration(
                         color: Color(0xFFF0EEF6),
@@ -107,13 +107,40 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: Material(
+        color: Colors.transparent, // Avoid default material color
+        child: Container(
+          height: 70, // Keep the height same
+          decoration: BoxDecoration(
+            color: Colors.white, // Ensure white background
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Very light shadow
+                spreadRadius: 0, // No extra spread
+                blurRadius: 1.5, // Slight blur for a thin effect
+                offset: Offset(0, -1), // Moves shadow slightly upwards
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
       ),
     );
   }

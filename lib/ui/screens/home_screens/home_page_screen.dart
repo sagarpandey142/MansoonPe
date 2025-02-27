@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
+import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
@@ -22,171 +23,196 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.only(top: 60),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return LinearGradient(
-                          colors: [
-                            CustomColor.primaryColor,
-                            CustomColor.secondaryColor
-                          ],
-                        ).createShader(bounds);
-                      },
-                      child: Text(
-                        "MasonPe.",
-                        style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 60),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        colors: [
+                          CustomColor.primaryColor,
+                          CustomColor.secondaryColor
+                        ],
+                      ).createShader(bounds);
+                    },
+                    child: Text(
+                      "MasonPe.",
+                      style: GoogleFonts.poppins(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.width * 0.02),
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to ProfilePageScreen
+                        Get.to(() => ProfilePageScreen());
+                      },
+                      child: SvgPicture.asset("assets/images/menu_vector.svg"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
+              child: Container(
+                height: 25,
+                decoration: BoxDecoration(
+                  color: Color(0xFFEFF6FF),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Padding(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width * 0.02),
-                      child: GestureDetector(
-                        onTap: () {
-                          // Navigate to ProfilePageScreen
-                          Get.to(() => ProfilePageScreen());
-                        },
-                        child:
-                            SvgPicture.asset("assets/images/menu_vector.svg"),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Icon(
+                        CupertinoIcons.exclamationmark_circle,
+                        color: Color(0xFF1E40AF),
+                        size: 13.0, // Adjust size to fit within the height
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "We will allot credit limit in 24-48 hrs post profile evaluation",
+                        style: TextStyle(
+                          color: Color(0xFF1E40AF),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
-                child: Container(
-                  height: 25,
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(8),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: Container(
+                height: 200,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/home_regi_container.png'),
+                    fit: BoxFit.cover,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Icon(
-                          CupertinoIcons.exclamationmark_circle,
-                          color: Color(0xFF1E40AF),
-                          size: 13.0, // Adjust size to fit within the height
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "We will allot credit limit in 24-48 hrs post profile evaluation",
-                          style: TextStyle(
-                            color: Color(0xFF1E40AF),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Container(
-                  height: 200,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage('assets/images/home_regi_container.png'),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceBetween, // Distributes content evenly
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Credit Left",
-                              style: TextStyle(
-                                  color: Color(0x99FFFFFF),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400)),
-                          SizedBox(height: 4),
-                          Text("₹ 0",
-                              style: TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600)),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Devesh Gupta",
-                              style: TextStyle(
-                                color: Color(0xFFFFFFFF),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              )),
-                          SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Limit: ₹ 0",
-                                  style: TextStyle(
-                                    color: Color(0xFFFFFFFF),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  )),
-                              Text(
-                                "MasonPe.",
-                                style: TextStyle(
-                                    color: Color(0xFFFFFFFF),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment
+                      .spaceBetween, // Distributes content evenly
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Credit Left",
+                            style: TextStyle(
+                                color: Color(0x99FFFFFF),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        SizedBox(height: 4),
+                        Text(
+                          "₹ 0",
+                          style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black, //  Black shadow
+                                offset: Offset(0, 2), //  Move shadow downward
+                                blurRadius: 8, //  Smooth effect
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Devesh Gupta",
+                            style: TextStyle(
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                        SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: "Limit:",
+                                      style: TextStyle(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                  TextSpan(
+                                      text: " ₹ 0",
+                                      style: TextStyle(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              "MasonPe.",
+                              style: TextStyle(
+                                  color: Color(0xFFFFFFFF),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "My Projects",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "My Projects",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
                     ),
-                    Text(
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(() => ProjectPageScreen());
+                    },
+                    child: Text(
                       "View all",
                       style: TextStyle(
                         fontSize: 12,
@@ -194,69 +220,114 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         color: Color(0xFF62449D),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 40),
-              Center(
-                child: Column(
-                  children: [
-                    Center(
-                      child: SvgPicture.asset(
-                        'assets/images/Component 160.svg',
-                        width: MediaQuery.of(context).size.width * 0.2,
-                      ),
+            ),
+            const SizedBox(height: 30),
+            Center(
+              child: Column(
+                children: [
+                  Center(
+                    child: SvgPicture.asset(
+                      'assets/images/Component 160.svg',
+                      width: MediaQuery.of(context).size.width * 0.2,
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "You haven't created any project yet.\nCreate your first project to start with",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black45,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "You haven't create any project yet.\nCreate your first project to start with",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
-                    const SizedBox(height: 30),
-                    Container(
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF0EEF6),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          Get.to(() => CreateProjectScreen()); // Navigate to CreateProjectScreen
-                          Future.delayed(Duration(milliseconds: 300), () {
-                            // Delay to ensure screen transition before showing bottom sheet
-                            Get.put(CreateProjectController()).showCreateProjectBottomSheet(Get.context!);
-                          });
-                        },
-                        child: Text(
-                          "+   Create first project",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF785CB2),
+                  ),
+                  const SizedBox(height: 30),
+                  Container(
+                    width: 200,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF0EEF6),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Get.to(() =>
+                            CreateProjectScreen()); // Navigate to CreateProjectScreen
+                        Future.delayed(Duration(milliseconds: 300), () {
+                          // Delay to ensure screen transition before showing bottom sheet
+                          Get.put(CreateProjectController())
+                              .showCreateProjectBottomSheet(Get.context!);
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 5,
                           ),
-                        ),
+                          Icon(
+                            Icons.add,
+                            color: Color(0xFF785CB2),
+                            size: 20,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "Create first project",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF785CB2),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-
-                  ],
-                ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Material(
+        color: Colors.transparent, // Avoid default material color
+        child: Container(
+          height: 70, // Keep the height same
+          decoration: BoxDecoration(
+            color: Colors.white, // Ensure white background
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Very light shadow
+                spreadRadius: 0, // No extra spread
+                blurRadius: 1.5, // Slight blur for a thin effect
+                offset: Offset(0, -1), // Moves shadow slightly upwards
               ),
             ],
           ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ));
+      ),
+    );
   }
 }

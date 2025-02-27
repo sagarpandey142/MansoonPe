@@ -34,12 +34,12 @@ class RegisterPageController extends GetxController {
         businessName.isNotEmpty) {
       if (!isValidGST(gstNumber)) {
         Get.snackbar("Error", "Invalid GST Number. Please enter a valid GST.",
-            snackPosition: SnackPosition.TOP,colorText: Colors.red);
+            snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
         return;
       }
       if (!isValidPAN(panNumber)) {
         Get.snackbar("Error", "Invalid PAN Number. Please enter a valid PAN.",
-            snackPosition: SnackPosition.TOP,colorText: Colors.red);
+            snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
         return;
       }
 
@@ -56,19 +56,19 @@ class RegisterPageController extends GetxController {
 
         if (res.status == 201) {
           Get.snackbar("Success", "Successfully Registered!",
-              snackPosition: SnackPosition.TOP);
+              snackPosition: SnackPosition.TOP,backgroundColor: Colors.green, colorText: Colors.white);
           Get.to(() => HomePageScreen());
         } else {
           Get.snackbar("Error", "Something went wrong: ",
-              snackPosition: SnackPosition.TOP);
+              snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
         }
       } catch (e) {
         Get.snackbar("Error", "Something went wrong:$e ",
-            snackPosition: SnackPosition.TOP);
+            snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
       }
     } else {
       Get.snackbar("Error", "Please fill all fields correctly.",
-          snackPosition: SnackPosition.TOP,colorText: Colors.red);
+          snackPosition: SnackPosition.TOP,backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 

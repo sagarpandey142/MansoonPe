@@ -18,47 +18,10 @@ import '../../../modals/project_res.dart';
 import '../../../model_class/project_model.dart';
 import '../open_project_screen/open_project_screen.dart';
 
-
 class ProjectPageController extends GetxController {
   TextEditingController dateController = TextEditingController();
 
   var projects = <Projects>[].obs;
-  //     <ProjectModel>[
-  //   ProjectModel(
-  //     title: "JMD Building, Gurgaon",
-  //     date: "16 Sep 23, 11:36 am",
-  //     cost: "₹ 1,00,000",
-  //     consumption: "₹ 1,00,000/₹ 5,00,000",
-  //     status: "Active",
-  //     statusColor: 0xFF28A745, // Green
-  //     pending: "\$23000",
-  //     buttonText: "Pay Now",
-  //     statusType: "active",
-  //     image: "assets/images/proj_img_1.png",
-  //   ),
-  //   ProjectModel(
-  //     title: "JMD Building, Gurgaon",
-  //     date: "16 Sep 23, 11:36 am",
-  //     cost: "₹ 1,00,000",
-  //     consumption: "₹ 1,00,000/₹ 5,00,000",
-  //     status: "In-review",
-  //     statusColor: 0xFFFFA500, // Orange
-  //     message: "Please wait while we are reviewing it",
-  //     statusType: "review",
-  //     image: "assets/images/proj_img_2.png",
-  //   ),
-  //   ProjectModel(
-  //     title: "JMD Building, Gurgaon",
-  //     date: "16 Sep 23, 11:36 am",
-  //     cost: "₹ 1,00,000",
-  //     consumption: "₹ 1,00,000/₹ 5,00,000",
-  //     status: "Not Approved",
-  //     statusColor: 0xFFDC3545, // Red
-  //     message: "This project is not approved yet",
-  //     statusType: "not_approved",
-  //     image: "assets/images/proj_img_3.png",
-  //   ),
-  // ].obs;
   getProjects() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -69,13 +32,13 @@ class ProjectPageController extends GetxController {
       var res = await repo.getProjects({});
       debugPrint("VskingProfileRes:>>>$res");
       if (res.status == 200) {
-        projects.value=res.data!.projects!;
-
+        projects.value = res.data!.projects!;
       }
     } catch (e) {
       debugPrint("Error: $e");
       Get.snackbar("Error", "Something went wrong!",
-          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
@@ -114,7 +77,7 @@ class ProjectPageController extends GetxController {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Add New Material",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w700, fontSize: 16)),
                             IconButton(
                               icon: Icon(
@@ -138,7 +101,7 @@ class ProjectPageController extends GetxController {
                             Container(
                               height: 25,
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
+                                color: Color(0xFFEFF6FF),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Row(
@@ -194,7 +157,7 @@ class ProjectPageController extends GetxController {
                                         'assets/images/upload_attach.svg'),
                                     SizedBox(width: 5),
                                     Text(
-                                      "Upload Contract",
+                                      "Upload Supplier Quote",
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
@@ -211,8 +174,8 @@ class ProjectPageController extends GetxController {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Get.to(() =>
-                                      OpenProjectScreen()); // Correct way to navigate
+                                  // Get.to(() =>
+                                  //     OpenProjectScreen()); // Correct way to navigate
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(0xFF603EA4),
@@ -244,7 +207,7 @@ class ProjectPageController extends GetxController {
     );
   }
 
-  void showProjectPopup(BuildContext context,Projects project) {
+  void showProjectPopup(BuildContext context, Projects project) {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -359,12 +322,22 @@ class ProjectPageController extends GetxController {
                             decoration: BoxDecoration(
                               color: Color(0xFFECFDF3),
                               borderRadius: BorderRadius.circular(15),
-                              border: Border.all(color: Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545)),
+                              border: Border.all(
+                                  color:
+                                      Color("${project.status}" == "IN_REVIEW"
+                                          ? 0xFFFFA500
+                                          : "${project.status}" == "ACTIVE"
+                                              ? 0xFF28A745
+                                              : 0xFFDC3545)),
                             ),
                             child: Text(
                               "${project.status}",
                               style: TextStyle(
-                                color: Color("${project.status}" == "IN_REVIEW" ? 0xFFFFA500 : "${project.status}" == "ACTIVE" ?  0xFF28A745 : 0xFFDC3545),
+                                color: Color("${project.status}" == "IN_REVIEW"
+                                    ? 0xFFFFA500
+                                    : "${project.status}" == "ACTIVE"
+                                        ? 0xFF28A745
+                                        : 0xFFDC3545),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -589,10 +562,11 @@ class ProjectPageController extends GetxController {
           labelStyle: TextStyle(
             color: Color(0xCC000000),
             fontWeight: FontWeight.w400,
-            fontSize: 14,
+            fontSize: 10,
           ),
         ),
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(
+            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
       ),
     );
   }
@@ -604,23 +578,19 @@ class ProjectPageController extends GetxController {
       // var uid = prefs.getString("id") ?? '';
       // var mob= prefs.getString("phone") ?? '';
       Repository repo = Repository(token: token);
-      var res = await repo.downloadApi("${project.contractFile}",{});
+      var res = await repo.downloadApi("${project.contractFile}", {});
       debugPrint("VskingProfileRes:>>>$res");
       if (res.status == 200) {
         String base64String = res.data!.fileBytes!;
         decodeAndSaveBase64(base64String, "${project.contractFile}");
-
       }
     } catch (e) {
       debugPrint("Error: $e");
       Get.snackbar("Error", "Something went wrong!",
-          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+          snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.red, colorText: Colors.white);
     }
-
-
-
   }
-
 
   Future<void> decodeAndSaveBase64(String base64String, String fileName) async {
     try {

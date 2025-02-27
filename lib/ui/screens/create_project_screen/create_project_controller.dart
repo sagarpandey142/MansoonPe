@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -15,8 +16,15 @@ class CreateProjectController extends ChangeNotifier {
   TextEditingController projectNameController = TextEditingController();
   TextEditingController projectCostController = TextEditingController();
   TextEditingController projectLocationController = TextEditingController();
-  String fileName="";
+  String fileName = "";
+
   void showCreateProjectBottomSheet(BuildContext context) {
+    // Reset controllers and fileName before showing the bottom sheet
+    projectNameController.clear();
+    projectCostController.clear();
+    projectLocationController.clear();
+    fileName = "";
+
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -28,13 +36,16 @@ class CreateProjectController extends ChangeNotifier {
           builder: (context, setModalState) {
             return Padding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
+                bottom: MediaQuery.of(context)
+                    .viewInsets
+                    .bottom, // Adjust for keyboard
               ),
               child: SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Column(
@@ -50,7 +61,7 @@ class CreateProjectController extends ChangeNotifier {
                               "Create your first project",
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
                             IconButton(
@@ -67,11 +78,16 @@ class CreateProjectController extends ChangeNotifier {
                         padding: const EdgeInsets.all(15),
                         child: Column(
                           children: [
-                            textFieldWidget("Enter Project Name",projectNameController),
+                            textFieldWidget("Enter Project Name",
+                                projectNameController), // Down arrow
                             SizedBox(height: 10),
-                            textFieldWidget("Overall Project Cost",projectCostController),
+                            textFieldWidget(
+                                "Overall Project Cost", projectCostController,
+                                isNumeric: true,
+                                prefixText: "\$"), // Dollar sign & numbers only
                             SizedBox(height: 10),
-                            textFieldWidget("Enter Location",projectLocationController),
+                            textFieldWidget("Enter Location",
+                                projectLocationController), // Down arrow
                           ],
                         ),
                       ),
@@ -86,13 +102,13 @@ class CreateProjectController extends ChangeNotifier {
                           ),
                           child: TextButton(
                             onPressed: () {
-
                               pickAndUploadPDF(context, setModalState);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SvgPicture.asset('assets/images/upload_attach.svg'),
+                                SvgPicture.asset(
+                                    'assets/images/upload_attach.svg'),
                                 SizedBox(width: 5),
                                 Text(
                                   "Upload Contract",
@@ -107,7 +123,6 @@ class CreateProjectController extends ChangeNotifier {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: Text(fileName),
@@ -119,7 +134,6 @@ class CreateProjectController extends ChangeNotifier {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Get.to(() => ProjectPageScreen());
                               createProject(context);
                             },
                             style: ElevatedButton.styleFrom(
@@ -152,19 +166,15 @@ class CreateProjectController extends ChangeNotifier {
   }
 
   createProject(context) async {
-    if(projectNameController.text.isEmpty){
-      showSnackMessage(context,"Please fill project name");
-
-    }else if(projectCostController.text.isEmpty){
-      showSnackMessage(context,"Please fill project cost");
-
-    }else if(projectLocationController.text.isEmpty){
-      showSnackMessage(context,"Please fill project location.");
-
-    }else if(fileName.isEmpty){
-      showSnackMessage(context,"Please upload contract in pdf.");
-
-    }else{
+    if (projectNameController.text.isEmpty) {
+      showSnackMessage(context, "Please fill project name");
+    } else if (projectCostController.text.isEmpty) {
+      showSnackMessage(context, "Please fill project cost");
+    } else if (projectLocationController.text.isEmpty) {
+      showSnackMessage(context, "Please fill project location.");
+    } else if (fileName.isEmpty) {
+      showSnackMessage(context, "Please upload contract in pdf.");
+    } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("auth_token").toString();
 
@@ -178,11 +188,10 @@ class CreateProjectController extends ChangeNotifier {
         var res = await repo.createProject(req);
 
         if (res.status == 201) {
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Project Successfully Created!"),
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.green,
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -192,11 +201,10 @@ class CreateProjectController extends ChangeNotifier {
           );
           // Get.to(() => ProjectPageScreen());
         } else {
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Something went wrong!"),
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -205,14 +213,13 @@ class CreateProjectController extends ChangeNotifier {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Something went wrong!"),
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
           ),
         );
       }
     }
   }
-
 
   Future<void> pickAndUploadPDF(context, setModalState) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -221,85 +228,121 @@ class CreateProjectController extends ChangeNotifier {
     );
 
     if (result != null) {
-      File file =  File(result.files.single.path!);
-      uploadPDF(file,context, setModalState);
+      File file = File(result.files.single.path!);
+      uploadPDF(file, context, setModalState);
       print("FileData:${file.path}");
     } else {
       print("No file selected");
     }
   }
 
-  Future<void> uploadPDF(File file,context, setModalState) async {
-
+  Future<void> uploadPDF(File file, context, setModalState) async {
     try {
       FormData formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(
           file.path,
           filename: file.path.split('/').last,
-          contentType: DioMediaType("application","pdf"),
+          contentType: DioMediaType("application", "pdf"),
         ),
       });
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("auth_token").toString();
 
-      Repository repo = Repository(token: token,isRequestTypeMultipart: true);
+      Repository repo = Repository(token: token, isRequestTypeMultipart: true);
       var response = await repo.uploadFile(formData);
       if (response.status == 200) {
         print("Upload Successful: ${response.data!.fileName!}");
 
-
-        setModalState((){
-          fileName=response.data!.fileName!;
+        setModalState(() {
+          fileName = response.data!.fileName!;
           notifyListeners();
         });
       } else {
         print("Upload failed with status: ${response.status}");
-        showSnackMessage(context,"${response.message}");
+        showSnackMessage(context, "${response.message}");
       }
     } catch (e) {
       print("Error uploading file: ${e.toString()}");
-      showSnackMessage(context,"Please check file size.");
-
+      showSnackMessage(context, "Please check file size.");
     }
   }
-  showSnackMessage(context,message){
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.grey,
-        behavior: SnackBarBehavior.floating,
+
+  void showSnackMessage(BuildContext context, String message) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).padding.top + 10, // Positioning at top
+        left: 10,
+        right: 10,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ),
     );
+
+    overlay.insert(overlayEntry);
+
+    // Remove the overlay after 3 seconds
+    Future.delayed(Duration(seconds: 3), () {
+      overlayEntry.remove();
+    });
   }
 
-  Widget textFieldWidget(String label, TextEditingController controller) {
+
+  Widget textFieldWidget(String label, TextEditingController controller,
+      {bool showDropdownIcon = false,
+      bool isNumeric = false,
+      String? prefixText}) {
     return SizedBox(
       height: 50,
       child: TextField(
         controller: controller,
+        keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+        inputFormatters:
+            isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border
+            borderSide: BorderSide(color: Colors.grey.shade300),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border when focused
+            borderSide: BorderSide(color: Colors.grey.shade300),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade300), // Set gray border for normal state
+            borderSide: BorderSide(color: Colors.grey.shade300),
           ),
-          labelStyle: TextStyle(color: Color(0xCC000000),
-              fontWeight: FontWeight.w400,
-              fontSize: 14
+          labelStyle: TextStyle(
+            color: Color(0x99000000),
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
+          prefixText: prefixText, // Prefix (e.g., "$")
+          prefixStyle: TextStyle(
+            color: Colors.black87,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        style: TextStyle(color: Colors.black), // Changed text color for visibility
+        style: TextStyle(
+          color: Color(0xCC000000),
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+        ),
       ),
     );
   }
-
 }

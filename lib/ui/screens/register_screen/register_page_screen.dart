@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
 import 'register_page_controller.dart';
 
 class RegisterPageScreen extends StatelessWidget {
@@ -19,20 +18,19 @@ class RegisterPageScreen extends StatelessWidget {
             child: AppBar(
               backgroundColor: Colors.white,
               elevation: 0,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: IconButton(
-                  icon: const Icon(Icons.chevron_left_outlined,
-                      color: Colors.black, size: 35),
-                  onPressed: () => Get.back(),
-                ),
-              ),
+              leading: IconButton(
+                  icon: const Icon(Icons.chevron_left,
+                      color: Colors.black, size: 40),
+                  onPressed: () {
+                    Get.back();
+                  }),
               title: Text(
                 "Register to continue",
                 style: GoogleFonts.poppins(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xCC000000)),
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xCC000000),
+                ),
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(1),
@@ -53,10 +51,12 @@ class RegisterPageScreen extends StatelessWidget {
                       "Business Name *", controller.businessNameController),
                   const SizedBox(height: 15),
                   _buildTextField(
-                      "GST Number *", controller.gstNumberController),
+                      "GST Number *", controller.gstNumberController,
+                      isUpperCase: true, maxLength: 15),
                   const SizedBox(height: 15),
                   _buildTextField(
-                      "PAN Number *", controller.panNumberController),
+                      "PAN Number *", controller.panNumberController,
+                      isUpperCase: true, maxLength: 10),
                   const SizedBox(height: 20),
 
                   // Terms & Conditions Checkbox
@@ -115,12 +115,11 @@ class RegisterPageScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   // Continue Button
                   Obx(
-                        () => ElevatedButton(
+                    () => ElevatedButton(
                       onPressed: controller.isChecked.value
                           ? () {
-                        controller.continueRegistration();
-
-                      }
+                              controller.continueRegistration();
+                            }
                           : null, // Disable if not checked
                       style: ElevatedButton.styleFrom(
                         backgroundColor: controller.isChecked.value
@@ -141,7 +140,6 @@ class RegisterPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -151,13 +149,30 @@ class RegisterPageScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller) {
+  Widget _buildTextField(String label, TextEditingController controller,
+      {bool isUpperCase = false, int? maxLength}) {
     return TextField(
       style: const TextStyle(height: 2.5),
       controller: controller,
-      textCapitalization: TextCapitalization.characters,
+      textCapitalization:
+          isUpperCase ? TextCapitalization.characters : TextCapitalization.none,
+      maxLength: maxLength, // Restrict max input length
+      onChanged: (value) {
+        if (isUpperCase) {
+          String newValue = value.toUpperCase();
+          if (maxLength != null && newValue.length > maxLength) {
+            newValue =
+                newValue.substring(0, maxLength); // Trim extra characters
+          }
+          controller.value = controller.value.copyWith(
+            text: newValue,
+            selection: TextSelection.collapsed(offset: newValue.length),
+          );
+        }
+      },
       decoration: InputDecoration(
         labelText: label,
+        counterText: "", // Hides the character count display
         labelStyle: const TextStyle(
             fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black54),
         border: OutlineInputBorder(
@@ -168,6 +183,3 @@ class RegisterPageScreen extends StatelessWidget {
     );
   }
 }
-
-
-

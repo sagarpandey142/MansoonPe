@@ -23,24 +23,19 @@ class ProfilePageController extends GetxController {
       var res = await repo.getProfile({});
       debugPrint("VskingProfileRes:>>>$res");
       if (res.status == 200) {
-
-        var data=res.data!.profile;
-        userName.value=data!.businessName!;
-        gstin.value=data.gstNumber!;
-        panNumber.value=data.panNumber!;
-        var mob= prefs.getString("phone") ?? '';
-        mobileNumber.value=mob;
+        var data = res.data!.profile;
+        userName.value = data!.businessName!;
+        gstin.value = data.gstNumber!;
+        panNumber.value = data.panNumber!;
+        var mob = prefs.getString("phone") ?? '';
+        mobileNumber.value = mob;
       }
     } catch (e) {
       debugPrint("Error: $e");
       Get.snackbar("Error", "Something went wrong!",
-          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
-
   }
-
-
-
 
   void showLogoutBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -114,7 +109,8 @@ class ProfilePageController extends GetxController {
                         height: 50, // Adjust height as per your requirement
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.transparent, // Make the background transparent
+                            color: Colors
+                                .transparent, // Make the background transparent
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey.shade300, // Grey border color
@@ -126,8 +122,10 @@ class ProfilePageController extends GetxController {
                               Get.back(); // Closes the popup
                             },
                             style: ElevatedButton.styleFrom(
-                              elevation: 0, // Removes the shadow of the ElevatedButton
-                              backgroundColor: Colors.transparent, // Transparent background for the button itself
+                              elevation:
+                                  0, // Removes the shadow of the ElevatedButton
+                              backgroundColor: Colors
+                                  .transparent, // Transparent background for the button itself
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -182,13 +180,11 @@ class ProfilePageController extends GetxController {
   Future<void> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove("auth_token");
-    if(!context.mounted) return;
+    if (!context.mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPageScreen()),
-          (Route<dynamic> route) => false,
+      (Route<dynamic> route) => false,
     );
-
   }
-
 }

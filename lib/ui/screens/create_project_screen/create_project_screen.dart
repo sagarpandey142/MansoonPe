@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
-import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
 
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
@@ -54,16 +53,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProjectPageScreen()),
-                        );
-                      },
-                      child: Icon(Icons.search, color: Color(0x66000000)),
-                    )
+                    Icon(Icons.search, color: Color(0x66000000))
                   ],
                 ),
               ),
@@ -127,13 +117,40 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index; // Update the selected index
-          });
-        },
+      bottomNavigationBar: Material(
+        color: Colors.transparent, // Avoid default material color
+        child: Container(
+          height: 70, // Keep the height same
+          decoration: BoxDecoration(
+            color: Colors.white, // Ensure white background
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Very light shadow
+                spreadRadius: 0, // No extra spread
+                blurRadius: 1.5, // Slight blur for a thin effect
+                offset: Offset(0, -1), // Moves shadow slightly upwards
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
       ),
     );
   }

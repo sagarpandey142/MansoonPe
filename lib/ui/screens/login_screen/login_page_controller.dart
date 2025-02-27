@@ -16,7 +16,7 @@ class LoginPageController extends GetxController {
 
     if (phoneNumber.isEmpty) {
       Get.snackbar("Error", "Phone number cannot be empty",
-          backgroundColor: Colors.grey.shade200.withOpacity(0.8), colorText: Colors.red);
+          backgroundColor: Colors.red, colorText: Colors.white);
 
       isError.value = true;
       return;
@@ -24,7 +24,7 @@ class LoginPageController extends GetxController {
 
     if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber)) {
       Get.snackbar("Error", "Please enter a valid 10-digit phone number",
-          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+          backgroundColor: Colors.red, colorText: Colors.white);
       isError.value = true;
       return;
     }
@@ -43,13 +43,13 @@ class LoginPageController extends GetxController {
         Get.to(() => OtpPageScreen(phoneNumber: phoneNumber));
       } else {
         Get.snackbar("Error", "Failed to generate OTP!",
-            backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+            backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
       isError.value = true;
       print("Error: $e");
       Get.snackbar("Error", "Something went wrong!",
-          backgroundColor: Colors.grey.withOpacity(0.5), colorText: Colors.red);
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 }

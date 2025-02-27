@@ -76,7 +76,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                               style: GoogleFonts.poppins(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF603EA4),
+                                color: Color(0xFF402387),
                               ),
                             )),
                       ),
@@ -104,8 +104,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                   'GSTIN: ${controller.gstin.value}',
                                   style: GoogleFonts.poppins(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF603EA4),
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF363F72),
                                   ),
                                 ),
                               )),
@@ -127,7 +127,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                           child: InfoRow(
                             label: 'PAN Number:',
                             value: controller.panNumber.value,
-                            labelColor: Color(0xFF603EA4), // Now this will work
+                            labelColor: Color(0xFF363F72), // Now this will work
                           ),
                         ),
                       )),
@@ -146,7 +146,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                           child: InfoRow(
                             label: 'Mob No:',
                             value: controller.mobileNumber.value,
-                            labelColor: Color(0xFF603EA4),
+                            labelColor: Color(0xFF363F72),
                           ),
                         ),
                       )),
@@ -266,13 +266,40 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: Material(
+        color: Colors.transparent, // Avoid default material color
+        child: Container(
+          height: 70, // Keep the height same
+          decoration: BoxDecoration(
+            color: Colors.white, // Ensure white background
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Very light shadow
+                spreadRadius: 0, // No extra spread
+                blurRadius: 1.5, // Slight blur for a thin effect
+                offset: Offset(0, -1), // Moves shadow slightly upwards
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -293,7 +320,7 @@ class InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.circle, size: 8, color: Color(0xFF603EA4)),
+        Icon(Icons.circle, size: 8, color: Color(0xFF363F72)),
         SizedBox(width: 8),
         RichText(
           text: TextSpan(
@@ -306,7 +333,7 @@ class InfoRow extends StatelessWidget {
               ),
               TextSpan(
                 text: value,
-                style: TextStyle(color: Color(0xFF603EA4)),
+                style: TextStyle(color: Color(0xFF363F72)),
               ),
             ],
           ),
