@@ -15,12 +15,12 @@ import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_services/repo.dart';
 import '../../../modals/project_res.dart';
-import '../../../model_class/project_model.dart';
-import '../open_project_screen/open_project_screen.dart';
+import '../home_screens/home_page_controller.dart';
 
 class ProjectPageController extends GetxController {
   TextEditingController dateController = TextEditingController();
 
+  String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   var projects = <Projects>[].obs;
   getProjects() async {
     try {
@@ -255,7 +255,7 @@ class ProjectPageController extends GetxController {
                     ),
                   ],
                 ),
-                Divider(),
+                Divider(color: Colors.grey.shade300,thickness: 2,),
                 // Purchase Details
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -286,21 +286,19 @@ class ProjectPageController extends GetxController {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RichText(
-                            text: TextSpan(
+                          Text.rich(
+                            TextSpan(
+                              text: "Created on: ",
+                              style: const TextStyle(
+                                color: Color(0x99000000),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
                               children: [
                                 TextSpan(
-                                  text: "Created on: ",
-                                  style: TextStyle(
-                                    color: Color(0x99000000), // Grey color
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "${project.createdOn}",
-                                  style: TextStyle(
-                                    color: Color(0xCC000000), // Black color
+                                  text: HomePageController.formatDate(createdOn), // Calling controller function
+                                  style: const TextStyle(
+                                    color: Color(0xCC000000),
                                     fontSize: 10,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -317,27 +315,41 @@ class ProjectPageController extends GetxController {
                                 color: Color(0x99000000)),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Color(0xFFECFDF3),
+                              color: Color(
+                                project.status == "IN_REVIEW"
+                                    ? 0xFFFFF2CC // Even lighter orange
+                                    : project.status == "ACTIVE"
+                                    ? 0xFFEAF7EE // Even lighter green
+                                    : 0xFFFDECEA, // Even lighter red
+                              ),
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(
-                                  color:
-                                      Color("${project.status}" == "IN_REVIEW"
-                                          ? 0xFFFFA500
-                                          : "${project.status}" == "ACTIVE"
-                                              ? 0xFF28A745
-                                              : 0xFFDC3545)),
+                                width: 0.7, // Thinner border
+                                color: Color(
+                                  project.status == "IN_REVIEW"
+                                      ? 0xFFFFD699 // Lighter orange border
+                                      : project.status == "ACTIVE"
+                                      ? 0xFFA8E6B5 // Lighter green border
+                                      : 0xFFF5A8A8, // Lighter red border
+                                ),
+                              ),
                             ),
                             child: Text(
-                              "${project.status}",
-                              style: TextStyle(
-                                color: Color("${project.status}" == "IN_REVIEW"
-                                    ? 0xFFFFA500
-                                    : "${project.status}" == "ACTIVE"
-                                        ? 0xFF28A745
-                                        : 0xFFDC3545),
+                              project.status == "IN_REVIEW"
+                                  ? "In-review"
+                                  : project.status == "ACTIVE"
+                                  ? "Active"
+                                  : "Inactive", // Adjust as needed
+                              style: GoogleFonts.poppins(
+                                color: Color(
+                                  project.status == "IN_REVIEW"
+                                      ? 0xFFB54708
+                                      : project.status == "ACTIVE"
+                                      ? 0xFF28A745
+                                      : 0xFFDC3545,
+                                ),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -346,21 +358,19 @@ class ProjectPageController extends GetxController {
                         ],
                       ),
 
-                      RichText(
-                        text: TextSpan(
+                      Text.rich(
+                        TextSpan(
+                          text: "Assigned Credit: ",
+                          style: const TextStyle(
+                            color: Color(0x99000000),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                          ),
                           children: [
                             TextSpan(
-                              text: "Assigned Credit: ",
-                              style: TextStyle(
-                                color: Color(0x99000000), // Grey color
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextSpan(
-                              text: "${project.budget}",
-                              style: TextStyle(
-                                color: Color(0xCC000000), // Black color
+                              text: "₹ ${NumberFormat('#,##,###').format(project.budget)}",
+                              style: const TextStyle(
+                                color: Color(0xCC000000),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -373,45 +383,41 @@ class ProjectPageController extends GetxController {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RichText(
-                            text: TextSpan(
+                          Text.rich(
+                            TextSpan(
+                              text: "Consumed: ",
+                              style: const TextStyle(
+                                color: Color(0x99000000),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
                               children: [
                                 TextSpan(
-                                  text: "Consumed: ",
-                                  style: TextStyle(
-                                    color: Color(0x99000000), // Grey color
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "${project.budget}",
-                                  style: TextStyle(
-                                    color: Color(0xCC000000), // Black color
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
+                                  text: "₹ ${NumberFormat('#,##,###').format(project.budget)}",
+                                  style: const TextStyle(
+                                    color: Color(0xCC000000),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          RichText(
-                            text: TextSpan(
+                          Text.rich(
+                            TextSpan(
+                              text: "Credit left: ",
+                              style: const TextStyle(
+                                color: Color(0x99000000),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
                               children: [
                                 TextSpan(
-                                  text: "Credit left: ",
-                                  style: TextStyle(
-                                    color: Color(0x99000000), // Grey color
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "${project.budget}",
-                                  style: TextStyle(
-                                    color: Color(0xCC000000), // Black color
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
+                                  text: "₹ ${NumberFormat('#,##,###').format(project.budget)}",
+                                  style: const TextStyle(
+                                    color: Color(0xCC000000),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
@@ -425,7 +431,7 @@ class ProjectPageController extends GetxController {
                     ],
                   ),
                 ),
-                Divider(),
+                Divider(thickness: 1,),
 
                 Spacer(),
                 // Empty State
@@ -450,7 +456,7 @@ class ProjectPageController extends GetxController {
                 Spacer(),
                 // Bottom Buttons
 
-                Divider(),
+                Divider(color: Colors.grey.shade300,),
                 Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(
@@ -461,19 +467,18 @@ class ProjectPageController extends GetxController {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomePageScreen()), // Navigate to HomepageScreen
+                                builder: (context) => HomePageScreen(),
+                              ),
                             );
                           },
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(10), // Border radius 15
+                              borderRadius: BorderRadius.circular(10), // Rounded corners
                             ),
-                            minimumSize:
-                                Size(double.infinity, 50), // Increased height
+                            minimumSize: const Size(double.infinity, 50), // Increased height
+                            side: BorderSide(color: Colors.grey[300]!, width: 1.3), // Grey border
                           ),
-                          child: Text(
+                          child: const Text(
                             "Go to Homepage",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -545,7 +550,14 @@ class ProjectPageController extends GetxController {
         decoration: InputDecoration(
           labelText: label,
           suffixIcon: isDateField
-              ? Icon(Icons.calendar_today, color: Colors.grey)
+              ? Padding(
+            padding: const EdgeInsets.all(13), // Add padding to keep spacing
+            child: SvgPicture.asset(
+              'assets/images/date_image.svg',
+              height: 16, // Decrease height
+              width: 16, // Decrease width
+            ),
+          )
               : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -560,7 +572,7 @@ class ProjectPageController extends GetxController {
             borderSide: BorderSide(color: Colors.grey.shade300),
           ),
           labelStyle: TextStyle(
-            color: Color(0xCC000000),
+            color: Color(0x99000000),
             fontWeight: FontWeight.w400,
             fontSize: 10,
           ),

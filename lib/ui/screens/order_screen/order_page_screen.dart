@@ -110,7 +110,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 70, // Keep the height same
+          height: 80, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

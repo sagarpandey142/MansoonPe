@@ -298,49 +298,61 @@ class CreateProjectController extends ChangeNotifier {
   }
 
 
-  Widget textFieldWidget(String label, TextEditingController controller,
-      {bool showDropdownIcon = false,
-        bool isNumeric = false,
-        String? prefixText}) {
-    return SizedBox(
-      height: 50,
-      child: TextField(
-        controller: controller,
-        keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
-        inputFormatters:
-        isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          labelStyle: TextStyle(
-            color: Color(0x99000000),
-            fontWeight: FontWeight.w400,
-            fontSize: 12,
-          ),
-          prefixText: prefixText, // Prefix (e.g., "$")
-          prefixStyle: TextStyle(
-            color: Colors.black87,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+Widget textFieldWidget(String label, TextEditingController controller,
+    {bool isNumeric = false, String? prefixText}) {
+  return SizedBox(
+    height: 60, // Fixed height to prevent shrinking
+    child: TextFormField(
+      controller: controller,
+      keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+      inputFormatters:
+      isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return null; // No extra space added for error
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
-        style: TextStyle(
-          color: Color(0xCC000000),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        labelStyle: TextStyle(
+          color: Color(0x99000000),
           fontWeight: FontWeight.w400,
+          fontSize: 12,
+        ),
+        prefixText: prefixText,
+        prefixStyle: TextStyle(
+          color: Colors.black87,
           fontSize: 16,
+          fontWeight: FontWeight.w500,
         ),
       ),
-    );
-  }
+      style: TextStyle(
+        color: Color(0xCC000000),
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+      ),
+    ),
+  );
+}
 }

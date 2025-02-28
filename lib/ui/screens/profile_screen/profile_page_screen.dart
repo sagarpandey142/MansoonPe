@@ -37,7 +37,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
             child: Row(
               children: [
                 Text(
-                  "Orders",
+                  "Profile",
                   style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -269,7 +269,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 70, // Keep the height same
+          height: 80, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

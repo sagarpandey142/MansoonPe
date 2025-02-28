@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:projects/modals/project_res.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
+import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_services/repo.dart';
@@ -24,6 +26,7 @@ class HomePageScreen extends StatefulWidget {
 class _HomePageScreenState extends State<HomePageScreen> {
   final ProjectPageController controller = Get.put(ProjectPageController());
 
+  String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   int _currentIndex = 0;
   List<Projects> projects = [];
   @override
@@ -188,7 +191,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             style: TextStyle(
                               color: Color(0xFFFFFFFF),
                               fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             )),
                         SizedBox(height: 4),
                         Row(
@@ -239,7 +242,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                      color: Color(0xCC000000),
                     ),
                   ),
                   TextButton(
@@ -251,7 +254,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF62449D),
+                        color: Color(0xFF4600F2),
                       ),
                     ),
                   ),
@@ -333,25 +336,37 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                   fontSize: 14),
                                             ),
                                             const SizedBox(height: 4),
-                                            Text(
-                                              "Date: ${project.createdOn}",
-                                              style: TextStyle(
-                                                color: Color(0xFF363F72),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400,
+                                            Text.rich(
+                                              TextSpan(
+                                                text: "Date: ",
+                                                style: const TextStyle(
+                                                  color: Color(0xCC363F72),
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: HomePageController.formatDate(createdOn), // Calling controller function
+                                                    style: const TextStyle(
+                                                      color: Color(0xE6363F72),
+                                                      fontSize: 10,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                             Text.rich(
                                               TextSpan(
                                                 text: "Project Cost: ",
                                                 style: const TextStyle(
-                                                  color: Color(0xFF363F72),
+                                                  color: Color(0xCC363F72),
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
                                                 ),
                                                 children: [
                                                   TextSpan(
-                                                    text: "${project.budget}",
+                                                    text: "₹ ${NumberFormat('#,##,###').format(project.budget)}",
                                                     style: const TextStyle(
                                                       color: Color(0xFF363F72),
                                                       fontSize: 10,
@@ -365,7 +380,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                               TextSpan(
                                                 text: "Consumption: ",
                                                 style: const TextStyle(
-                                                  color: Color(0xFF363F72),
+                                                  color: Color(0xCC363F72),
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -383,45 +398,48 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             ),
                                             const SizedBox(height: 5),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 8, vertical: 4),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                               decoration: BoxDecoration(
-                                                color: Color("${project.status}" ==
-                                                    "IN_REVIEW"
-                                                    ? 0xFFFFA500
-                                                    : "${project.status}" ==
-                                                    "ACTIVE"
-                                                    ? 0xFF28A745
-                                                    : 0xFFDC3545)
-                                                    .withOpacity(0.2),
-                                                borderRadius:
-                                                BorderRadius.circular(15),
+                                                color: Color(
+                                                  project.status == "IN_REVIEW"
+                                                      ? 0xFFFFF2CC // Even lighter orange
+                                                      : project.status == "ACTIVE"
+                                                      ? 0xFFEAF7EE // Even lighter green
+                                                      : 0xFFFDECEA, // Even lighter red
+                                                ),
+                                                borderRadius: BorderRadius.circular(15),
                                                 border: Border.all(
-                                                    color: Color(
-                                                        "${project.status}" ==
-                                                            "IN_REVIEW"
-                                                            ? 0xFFFFA500
-                                                            : "${project.status}" ==
-                                                            "ACTIVE"
-                                                            ? 0xFF28A745
-                                                            : 0xFFDC3545)),
+                                                  width: 0.7, // Thinner border
+                                                  color: Color(
+                                                    project.status == "IN_REVIEW"
+                                                        ? 0xFFFFD699 // Lighter orange border
+                                                        : project.status == "ACTIVE"
+                                                        ? 0xFFA8E6B5 // Lighter green border
+                                                        : 0xFFF5A8A8, // Lighter red border
+                                                  ),
+                                                ),
                                               ),
                                               child: Text(
-                                                "${project.status}",
-                                                style: TextStyle(
+                                                project.status == "IN_REVIEW"
+                                                    ? "In-review"
+                                                    : project.status == "ACTIVE"
+                                                    ? "Active"
+                                                    : "Inactive", // Adjust as needed
+                                                style: GoogleFonts.poppins(
                                                   color: Color(
-                                                      "${project.status}" ==
-                                                          "IN_REVIEW"
-                                                          ? 0xFFFFA500
-                                                          : "${project.status}" ==
-                                                          "ACTIVE"
-                                                          ? 0xFF28A745
-                                                          : 0xFFDC3545),
+                                                    project.status == "IN_REVIEW"
+                                                        ? 0xFFB54708
+                                                        : project.status == "ACTIVE"
+                                                        ? 0xFF28A745
+                                                        : 0xFFDC3545,
+                                                  ),
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                             ),
+
+
                                             const SizedBox(height: 5),
                                             Text(
                                               "- - - - - - - - - - - - - - - - - - - - - -",
@@ -591,7 +609,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 70, // Keep the height same
+          height: 80, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

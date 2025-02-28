@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_controller.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
-import '../create_project_screen/create_project_screen.dart';
+import '../home_screens/home_page_controller.dart';
 
 class ProjectPageScreen extends StatefulWidget {
   const ProjectPageScreen({super.key});
@@ -16,6 +18,7 @@ class ProjectPageScreen extends StatefulWidget {
 class _ProjectPageScreenState extends State<ProjectPageScreen> {
   final ProjectPageController controller = Get.put(ProjectPageController());
   int _currentIndex = 1;
+  String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
 
   @override
   void initState() {
@@ -51,7 +54,9 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                         color: Color(0xFF603EA4),
                         size: 20,
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       const Text(
                         "New project",
                         style: TextStyle(
@@ -65,12 +70,10 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
           Divider(color: Colors.grey.shade200, thickness: 2),
           const SizedBox(height: 10),
           Expanded(
-            child: Obx(() =>
-                ListView.builder(
+            child: Obx(() => ListView.builder(
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 8),
                   itemCount: controller.projects.length,
                   itemBuilder: (context, index) {
@@ -91,7 +94,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                             },
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(top: 10, right: 20),
+                                  const EdgeInsets.only(right: 20),
                               child: Row(
                                 children: [
                                   Stack(
@@ -128,6 +131,12 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                       ),
                                     ],
                                   ),
+                                  Container(
+                                    width: 1.5,
+                                    height: 180, // Adjust height as needed
+                                    color: Colors.grey.shade100,
+                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                  ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Column(
@@ -141,25 +150,40 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                               fontSize: 14),
                                         ),
                                         const SizedBox(height: 4),
-                                        Text(
-                                          "Date: ${project.createdOn}",
-                                          style: TextStyle(
-                                            color: Color(0xFF363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
                                         Text.rich(
                                           TextSpan(
-                                            text: "Project Cost: ",
+                                            text: "Date: ",
                                             style: const TextStyle(
-                                              color: Color(0xFF363F72),
+                                              color: Color(0xCC363F72),
                                               fontSize: 10,
                                               fontWeight: FontWeight.w400,
                                             ),
                                             children: [
                                               TextSpan(
-                                                text: "${project.budget}",
+                                                text: HomePageController.formatDate(
+                                                    createdOn), // Calling controller function
+                                                style: const TextStyle(
+                                                  color: Color(0xE6363F72),
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "Project Cost: ",
+                                            style: const TextStyle(
+                                              color: Color(0xCC363F72),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    "₹ ${NumberFormat('#,##,###').format(project.budget)}",
                                                 style: const TextStyle(
                                                   color: Color(0xFF363F72),
                                                   fontSize: 10,
@@ -169,11 +193,12 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                             ],
                                           ),
                                         ),
+                                        const SizedBox(height: 2),
                                         Text.rich(
                                           TextSpan(
                                             text: "Consumption: ",
                                             style: const TextStyle(
-                                              color: Color(0xFF363F72),
+                                              color: Color(0xCC363F72),
                                               fontSize: 10,
                                               fontWeight: FontWeight.w400,
                                             ),
@@ -194,37 +219,40 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 8, vertical: 4),
                                           decoration: BoxDecoration(
-                                            color: Color("${project.status}" ==
-                                                        "IN_REVIEW"
-                                                    ? 0xFFFFA500
-                                                    : "${project.status}" ==
-                                                            "ACTIVE"
-                                                        ? 0xFF28A745
-                                                        : 0xFFDC3545)
-                                                .withOpacity(0.2),
+                                            color: Color(
+                                              project.status == "IN_REVIEW"
+                                                  ? 0xFFFFF2CC // Even lighter orange
+                                                  : project.status == "ACTIVE"
+                                                      ? 0xFFEAF7EE // Even lighter green
+                                                      : 0xFFFDECEA, // Even lighter red
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             border: Border.all(
-                                                color: Color(
-                                                    "${project.status}" ==
-                                                            "IN_REVIEW"
-                                                        ? 0xFFFFA500
-                                                        : "${project.status}" ==
-                                                                "ACTIVE"
-                                                            ? 0xFF28A745
-                                                            : 0xFFDC3545)),
+                                              width: 0.7, // Thinner border
+                                              color: Color(
+                                                project.status == "IN_REVIEW"
+                                                    ? 0xFFFFD699 // Lighter orange border
+                                                    : project.status == "ACTIVE"
+                                                        ? 0xFFA8E6B5 // Lighter green border
+                                                        : 0xFFF5A8A8, // Lighter red border
+                                              ),
+                                            ),
                                           ),
                                           child: Text(
-                                            "${project.status}",
-                                            style: TextStyle(
+                                            project.status == "IN_REVIEW"
+                                                ? "In-review"
+                                                : project.status == "ACTIVE"
+                                                    ? "Active"
+                                                    : "Inactive", // Adjust as needed
+                                            style: GoogleFonts.poppins(
                                               color: Color(
-                                                  "${project.status}" ==
-                                                          "IN_REVIEW"
-                                                      ? 0xFFFFA500
-                                                      : "${project.status}" ==
-                                                              "ACTIVE"
-                                                          ? 0xFF28A745
-                                                          : 0xFFDC3545),
+                                                project.status == "IN_REVIEW"
+                                                    ? 0xFFB54708
+                                                    : project.status == "ACTIVE"
+                                                        ? 0xFF28A745
+                                                        : 0xFFDC3545,
+                                              ),
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -237,9 +265,12 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                             color: Color(0xFFEDEBF4),
                                             fontSize: 20,
                                           ),
-                                          overflow: TextOverflow.clip, // Clips overflowing text without showing "..."
-                                          maxLines: 1, // Ensures text stays on a single line
-                                          softWrap: false, // Prevents wrapping to the next line
+                                          overflow: TextOverflow
+                                              .clip, // Clips overflowing text without showing "..."
+                                          maxLines:
+                                              1, // Ensures text stays on a single line
+                                          softWrap:
+                                              false, // Prevents wrapping to the next line
                                         ),
                                         if ("${project.status}" ==
                                             "ACTIVE") ...[
@@ -332,7 +363,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 70, // Keep the height same
+          height: 80, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(
