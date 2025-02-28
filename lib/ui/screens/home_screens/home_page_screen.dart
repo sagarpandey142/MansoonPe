@@ -109,7 +109,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 height: 25,
                 decoration: BoxDecoration(
                   color: Color(0xFFEFF6FF),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
