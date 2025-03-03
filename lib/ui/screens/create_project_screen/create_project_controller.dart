@@ -36,14 +36,16 @@ class CreateProjectController extends ChangeNotifier {
           builder: (context, setModalState) {
             return Padding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
+                bottom: MediaQuery.of(context)
+                    .viewInsets
+                    .bottom, // Adjust for keyboard
               ),
               child: SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(20)),
+                        BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Column(
@@ -297,62 +299,66 @@ class CreateProjectController extends ChangeNotifier {
     });
   }
 
-
-Widget textFieldWidget(String label, TextEditingController controller,
-    {bool isNumeric = false, String? prefixText}) {
-  return SizedBox(
-    height: 60, // Fixed height to prevent shrinking
-    child: TextFormField(
-      controller: controller,
-      keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
-      inputFormatters:
-      isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return null; // No extra space added for error
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+  Widget textFieldWidget(String label, TextEditingController controller,
+      {bool isNumeric = false, String? prefixText}) {
+    return SizedBox(
+      height: 60, // Fixed height to prevent shrinking
+      child: TextFormField(
+        controller: controller,
+        keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+        inputFormatters:
+            isNumeric ? [FilteringTextInputFormatter.digitsOnly] : [],
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return null; // No extra space added for error
+          }
+          return null;
+        },
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          labelStyle: TextStyle(
+            color: Color(0x99000000),
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
+          prefixText: prefixText,
+          prefixStyle: TextStyle(
+            color: Colors.black87,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.red),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.red),
-        ),
-        labelStyle: TextStyle(
-          color: Color(0x99000000),
+        style: TextStyle(
+          color: Color(0xCC000000),
           fontWeight: FontWeight.w400,
-          fontSize: 12,
-        ),
-        prefixText: prefixText,
-        prefixStyle: TextStyle(
-          color: Colors.black87,
           fontSize: 16,
-          fontWeight: FontWeight.w500,
         ),
       ),
-      style: TextStyle(
-        color: Color(0xCC000000),
-        fontWeight: FontWeight.w400,
-        fontSize: 16,
-      ),
-    ),
-  );
+    );
+  }
 }
-}
+
+
+
+
+

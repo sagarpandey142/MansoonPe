@@ -1,27 +1,13 @@
-class ProjectModel {
-  String title;
-  String date;
+class MaterialModel {
+  String name;
   String cost;
-  String consumption;
+  String dueDate;
   String status;
-  int statusColor;
-  String? pending;
-  String? buttonText;
-  String? message;
-  String statusType;
-  String image;
 
-  ProjectModel({
-    required this.title,
-    required this.date,
+  MaterialModel({
+    required this.name,
     required this.cost,
-    required this.consumption,
+    required this.dueDate,
     required this.status,
-    required this.statusColor,
-    this.pending,
-    this.buttonText,
-    this.message,
-    required this.statusType,
-    required this.image
   });
 }

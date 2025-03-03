@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_controller.dart';
+import '../../../modals/create_project_res.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
 import '../home_screens/home_page_controller.dart';
+import '../open_project_screen/open_project_screen.dart';
 
 class ProjectPageScreen extends StatefulWidget {
   const ProjectPageScreen({super.key});
@@ -89,9 +91,13 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              controller.showProjectPopup(
-                                  context, project); // Popup function call
+                              var controller = Get.find<ProjectPageController>();
+                              var selectedProject = controller.projects[index]; // This is 'Projects'
+
+                              Get.to(() => OpenProjectScreen(project: selectedProject)); // Pass the correct type
                             },
+
+
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(right: 20),

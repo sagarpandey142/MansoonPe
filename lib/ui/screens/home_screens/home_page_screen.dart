@@ -13,6 +13,7 @@ import '../../../api_services/repo.dart';
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
+import '../open_project_screen/open_project_screen.dart';
 import '../profile_screen/profile_page_screen.dart';
 import '../projects_screen/project_page_controller.dart';
 
@@ -188,7 +189,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Devesh Gupta",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Color(0xFFFFFFFF),
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -281,12 +282,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               ),
                               child: InkWell(
                                 onTap: () {
-                                  controller.showProjectPopup(
-                                      context, project); // Popup function call
+                                  var controller = Get.find<ProjectPageController>();
+                                  var selectedProject = controller.projects[index]; // This is 'Projects'
+
+                                  Get.to(() => OpenProjectScreen(project: selectedProject)); // Pass the correct type
                                 },
+
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.only(top: 4, right: 20),
+                                  const EdgeInsets.only(right: 20),
                                   child: Row(
                                     children: [
                                       Stack(
@@ -295,13 +299,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             // project.image ??
                                               "assets/images/proj_img_2.png",
                                               width: 130,
-                                              height: 160),
+                                              height: 180),
                                           Positioned(
                                             bottom: 5,
-                                            right: 5,
+                                            right: 0,
                                             child: Container(
-                                              height: 25,
-                                              width: 25,
+                                              height: 26,
+                                              width: 26,
                                               decoration: BoxDecoration(
                                                 color: Color(0x66000000),
                                                 borderRadius:
@@ -314,8 +318,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 },
                                                 child: SvgPicture.asset(
                                                   'assets/images/save_button.svg',
-                                                  width: 15,
-                                                  height: 15,
+                                                  height: 10,
                                                   fit: BoxFit.scaleDown,
                                                 ),
                                               ),
@@ -323,7 +326,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(width: 10),
+
+                                      Container(
+                                        width: 1.5,
+                                        height: 180, // Adjust height as needed
+                                        color: Colors.grey.shade100,
+                                        margin: EdgeInsets.symmetric(horizontal: 8),
+                                      ),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
@@ -356,6 +365,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 ],
                                               ),
                                             ),
+                                            SizedBox(height: 5,),
                                             Text.rich(
                                               TextSpan(
                                                 text: "Project Cost: ",
@@ -376,6 +386,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 ],
                                               ),
                                             ),
+                                            SizedBox(height: 5,),
                                             Text.rich(
                                               TextSpan(
                                                 text: "Consumption: ",
