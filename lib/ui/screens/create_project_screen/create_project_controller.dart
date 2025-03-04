@@ -84,7 +84,7 @@ class CreateProjectController extends ChangeNotifier {
                             textFieldWidget(
                                 "Overall Project Cost", projectCostController,
                                 isNumeric: true,
-                                prefixText: "\$"), // Dollar sign & numbers only
+                                prefixText: "₹ "), // Dollar sign & numbers only
                             SizedBox(height: 10),
                             textFieldWidget("Enter Location",
                                 projectLocationController), // Down arrow
@@ -123,9 +123,15 @@ class CreateProjectController extends ChangeNotifier {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: Text(fileName),
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
@@ -176,7 +182,7 @@ class CreateProjectController extends ChangeNotifier {
       showSnackMessage(context, "Please upload contract in pdf.");
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString("auth_token").toString();
+      String token = prefs.getString("auth_token") ?? '';
 
       try {
         CreateProjectReq req = CreateProjectReq();
@@ -195,11 +201,11 @@ class CreateProjectController extends ChangeNotifier {
               behavior: SnackBarBehavior.floating,
             ),
           );
-          Navigator.push(
+          await prefs.setBool("is_project_created", true);
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => ProjectPageScreen()),
           );
-          // Get.to(() => ProjectPageScreen());
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -357,8 +363,3 @@ class CreateProjectController extends ChangeNotifier {
     );
   }
 }
-
-
-
-
-

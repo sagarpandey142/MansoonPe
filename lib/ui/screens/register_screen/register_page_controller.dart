@@ -81,8 +81,57 @@ class RegisterPageController extends GetxController {
     }
   }
 
+  void showSuccessBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, size: 50, color: Color(0xFF00A460)),
+              const SizedBox(height: 16),
+              const Text(
+                "You have registered successfully",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "You can now submit your first project",
+                style: TextStyle(fontSize: 14, color: Color(0x99000000),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Get.to(() => HomePageScreen());
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  child: Text("Continue", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   // Toggle Checkbox
   void toggleCheckbox(bool value) {
     isChecked.value = value;
   }
 }
+

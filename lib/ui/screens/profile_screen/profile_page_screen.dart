@@ -18,10 +18,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   @override
   void initState() {
     super.initState();
-
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +221,6 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
             ),
           ),
 
-
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
             child: InkWell(
@@ -329,7 +325,8 @@ class InfoRow extends StatelessWidget {
               TextSpan(
                 text: ' $label ',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: labelColor), // Use labelColor here
+                    fontWeight: FontWeight.bold,
+                    color: labelColor), // Use labelColor here
               ),
               TextSpan(
                 text: value,
@@ -342,7 +339,6 @@ class InfoRow extends StatelessWidget {
     );
   }
 }
-
 
 class OptionTile extends StatelessWidget {
   final IconData icon;

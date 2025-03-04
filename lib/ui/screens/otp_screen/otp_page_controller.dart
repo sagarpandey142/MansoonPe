@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/verify_otp_req.dart';
@@ -32,6 +33,7 @@ class OtpPageController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: const Color(0xFF4CAF50),
           colorText: const Color(0xFFFFFFFF),
+          margin: const EdgeInsets.only(bottom: 10), // Snackbar ko upar shift karega
         );
         if(res.data!.user!.userProfile != null){
         //   registered

@@ -22,6 +22,24 @@ class OpenProjectController extends GetxController {
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   var projects = <Projects>[].obs;
 
+  String formatCost(String value) {
+    if (value.isEmpty) return '';
+
+    // Remove all non-digit characters (except for decimal points if needed)
+    String rawValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // If the value is empty or invalid, return it as it is
+    if (rawValue.isEmpty) return '₹ 0';
+
+    // Parse the number and format it
+    int number = int.tryParse(rawValue) ?? 0;
+
+    // Format the number using Indian currency format
+    String formattedValue = NumberFormat("#,##,##0", "en_IN").format(number);
+
+    return '₹ $formattedValue';
+  }
+
   getProjects() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -77,7 +95,8 @@ class OpenProjectController extends GetxController {
                   padding: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,17 +108,23 @@ class OpenProjectController extends GetxController {
                         padding: const EdgeInsets.all(15),
                         child: Column(
                           children: [
-                            textFieldWidget("Material Name", controller: materialNameController),
+                            textFieldWidget("Material Name",
+                                controller: materialNameController),
                             SizedBox(height: 10),
-                            textFieldWidget("Cost of Material", controller: costController, isCostField: true),
+                          textFieldWidget("Cost of Material", controller: costController, isCostField: true),
                             SizedBox(height: 5),
                             _buildCostInfo(),
                             SizedBox(height: 16),
-                            textFieldWidget("Requested Payment Due Date", isDateField: true, controller: dateController),
+                            textFieldWidget("Requested Payment Due Date",
+                                isDateField: true, controller: dateController),
                             SizedBox(height: 10),
                             _buildUploadButton(context, setModalState),
                             SizedBox(height: 15),
-                            _buildContinueButton(context, materialNameController, costController, dateController),
+                            _buildContinueButton(
+                                context,
+                                materialNameController,
+                                costController,
+                                dateController),
                           ],
                         ),
                       ),
@@ -121,7 +146,8 @@ class OpenProjectController extends GetxController {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Add New Material",
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 16)),
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w700, fontSize: 16)),
           IconButton(
             icon: Icon(Icons.close, color: Colors.grey),
             onPressed: () => Navigator.pop(context),
@@ -143,12 +169,16 @@ class OpenProjectController extends GetxController {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(CupertinoIcons.exclamationmark_circle, color: Color(0xFF1E40AF), size: 13.0),
+            child: Icon(CupertinoIcons.exclamationmark_circle,
+                color: Color(0xFF1E40AF), size: 13.0),
           ),
           Expanded(
             child: Text(
               "Inclusive of GST and shipping charges",
-              style: TextStyle(color: Color(0xFF1E40AF), fontSize: 10, fontWeight: FontWeight.w400),
+              style: TextStyle(
+                  color: Color(0xFF1E40AF),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -162,7 +192,8 @@ class OpenProjectController extends GetxController {
     return Container(
       width: double.infinity,
       height: 50,
-      decoration: BoxDecoration(color: Color(0xFFF0EEF6), borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+          color: Color(0xFFF0EEF6), borderRadius: BorderRadius.circular(10)),
       child: TextButton(
         onPressed: () {
           final controller = Get.find<CreateProjectController>();
@@ -175,7 +206,10 @@ class OpenProjectController extends GetxController {
             SizedBox(width: 5),
             Text(
               "Upload Supplier Quote",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF603EA4)),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF603EA4)),
             ),
           ],
         ),
@@ -183,13 +217,16 @@ class OpenProjectController extends GetxController {
     );
   }
 
-  Widget _buildContinueButton(BuildContext context, TextEditingController name, TextEditingController cost, TextEditingController date) {
+  Widget _buildContinueButton(BuildContext context, TextEditingController name,
+      TextEditingController cost, TextEditingController date) {
     return SizedBox(
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
         onPressed: () {
-          if (name.text.trim().isEmpty || cost.text.trim().isEmpty || date.text.trim().isEmpty) {
+          if (name.text.trim().isEmpty ||
+              cost.text.trim().isEmpty ||
+              date.text.trim().isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Please fill all fields"),
@@ -200,31 +237,35 @@ class OpenProjectController extends GetxController {
           }
 
           final controller = Get.find<OpenProjectController>();
-          controller.addMaterial(name.text.trim(), cost.text.trim(), date.text.trim());
+          controller.addMaterial(
+              name.text.trim(), cost.text.trim(), date.text.trim());
 
           Navigator.pop(context);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF603EA4),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
         child: Text(
           "Continue",
-          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+          style: GoogleFonts.poppins(
+              fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
         ),
       ),
     );
   }
 
-
   Widget textFieldWidget(String label,
-      {bool isDateField = false, TextEditingController? controller, bool isCostField = false}) {
+      {bool isDateField = false,
+        TextEditingController? controller,
+        bool isCostField = false}) {
     return SizedBox(
       height: 50,
       child: TextField(
         controller: controller,
         readOnly: isDateField,
-        keyboardType: isCostField ? TextInputType.number : TextInputType.text, // Set number keyboard for cost field
+        keyboardType: isCostField ? TextInputType.number : TextInputType.text,
         onTap: isDateField
             ? () async {
           DateTime? pickedDate = await showDatePicker(
@@ -238,9 +279,19 @@ class OpenProjectController extends GetxController {
           }
         }
             : null,
+        onChanged: isCostField
+            ? (value) {
+          // Format number as user types
+          String formattedValue = formatCost(value);
+          if (controller?.text != formattedValue) {
+            controller?.text = formattedValue;
+            controller?.selection = TextSelection.collapsed(offset: formattedValue.length);
+          }
+        }
+            : null,
         decoration: InputDecoration(
           labelText: label,
-          prefixText: isCostField ? "\$ " : null, // Add dollar sign for cost field
+          prefixText: isCostField ? null : null,
           suffixIcon: isDateField
               ? Padding(
             padding: const EdgeInsets.all(13),
@@ -277,7 +328,6 @@ class OpenProjectController extends GetxController {
       ),
     );
   }
-
 
   Future<void> downloadPDF(Projects project) async {
     try {
@@ -328,8 +378,3 @@ class OpenProjectController extends GetxController {
     }
   }
 }
-
-
-
-
-

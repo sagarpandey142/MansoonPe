@@ -38,24 +38,37 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.chevron_left_outlined,
-                          size: 35, color: Color(0x99000000)),
+                      icon: Icon(
+                        Icons.chevron_left_outlined,
+                        size: 35,
+                        color: Color(0x99000000),
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    Text(
-                      "${widget.project.name}",
-                      style: TextStyle(
-                        color: Color(0xCC000000),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.3, // Max width
+                        ),
+                        child: Text(
+                          "${widget.project.name}",
+                          style: TextStyle(
+                            color: Color(0xCC000000),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.put(OpenProjectController())
-                        .showAddMaterialPopup(context); // Pass local context
+                    Get.put(OpenProjectController()).showAddMaterialPopup(context);
                   },
                   child: Text(
                     "+ Add new material",
@@ -265,10 +278,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   children: [
                     SvgPicture.asset(
                       'assets/images/order_file.svg',
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      height: MediaQuery.of(context).size.height * 0.10,
+                      width: MediaQuery.of(context).size.width * 0.12,  // Reduced width
+                      height: MediaQuery.of(context).size.height * 0.06, // Reduced height
                     ),
-                    SizedBox(height: 8),
+
+                    SizedBox(height: 30),
                     Text(
                       "You haven't requested any quote yet.",
                       style: TextStyle(

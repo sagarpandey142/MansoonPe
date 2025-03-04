@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
 import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
-import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
 class GuestSkipScreen extends StatefulWidget {
   const GuestSkipScreen({super.key});
@@ -36,7 +35,10 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                     ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return LinearGradient(
-                          colors: [CustomColor.primaryColor, CustomColor.secondaryColor], // Gradient colors
+                          colors: [
+                            CustomColor.primaryColor,
+                            CustomColor.secondaryColor
+                          ], // Gradient colors
                         ).createShader(bounds);
                       },
                       child: Text(
@@ -44,13 +46,15 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white, // Keep it white, ShaderMask applies the gradient
+                          color: Colors
+                              .white, // Keep it white, ShaderMask applies the gradient
                         ),
                       ),
                     ),
-
                     Padding(
-                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02), // Adjust padding based on screen width
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width *
+                              0.02), // Adjust padding based on screen width
                       child: SvgPicture.asset("assets/images/menu_vector.svg"),
                     ),
                   ],
@@ -172,7 +176,8 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                     Center(
                       child: Image.asset(
                         'assets/images/file_image.png',
-                        width: MediaQuery.of(context).size.width * 0.2, // 20% of screen width
+                        width: MediaQuery.of(context).size.width *
+                            0.2, // 20% of screen width
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -195,7 +200,8 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(() => LoginPageScreen());// Handle create first project action
+                          Get.to(() =>
+                              LoginPageScreen()); // Handle create first project action
                         },
                         child: Text(
                           "+   Create first project",
@@ -238,13 +244,56 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: CustomBottomNavigationBar(
+            child: BottomNavigationBar(
+              backgroundColor: Colors.white, // ✅ Fix background color issue
               currentIndex: _currentIndex,
               onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
+                if (index == 0) {
+                  // Sirf "Home" button clickable hoga
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                }
               },
+              selectedItemColor: Color(0xFF603EA4), // Active tab color
+              unselectedItemColor: Colors.black54, // Non-selected tab color
+              selectedLabelStyle: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+              unselectedLabelStyle: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+              items: [
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    _currentIndex == 0
+                        ? "assets/custom_bottom_navigation/home_color.svg"
+                        : "assets/custom_bottom_navigation/home.svg",
+                  ),
+                  label: "Home",
+                ),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    "assets/custom_bottom_navigation/project.svg",
+                  ),
+                  label: "Projects",
+                ),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    "assets/custom_bottom_navigation/order.svg",
+                  ),
+                  label: "Orders",
+                ),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    "assets/custom_bottom_navigation/profile.svg",
+                  ),
+                  label: "Profile",
+                ),
+              ],
+              type: BottomNavigationBarType.fixed, // Fixes label disappearing issue
             ),
           ),
         ),

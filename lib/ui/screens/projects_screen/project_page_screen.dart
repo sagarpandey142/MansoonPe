@@ -106,20 +106,20 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                   Stack(
                                     children: [
                                       Image.asset(
-                                          // project.image ??
+                                        // project.image ??
                                           "assets/images/proj_img_2.png",
                                           width: 130,
-                                          height: 160),
+                                          height: 180),
                                       Positioned(
                                         bottom: 5,
-                                        right: 5,
+                                        right: 0,
                                         child: Container(
-                                          height: 25,
-                                          width: 25,
+                                          height: 26,
+                                          width: 26,
                                           decoration: BoxDecoration(
                                             color: Color(0x66000000),
                                             borderRadius:
-                                                BorderRadius.circular(5),
+                                            BorderRadius.circular(5),
                                           ),
                                           child: InkWell(
                                             onTap: () {
@@ -128,8 +128,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                             },
                                             child: SvgPicture.asset(
                                               'assets/images/save_button.svg',
-                                              width: 15,
-                                              height: 15,
+                                              height: 10,
                                               fit: BoxFit.scaleDown,
                                             ),
                                           ),
@@ -141,7 +140,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                     width: 1.5,
                                     height: 180, // Adjust height as needed
                                     color: Colors.grey.shade100,
-                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                    margin:
+                                    EdgeInsets.symmetric(horizontal: 8),
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(
@@ -150,11 +150,13 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          project.name!,
+                                          '${project.name!} , ${project.location!}',
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
                                         ),
+
                                         const SizedBox(height: 4),
                                         Text.rich(
                                           TextSpan(
