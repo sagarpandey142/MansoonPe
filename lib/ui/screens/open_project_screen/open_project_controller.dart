@@ -4,40 +4,32 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../api_services/repo.dart';
 import '../../../modals/project_res.dart';
 import '../../../model_class/project_model.dart';
-import '../create_project_screen/create_project_controller.dart';
 
 class OpenProjectController extends GetxController {
   TextEditingController dateController = TextEditingController();
+  String fileName = "";
 
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   var projects = <Projects>[].obs;
 
   String formatCost(String value) {
-    if (value.isEmpty) return '';
+    if (value.isEmpty) return ''; // Empty string return karein instead of "0"
 
-    // Remove all non-digit characters (except for decimal points if needed)
-    String rawValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+    double? number = double.tryParse(value.replaceAll(',', ''));
+    if (number == null) return '';
 
-    // If the value is empty or invalid, return it as it is
-    if (rawValue.isEmpty) return '₹ 0';
-
-    // Parse the number and format it
-    int number = int.tryParse(rawValue) ?? 0;
-
-    // Format the number using Indian currency format
-    String formattedValue = NumberFormat("#,##,##0", "en_IN").format(number);
-
-    return '₹ $formattedValue';
+    final formatter = NumberFormat('#,##0', 'en_US');
+    return formatter.format(number);
   }
 
   getProjects() async {
@@ -76,6 +68,7 @@ class OpenProjectController extends GetxController {
     TextEditingController materialNameController = TextEditingController();
     TextEditingController costController = TextEditingController();
     TextEditingController dateController = TextEditingController();
+    fileName = "";
 
     showModalBottomSheet(
       context: context,
@@ -119,6 +112,11 @@ class OpenProjectController extends GetxController {
                                 isDateField: true, controller: dateController),
                             SizedBox(height: 10),
                             _buildUploadButton(context, setModalState),
+                            SizedBox(height: 5,),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Text(fileName),
+                            ),
                             SizedBox(height: 15),
                             _buildContinueButton(
                                 context,
@@ -196,8 +194,7 @@ class OpenProjectController extends GetxController {
           color: Color(0xFFF0EEF6), borderRadius: BorderRadius.circular(10)),
       child: TextButton(
         onPressed: () {
-          final controller = Get.find<CreateProjectController>();
-          controller.pickAndUploadPDF(context, setModalState);
+          // pickAndUploadPDF(context, setModalState);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -281,17 +278,18 @@ class OpenProjectController extends GetxController {
             : null,
         onChanged: isCostField
             ? (value) {
-          // Format number as user types
           String formattedValue = formatCost(value);
           if (controller?.text != formattedValue) {
-            controller?.text = formattedValue;
-            controller?.selection = TextSelection.collapsed(offset: formattedValue.length);
+            controller?.value = TextEditingValue(
+              text: formattedValue,
+              selection: TextSelection.collapsed(offset: formattedValue.length),
+            );
           }
         }
             : null,
         decoration: InputDecoration(
           labelText: label,
-          prefixText: isCostField ? null : null,
+          prefixText: isCostField ? '₹ ' : null, // Rupee sign added
           suffixIcon: isDateField
               ? Padding(
             padding: const EdgeInsets.all(13),

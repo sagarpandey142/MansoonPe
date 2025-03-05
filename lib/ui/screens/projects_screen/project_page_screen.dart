@@ -98,264 +98,264 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                             },
 
 
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 20),
-                              child: Row(
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Image.asset(
+                            child: Row(
+                              children: [
+                                Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Image.asset(
                                         // project.image ??
                                           "assets/images/proj_img_2.png",
-                                          width: 130,
-                                          height: 180),
-                                      Positioned(
-                                        bottom: 5,
-                                        right: 0,
-                                        child: Container(
-                                          height: 26,
-                                          width: 26,
-                                          decoration: BoxDecoration(
-                                            color: Color(0x66000000),
-                                            borderRadius:
-                                            BorderRadius.circular(5),
-                                          ),
-                                          child: InkWell(
-                                            onTap: () {
-                                              // Add your save functionality here
-                                              controller.downloadPDF(project);
-                                            },
-                                            child: SvgPicture.asset(
-                                              'assets/images/save_button.svg',
-                                              height: 10,
-                                              fit: BoxFit.scaleDown,
-                                            ),
+                                          width: 120,
+                                          height: 170),
+                                    ),
+                                    Positioned(
+                                      bottom: 5,
+                                      right: 0,
+                                      child: Container(
+                                        height: 26,
+                                        width: 26,
+                                        decoration: BoxDecoration(
+                                          color: Color(0x66000000),
+                                          borderRadius:
+                                          BorderRadius.circular(5),
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            // Add your save functionality here
+                                            controller.downloadPDF(project);
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/images/save_button.svg',
+                                            height: 10,
+                                            fit: BoxFit.scaleDown,
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  Container(
-                                    width: 1.5,
-                                    height: 180, // Adjust height as needed
-                                    color: Colors.grey.shade100,
-                                    margin:
-                                    EdgeInsets.symmetric(horizontal: 8),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${project.name!} , ${project.location!}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                          ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  width: 1.5,
+                                  height: 180, // Adjust height as needed
+                                  color: Colors.grey.shade100,
+                                  margin:
+                                  EdgeInsets.symmetric(horizontal: 8),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 5,),
+                                      Text(
+                                        '${project.name!} , ${project.location!}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
                                         ),
+                                      ),
 
-                                        const SizedBox(height: 4),
-                                        Text.rich(
-                                          TextSpan(
-                                            text: "Date: ",
-                                            style: const TextStyle(
-                                              color: Color(0xCC363F72),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: HomePageController.formatDate(
-                                                    createdOn), // Calling controller function
-                                                style: const TextStyle(
-                                                  color: Color(0xE6363F72),
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
+                                      const SizedBox(height: 4),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "Date: ",
+                                          style: const TextStyle(
+                                            color: Color(0xCC363F72),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w400,
                                           ),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text.rich(
-                                          TextSpan(
-                                            text: "Project Cost: ",
-                                            style: const TextStyle(
-                                              color: Color(0xCC363F72),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text:
-                                                    "₹ ${NumberFormat('#,##,###').format(project.budget)}",
-                                                style: const TextStyle(
-                                                  color: Color(0xFF363F72),
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                          children: [
+                                            TextSpan(
+                                              text: HomePageController.formatDate(
+                                                  createdOn), // Calling controller function
+                                              style: const TextStyle(
+                                                color: Color(0xE6363F72),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text.rich(
-                                          TextSpan(
-                                            text: "Consumption: ",
-                                            style: const TextStyle(
-                                              color: Color(0xCC363F72),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
                                             ),
-                                            children: [
-                                              TextSpan(
-                                                text: "",
-                                                style: const TextStyle(
-                                                  color: Color(0xFF363F72),
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         ),
-                                        const SizedBox(height: 5),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 4),
-                                          decoration: BoxDecoration(
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "Project Cost: ",
+                                          style: const TextStyle(
+                                            color: Color(0xCC363F72),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  "₹ ${NumberFormat('#,##,###').format(project.budget)}",
+                                              style: const TextStyle(
+                                                color: Color(0xFF363F72),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "Consumption: ",
+                                          style: const TextStyle(
+                                            color: Color(0xCC363F72),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: "",
+                                              style: const TextStyle(
+                                                color: Color(0xFF363F72),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: Color(
+                                            project.status == "IN_REVIEW"
+                                                ? 0xFFFFF2CC // Even lighter orange
+                                                : project.status == "ACTIVE"
+                                                    ? 0xFFEAF7EE // Even lighter green
+                                                    : 0xFFFDECEA, // Even lighter red
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                            width: 0.7, // Thinner border
                                             color: Color(
                                               project.status == "IN_REVIEW"
-                                                  ? 0xFFFFF2CC // Even lighter orange
+                                                  ? 0xFFFFD699 // Lighter orange border
                                                   : project.status == "ACTIVE"
-                                                      ? 0xFFEAF7EE // Even lighter green
-                                                      : 0xFFFDECEA, // Even lighter red
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            border: Border.all(
-                                              width: 0.7, // Thinner border
-                                              color: Color(
-                                                project.status == "IN_REVIEW"
-                                                    ? 0xFFFFD699 // Lighter orange border
-                                                    : project.status == "ACTIVE"
-                                                        ? 0xFFA8E6B5 // Lighter green border
-                                                        : 0xFFF5A8A8, // Lighter red border
-                                              ),
-                                            ),
-                                          ),
-                                          child: Text(
-                                            project.status == "IN_REVIEW"
-                                                ? "In-review"
-                                                : project.status == "ACTIVE"
-                                                    ? "Active"
-                                                    : "Inactive", // Adjust as needed
-                                            style: GoogleFonts.poppins(
-                                              color: Color(
-                                                project.status == "IN_REVIEW"
-                                                    ? 0xFFB54708
-                                                    : project.status == "ACTIVE"
-                                                        ? 0xFF28A745
-                                                        : 0xFFDC3545,
-                                              ),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w500,
+                                                      ? 0xFFA8E6B5 // Lighter green border
+                                                      : 0xFFF5A8A8, // Lighter red border
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          "- - - - - - - - - - - - - - - - - - - - - -",
-                                          style: TextStyle(
-                                            color: Color(0xFFEDEBF4),
-                                            fontSize: 20,
+                                        child: Text(
+                                          project.status == "IN_REVIEW"
+                                              ? "In-review"
+                                              : project.status == "ACTIVE"
+                                                  ? "Active"
+                                                  : "Inactive", // Adjust as needed
+                                          style: GoogleFonts.poppins(
+                                            color: Color(
+                                              project.status == "IN_REVIEW"
+                                                  ? 0xFFB54708
+                                                  : project.status == "ACTIVE"
+                                                      ? 0xFF28A745
+                                                      : 0xFFDC3545,
+                                            ),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                          overflow: TextOverflow
-                                              .clip, // Clips overflowing text without showing "..."
-                                          maxLines:
-                                              1, // Ensures text stays on a single line
-                                          softWrap:
-                                              false, // Prevents wrapping to the next line
                                         ),
-                                        if ("${project.status}" ==
-                                            "ACTIVE") ...[
-                                          Row(
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  text: "Pending: ",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF363F72),
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "${project.budget}",
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFFB42318),
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        "- - - - - - - - - - - - - - - - - - - - - -",
+                                        style: TextStyle(
+                                          color: Color(0xFFEDEBF4),
+                                          fontSize: 20,
+                                        ),
+                                        overflow: TextOverflow
+                                            .clip, // Clips overflowing text without showing "..."
+                                        maxLines:
+                                            1, // Ensures text stays on a single line
+                                        softWrap:
+                                            false, // Prevents wrapping to the next line
+                                      ),
+                                      if ("${project.status}" ==
+                                          "ACTIVE") ...[
+                                        Row(
+                                          children: [
+                                            Text.rich(
+                                              TextSpan(
+                                                text: "Pending: ",
+                                                style: const TextStyle(
+                                                  color: Color(0xFF363F72),
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: "${project.budget}",
+                                                    style: const TextStyle(
+                                                      color:
+                                                          Color(0xFFB42318),
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
-                                              const Spacer(),
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  side: const BorderSide(
-                                                      color: Color(0xFF603EA4)),
-                                                  elevation: 0,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6),
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    vertical: 3,
-                                                    horizontal: 8,
-                                                  ),
-                                                  minimumSize: Size(0, 24),
-                                                ),
-                                                child: Text(
-                                                  "Pay Now",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF603EA4),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ] else ...[
-                                          Text(
-                                            "${project.status}" == "IN_REVIEW"
-                                                ? "Please wait while we are reviewing it"
-                                                : "This project is not approved yet",
-                                            style: TextStyle(
-                                              color: Color(0xFF363F72),
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 10,
                                             ),
+                                            const Spacer(),
+                                            ElevatedButton(
+                                              onPressed: () {},
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                side: const BorderSide(
+                                                    color: Color(0xFF603EA4)),
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6),
+                                                ),
+                                                padding: const EdgeInsets
+                                                    .symmetric(
+                                                  vertical: 3,
+                                                  horizontal: 8,
+                                                ),
+                                                minimumSize: Size(0, 24),
+                                              ),
+                                              child: Text(
+                                                "Pay Now",
+                                                style: const TextStyle(
+                                                  color: Color(0xFF603EA4),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 10,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ] else ...[
+                                        Text(
+                                          "${project.status}" == "IN_REVIEW"
+                                              ? "Please wait while we are reviewing it"
+                                              : "This project is not approved yet",
+                                          style: TextStyle(
+                                            color: Color(0xFF363F72),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 10,
                                           ),
-                                          const SizedBox(height: 10),
-                                        ],
+                                        ),
+                                        const SizedBox(height: 10),
                                       ],
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

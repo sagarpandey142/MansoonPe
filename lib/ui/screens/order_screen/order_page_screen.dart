@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
-import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
+import 'package:projects/ui/screens/open_order_screen/open_order_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
@@ -20,7 +20,6 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
   @override
   Widget build(BuildContext context) {
     Get.put(CreateProjectController());
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -88,7 +87,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(() => ProjectPageScreen());
+                          Get.to(() => OpenOrderScreen());
                         },
                         child: Text(
                           "Go to Projects",

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/reg_profile_req.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../home_screens/home_page_controller.dart';
 import '../home_screens/home_page_screen.dart';
 
 class RegisterPageController extends GetxController {
@@ -19,8 +21,8 @@ class RegisterPageController extends GetxController {
     isBusinessNameValid.value = businessNameController.text.isNotEmpty;
     isGstValid.value = gstNumberController.text.isNotEmpty &&
         isValidGST(gstNumberController.text);
-    isPanValid.value =
-        panNumberController.text.isNotEmpty && isValidPAN(panNumberController.text);
+    isPanValid.value = panNumberController.text.isNotEmpty &&
+        isValidPAN(panNumberController.text);
   }
 
   bool isValidGST(String gst) {
@@ -62,10 +64,79 @@ class RegisterPageController extends GetxController {
       var res = await repo.registerProfile(req);
 
       if (res.status == 201) {
-        Get.snackbar("Success", "Successfully Registered!",
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: Colors.green,
-            colorText: Colors.white);
+        Get.showSnackbar(
+          GetSnackBar(
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(seconds: 300),
+            backgroundColor: Colors.white, // No background as container has color
+            margin: EdgeInsets.zero, // Ensure it touches the bottom
+            messageText: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: MediaQuery.of(Get.context!).size.width, // Full width
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2), // Very light shadow
+                      spreadRadius: 0, // No extra spread
+                      blurRadius: 1.5, // Slight blur for a thin effect
+                      offset: Offset(0, -1), // Moves shadow slightly upwards
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.check_circle, size: 50, color: Color(0xFF00A460)),
+                    SizedBox(height: 16),
+                    Text(
+                      "You have registered successfully",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "You can now submit your first project",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0x99000000),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 25),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF603EA4),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Text(
+                          "Continue",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
         Get.to(() => HomePageScreen());
       } else {
         Get.snackbar("Error", "Something went wrong: ${res.message}",
@@ -81,53 +152,7 @@ class RegisterPageController extends GetxController {
     }
   }
 
-  void showSuccessBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.check_circle, size: 50, color: Color(0xFF00A460)),
-              const SizedBox(height: 16),
-              const Text(
-                "You have registered successfully",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                "You can now submit your first project",
-                style: TextStyle(fontSize: 14, color: Color(0x99000000),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Get.to(() => HomePageScreen());
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  child: Text("Continue", style: TextStyle(color: Colors.white)),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+
 
   // Toggle Checkbox
   void toggleCheckbox(bool value) {
