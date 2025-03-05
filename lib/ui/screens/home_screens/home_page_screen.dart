@@ -30,11 +30,36 @@ class _HomePageScreenState extends State<HomePageScreen> {
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   int _currentIndex = 0;
   List<Projects> projects = [];
+  String businessName="Business Name";
 
   @override
   void initState() {
     super.initState();
+    getProfile();
     getProjects();
+  }
+  getProfile() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+
+      Repository repo = Repository(token: token);
+      var res = await repo.getProfile({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        var data = res.data!.profile;
+        setState(() {
+          businessName=data!.businessName!;
+        });
+
+
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      Get.snackbar("Error", "Something went wrong!",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 
   getProjects() async {
@@ -195,9 +220,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               RegisterPageController(), // Ensures controller is available
                           builder: (controller) {
                             return Text(
-                              controller.businessNameController.text.isNotEmpty
-                                  ? controller.businessNameController.text
-                                  : "Business Name", // Default text if empty
+                              businessName, // Default text if empty
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -301,8 +324,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               onTap: () {
                                 var controller =
                                     Get.find<ProjectPageController>();
-                                var selectedProject = controller
-                                    .projects[index]; // This is 'Projects'
+                                var selectedProject = projects[index]; // This is 'Projects'
 
                                 Get.to(() => OpenProjectScreen(
                                     project:

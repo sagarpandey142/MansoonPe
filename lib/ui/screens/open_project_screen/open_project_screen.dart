@@ -68,7 +68,10 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.put(OpenProjectController()).showAddMaterialPopup(context);
+                    if(widget.project.status.toString().toLowerCase() == "active"){
+                      Get.put(OpenProjectController()).showAddMaterialPopup(context);
+                    }
+
                   },
                   child: Text(
                     "+ Add new material",
@@ -344,8 +347,10 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.put(OpenProjectController()).showAddMaterialPopup(
-                            context); // Pass local context
+                        if(widget.project.status.toString().toLowerCase() == "active"){
+                          Get.put(OpenProjectController()).showAddMaterialPopup(context);
+                        }
+                        // Pass local context
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF603EA4),
