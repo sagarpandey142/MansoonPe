@@ -49,7 +49,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.3, // Max width
+                          maxWidth: MediaQuery.of(context).size.width *
+                              0.3, // Max width
                         ),
                         child: Text(
                           "${widget.project.name}",
@@ -68,10 +69,16 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    if(widget.project.status.toString().toLowerCase() == "active"){
-                      Get.put(OpenProjectController()).showAddMaterialPopup(context);
-                    }
+                    String status = widget.project.status.toString().toLowerCase();
+                    print("Project Status: $status");
 
+                    if (status == "in_review") {
+                      print("Showing Popup...");
+                      OpenProjectController.showTopMessage(
+                          context,
+                          "We are currently reviewing this project."
+                      );
+                    }
                   },
                   child: Text(
                     "+ Add new material",
@@ -153,10 +160,10 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                         decoration: BoxDecoration(
                           color: Color(
                             widget.project.status == "IN_REVIEW"
-                                ? 0xFFFFF2CC // Even lighter orange
+                                ? 0xFFFFFAEB // Even lighter orange
                                 : widget.project.status == "ACTIVE"
-                                    ? 0xFFEAF7EE // Even lighter green
-                                    : 0xFFFDECEA, // Even lighter red
+                                    ? 0xFFECFDF3 // Even lighter green
+                                    : 0xFFFEF3F2, // Even lighter red
                           ),
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
@@ -165,7 +172,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               widget.project.status == "IN_REVIEW"
                                   ? 0xFFFFD699 // Lighter orange border
                                   : widget.project.status == "ACTIVE"
-                                      ? 0xFFA8E6B5 // Lighter green border
+                                      ? 0xFF027A48 // Lighter green border
                                       : 0xFFF5A8A8, // Lighter red border
                             ),
                           ),
@@ -273,35 +280,38 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
               thickness: 1,
             ),
 
-            Expanded( // Wrap the entire Obx() to prevent layout breaking
+            Expanded(
+              // Wrap the entire Obx() to prevent layout breaking
               child: Obx(() {
                 return controller.materialsList.isEmpty
                     ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/order_file.svg',
-                      width: MediaQuery.of(context).size.width * 0.12,  // Reduced width
-                      height: MediaQuery.of(context).size.height * 0.06, // Reduced height
-                    ),
-
-                    SizedBox(height: 30),
-                    Text(
-                      "You haven't requested any quote yet.",
-                      style: TextStyle(
-                        color: Color(0x66000000),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                )
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/order_file.svg',
+                            width: MediaQuery.of(context).size.width *
+                                0.12, // Reduced width
+                            height: MediaQuery.of(context).size.height *
+                                0.06, // Reduced height
+                          ),
+                          SizedBox(height: 30),
+                          Text(
+                            "You haven't requested any quote yet.",
+                            style: TextStyle(
+                              color: Color(0x66000000),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      )
                     : ListView.builder(
-                  itemCount: controller.materialsList.length,
-                  itemBuilder: (context, index) {
-                    return buildOrderCard(controller.materialsList[index].status);
-                  },
-                );
+                        itemCount: controller.materialsList.length,
+                        itemBuilder: (context, index) {
+                          return buildOrderCard(
+                              controller.materialsList[index].status);
+                        },
+                      );
               }),
             ),
 
@@ -347,10 +357,16 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        if(widget.project.status.toString().toLowerCase() == "active"){
-                          Get.put(OpenProjectController()).showAddMaterialPopup(context);
+                        String status = widget.project.status.toString().toLowerCase();
+                        print("Project Status: $status");
+
+                        if (status == "in_review") {
+                          print("Showing Popup...");
+                          OpenProjectController.showTopMessage(
+                              context,
+                              "We are currently reviewing this project."
+                          );
                         }
-                        // Pass local context
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF603EA4),
@@ -403,7 +419,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 children: [
                   IntrinsicWidth(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8), // Add padding for spacing
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 8), // Add padding for spacing
                       height: 20,
                       decoration: BoxDecoration(
                         color: Color(0xFFF8F9FC),
@@ -431,11 +448,16 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       ),
                     ),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity(horizontal: -3, vertical: -4), // Reducing vertical spacing
-                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: -4), // Reduce top & bottom padding
+                    visualDensity: VisualDensity(
+                        horizontal: -3,
+                        vertical: -4), // Reducing vertical spacing
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: -4), // Reduce top & bottom padding
                     backgroundColor: Color(0xFFF2F4F7),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // Slightly smaller border radius
+                      borderRadius: BorderRadius.circular(
+                          12), // Slightly smaller border radius
                       side: BorderSide(
                         color: Color(0xFFCBD5E1),
                         width: 0.5, // Thinner border
@@ -463,10 +485,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           Text(
                             "You",
                             style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Color(0x66363F72)
-                            ),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                color: Color(0x66363F72)),
                           ),
                           Text(
                             DateFormat('dd-MM-yyyy hh:mm a').format(
@@ -475,12 +496,14 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w300,
                               fontSize: 10,
-                                color: Color(0x99363F72),
+                              color: Color(0x99363F72),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       RichText(
                         text: TextSpan(
                           children: [
@@ -503,7 +526,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [],
@@ -530,7 +555,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       RichText(
                         text: TextSpan(
                           children: [
@@ -587,5 +614,4 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
       ),
     );
   }
-
 }

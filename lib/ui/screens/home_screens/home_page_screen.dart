@@ -300,9 +300,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 50,
-            ),
             // const SizedBox(height: 3),
             projects.isNotEmpty
                 ? Expanded(
@@ -356,7 +353,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                           ),
                                           child: InkWell(
                                             onTap: () {
-                                              // Add your save functionality here
                                               controller.downloadPDF(project);
                                             },
                                             child: SvgPicture.asset(
@@ -466,10 +462,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                           decoration: BoxDecoration(
                                             color: Color(
                                               project.status == "IN_REVIEW"
-                                                  ? 0xFFFFF2CC // Even lighter orange
+                                                  ? 0xFFFFFAEB // Even lighter orange
                                                   : project.status == "ACTIVE"
-                                                      ? 0xFFEAF7EE // Even lighter green
-                                                      : 0xFFFDECEA, // Even lighter red
+                                                      ? 0xFFECFDF3 // Even lighter green
+                                                      : 0xFFFEF3F2, // Even lighter red
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(15),
@@ -495,8 +491,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 project.status == "IN_REVIEW"
                                                     ? 0xFFB54708
                                                     : project.status == "ACTIVE"
-                                                        ? 0xFF28A745
-                                                        : 0xFFDC3545,
+                                                        ? 0xFF027A48
+                                                        : 0xFFB42318,
                                               ),
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
@@ -602,68 +598,71 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     },
                   ))
                 : Center(
-                    child: Column(
-                      children: [
-                        Center(
-                          child: SvgPicture.asset(
-                            'assets/images/Component 160.svg',
-                            width: MediaQuery.of(context).size.width * 0.2,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "You haven't create any project yet.\nCreate your first project to start with",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black45,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        Container(
-                          width: 200,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF0EEF6),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              Get.to(() =>
-                                  CreateProjectScreen()); // Navigate to CreateProjectScreen
-                              Future.delayed(Duration(milliseconds: 300), () {
-                                // Delay to ensure screen transition before showing bottom sheet
-                                Get.put(CreateProjectController())
-                                    .showCreateProjectBottomSheet(Get.context!);
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.add,
-                                  color: Color(0xFF785CB2),
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "Create first project",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF785CB2),
-                                  ),
-                                ),
-                              ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 35),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: SvgPicture.asset(
+                              'assets/images/Component 160.svg',
+                              width: MediaQuery.of(context).size.width * 0.2,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 20),
+                          Text(
+                            "You haven't create any project yet.\nCreate your first project to start with",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Container(
+                            width: 200,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0EEF6),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: TextButton(
+                              onPressed: () {
+                                Get.to(() =>
+                                    CreateProjectScreen()); // Navigate to CreateProjectScreen
+                                Future.delayed(Duration(milliseconds: 300), () {
+                                  // Delay to ensure screen transition before showing bottom sheet
+                                  Get.put(CreateProjectController())
+                                      .showCreateProjectBottomSheet(Get.context!);
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Icon(
+                                    Icons.add,
+                                    color: Color(0xFF785CB2),
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "Create first project",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF785CB2),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           ],

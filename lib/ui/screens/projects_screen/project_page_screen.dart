@@ -123,7 +123,6 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         ),
                                         child: InkWell(
                                           onTap: () {
-                                            // Add your save functionality here
                                             controller.downloadPDF(project);
                                           },
                                           child: SvgPicture.asset(
@@ -230,10 +229,10 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         decoration: BoxDecoration(
                                           color: Color(
                                             project.status == "IN_REVIEW"
-                                                ? 0xFFFFF2CC // Even lighter orange
+                                                ? 0xFFFFFAEB // Even lighter orange
                                                 : project.status == "ACTIVE"
-                                                    ? 0xFFEAF7EE // Even lighter green
-                                                    : 0xFFFDECEA, // Even lighter red
+                                                    ? 0xFFECFDF3 // Even lighter green
+                                                    : 0xFFFEF3F2, // Even lighter red
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(15),
@@ -259,8 +258,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                               project.status == "IN_REVIEW"
                                                   ? 0xFFB54708
                                                   : project.status == "ACTIVE"
-                                                      ? 0xFF28A745
-                                                      : 0xFFDC3545,
+                                                      ? 0xFF027A48
+                                                      : 0xFFB42318,
                                             ),
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,

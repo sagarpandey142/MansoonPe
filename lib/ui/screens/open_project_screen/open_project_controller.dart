@@ -22,6 +22,47 @@ class OpenProjectController extends GetxController {
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   var projects = <Projects>[].obs;
 
+  static void showTopMessage(BuildContext context, String message) {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 50, // Adjust this value to change the position of the popup
+        left: 10,
+        right: 10,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.redAccent,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                )
+              ],
+            ),
+            child: Center(
+              child: Text(
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
+
+    // Remove the message after 2 seconds
+    Future.delayed(Duration(seconds: 2), () {
+      overlayEntry.remove();
+    });
+  }
+
   String formatCost(String value) {
     if (value.isEmpty) return ''; // Empty string return karein instead of "0"
 
@@ -31,6 +72,7 @@ class OpenProjectController extends GetxController {
     final formatter = NumberFormat('#,##0', 'en_US');
     return formatter.format(number);
   }
+
 
   getProjects() async {
     try {
@@ -104,7 +146,8 @@ class OpenProjectController extends GetxController {
                             textFieldWidget("Material Name",
                                 controller: materialNameController),
                             SizedBox(height: 10),
-                          textFieldWidget("Cost of Material", controller: costController, isCostField: true),
+                            textFieldWidget("Cost of Material",
+                                controller: costController, isCostField: true),
                             SizedBox(height: 5),
                             _buildCostInfo(),
                             SizedBox(height: 16),
@@ -112,9 +155,12 @@ class OpenProjectController extends GetxController {
                                 isDateField: true, controller: dateController),
                             SizedBox(height: 10),
                             _buildUploadButton(context, setModalState),
-                            SizedBox(height: 5,),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Text(fileName),
                             ),
                             SizedBox(height: 15),
@@ -255,8 +301,8 @@ class OpenProjectController extends GetxController {
 
   Widget textFieldWidget(String label,
       {bool isDateField = false,
-        TextEditingController? controller,
-        bool isCostField = false}) {
+      TextEditingController? controller,
+      bool isCostField = false}) {
     return SizedBox(
       height: 50,
       child: TextField(
@@ -265,40 +311,42 @@ class OpenProjectController extends GetxController {
         keyboardType: isCostField ? TextInputType.number : TextInputType.text,
         onTap: isDateField
             ? () async {
-          DateTime? pickedDate = await showDatePicker(
-            context: Get.context!,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2100),
-          );
-          if (pickedDate != null) {
-            controller?.text = DateFormat('dd/MM/yyyy').format(pickedDate);
-          }
-        }
+                DateTime? pickedDate = await showDatePicker(
+                  context: Get.context!,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                );
+                if (pickedDate != null) {
+                  controller?.text =
+                      DateFormat('dd/MM/yyyy').format(pickedDate);
+                }
+              }
             : null,
         onChanged: isCostField
             ? (value) {
-          String formattedValue = formatCost(value);
-          if (controller?.text != formattedValue) {
-            controller?.value = TextEditingValue(
-              text: formattedValue,
-              selection: TextSelection.collapsed(offset: formattedValue.length),
-            );
-          }
-        }
+                String formattedValue = formatCost(value);
+                if (controller?.text != formattedValue) {
+                  controller?.value = TextEditingValue(
+                    text: formattedValue,
+                    selection:
+                        TextSelection.collapsed(offset: formattedValue.length),
+                  );
+                }
+              }
             : null,
         decoration: InputDecoration(
           labelText: label,
           prefixText: isCostField ? '₹ ' : null, // Rupee sign added
           suffixIcon: isDateField
               ? Padding(
-            padding: const EdgeInsets.all(13),
-            child: SvgPicture.asset(
-              'assets/images/date_image.svg',
-              height: 16,
-              width: 16,
-            ),
-          )
+                  padding: const EdgeInsets.all(13),
+                  child: SvgPicture.asset(
+                    'assets/images/date_image.svg',
+                    height: 16,
+                    width: 16,
+                  ),
+                )
               : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
