@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:projects/modals/add_material_req.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -14,6 +16,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../api_services/repo.dart';
 import '../../../modals/project_res.dart';
 import '../../../model_class/project_model.dart';
+import 'package:dio/dio.dart' as dio;
+
 
 class OpenProjectController extends GetxController {
   TextEditingController dateController = TextEditingController();
@@ -97,16 +101,47 @@ class OpenProjectController extends GetxController {
 
   var materialsList = <MaterialModel>[].obs; //  Define as RxList
 
-  void addMaterial(String name, String cost, String dueDate) {
-    materialsList.add(MaterialModel(
-      name: name,
-      cost: cost,
-      dueDate: dueDate,
-      status: "In-Progress",
-    ));
+  Future<void> addMaterial(String name, String cost, String dueDate,context,projectID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("auth_token") ?? '';
+
+    try {
+      AddMaterialReq req = AddMaterialReq();
+      req.material = name;
+      req.cost = cost;
+      req.dueDate = dueDate;
+      req.quoteFile = fileName;
+      Repository repo = Repository(token: token);
+      var res = await repo.addMaterialAPI(projectID.toString(),req);
+
+      if (res.status == 201) {
+        showTopMessage(context, "Material Successfully Created!");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Material Successfully Created!"),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+
+
+      } else {
+        showTopMessage(context, "Something went wrong!");
+      }
+    } catch (e) {
+      showTopMessage(context, "Something went wrong!");
+
+    }
+
+    // materialsList.add(MaterialModel(
+    //   name: name,
+    //   cost: cost,
+    //   dueDate: dueDate,
+    //   status: "In-Progress",
+    // ));
   }
 
-  void showAddMaterialPopup(BuildContext context) {
+  void showAddMaterialPopup(BuildContext context,projectID) {
     TextEditingController materialNameController = TextEditingController();
     TextEditingController costController = TextEditingController();
     TextEditingController dateController = TextEditingController();
@@ -168,7 +203,7 @@ class OpenProjectController extends GetxController {
                                 context,
                                 materialNameController,
                                 costController,
-                                dateController),
+                                dateController,projectID),
                           ],
                         ),
                       ),
@@ -240,7 +275,7 @@ class OpenProjectController extends GetxController {
           color: Color(0xFFF0EEF6), borderRadius: BorderRadius.circular(10)),
       child: TextButton(
         onPressed: () {
-          // pickAndUploadPDF(context, setModalState);
+          pickAndUploadPDF(context, setModalState);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -261,7 +296,7 @@ class OpenProjectController extends GetxController {
   }
 
   Widget _buildContinueButton(BuildContext context, TextEditingController name,
-      TextEditingController cost, TextEditingController date) {
+      TextEditingController cost, TextEditingController date,projectID) {
     return SizedBox(
       width: double.infinity,
       height: 50,
@@ -270,18 +305,22 @@ class OpenProjectController extends GetxController {
           if (name.text.trim().isEmpty ||
               cost.text.trim().isEmpty ||
               date.text.trim().isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Please fill all fields"),
-                backgroundColor: Colors.red,
-              ),
-            );
+            showTopMessage(context, "Please fill all fields");
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text("Please fill all fields"),
+            //     backgroundColor: Colors.red,
+            //   ),
+            // );
+            return;
+          }else if(fileName.isEmpty){
+            showTopMessage(context, "Please upload file");
             return;
           }
 
           final controller = Get.find<OpenProjectController>();
           controller.addMaterial(
-              name.text.trim(), cost.text.trim(), date.text.trim());
+              name.text.trim(), cost.text, date.text.trim(),context,projectID);
 
           Navigator.pop(context);
         },
@@ -319,7 +358,7 @@ class OpenProjectController extends GetxController {
                 );
                 if (pickedDate != null) {
                   controller?.text =
-                      DateFormat('dd/MM/yyyy').format(pickedDate);
+                      DateFormat('yyyy-MM-dd').format(pickedDate);
                 }
               }
             : null,
@@ -423,4 +462,52 @@ class OpenProjectController extends GetxController {
       print("Error saving file: $e");
     }
   }
+
+
+  Future<void> pickAndUploadPDF(context, setModalState) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      uploadPDF(file, context, setModalState);
+      print("FileData:${file.path}");
+    } else {
+      print("No file selected");
+    }
+  }
+
+  Future<void> uploadPDF(File file, context, setModalState) async {
+    try {
+      dio.FormData formData = dio.FormData.fromMap({
+        "file": await dio.MultipartFile.fromFile(
+          file.path,
+          filename: file.path.split('/').last,
+          contentType: dio.DioMediaType("application", "pdf"),
+        ),
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token").toString();
+
+      Repository repo = Repository(token: token, isRequestTypeMultipart: true);
+      var response = await repo.uploadFile(formData);
+      if (response.status == 200) {
+        print("Upload Successful: ${response.data!.fileName!}");
+
+        setModalState(() {
+          fileName = response.data!.fileName!;
+          // notifyListeners();
+        });
+      } else {
+        print("Upload failed with status: ${response.status}");
+        showTopMessage(context, "${response.message}");
+      }
+    } catch (e) {
+      print("Error uploading file: ${e.toString()}");
+      showTopMessage(context, "Please check file size.");
+    }
+  }
+
 }

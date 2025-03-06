@@ -286,7 +286,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => ProjectPageScreen());
+                      // Get.to(() => ProjectPageScreen());
+                      projects.isNotEmpty ? Get.offNamed('/project') : Get.offNamed('/Createproject');
                     },
                     child: Text(
                       "View all",
@@ -437,7 +438,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                         ),
                                         Text.rich(
                                           TextSpan(
-                                            text: "Consumption: ",
+                                            text: "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
                                             style: const TextStyle(
                                               color: Color(0xCC363F72),
                                               fontSize: 10,

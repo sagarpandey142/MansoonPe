@@ -78,6 +78,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           context,
                           "We are currently reviewing this project."
                       );
+                    }else if(status == 'active'){
+
+                      controller.showAddMaterialPopup(context,widget.project.id);
                     }
                   },
                   child: Text(
@@ -366,6 +369,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               context,
                               "We are currently reviewing this project."
                           );
+                        }else if(status == 'active'){
+                          controller.showAddMaterialPopup(context,widget.project.id);
                         }
                       },
                       style: ElevatedButton.styleFrom(

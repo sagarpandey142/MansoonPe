@@ -1,3 +1,5 @@
+import 'package:projects/modals/add_material_req.dart';
+import 'package:projects/modals/add_material_res.dart';
 import 'package:projects/modals/create_project_req.dart';
 import 'package:dio/dio.dart';
 import 'package:projects/modals/download_res.dart';
@@ -57,5 +59,9 @@ class Repository {
   }
   Future<DownloadRes> downloadApi(String endpoint,dynamic kr) async {
     return await _apiReq.downloadFile(endpoint,kr);
+  }
+
+  Future<AddMaterialRes> addMaterialAPI(String endpoint,AddMaterialReq kr) async {
+    return await _apiReq.addMaterial(endpoint,kr);
   }
 }

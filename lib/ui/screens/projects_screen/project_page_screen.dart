@@ -204,7 +204,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                       const SizedBox(height: 2),
                                       Text.rich(
                                         TextSpan(
-                                          text: "Consumption: ",
+                                          text: "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
                                           style: const TextStyle(
                                             color: Color(0xCC363F72),
                                             fontSize: 10,

@@ -60,8 +60,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/background_screen.svg
   String get backgroundScreen => 'assets/images/background_screen.svg';
 
+  /// File path: assets/images/box_arrow.svg
+  String get boxArrow => 'assets/images/box_arrow.svg';
+
   /// File path: assets/images/constructor_img.svg
   String get constructorImg => 'assets/images/constructor_img.svg';
+
+  /// File path: assets/images/date_image.svg
+  String get dateImage => 'assets/images/date_image.svg';
 
   /// File path: assets/images/file_image.png
   AssetGenImage get fileImage =>
@@ -126,7 +132,9 @@ class $AssetsImagesGen {
   List<dynamic> get values => [
         component160,
         backgroundScreen,
+        boxArrow,
         constructorImg,
+        dateImage,
         fileImage,
         homeBackgroundImage,
         homeRegiContainer,
