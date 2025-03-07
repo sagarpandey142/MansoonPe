@@ -30,6 +30,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   int _currentIndex = 0;
   List<Projects> projects = [];
+  List<Orders> orders = [];
   String businessName="Business Name";
 
   @override
@@ -320,14 +321,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             ),
                             child: InkWell(
                               onTap: () {
-                                var controller =
-                                    Get.find<ProjectPageController>();
-                                var selectedProject = projects[index]; // This is 'Projects'
+                                var controller = Get.find<ProjectPageController>();
+                                var selectedProject = controller.projects[index];
+                                var selectedOrders = controller.projects[index].orders ?? []; // Ensure it's not null
 
-                                Get.to(() => OpenProjectScreen(
-                                    project:
-                                        selectedProject)); // Pass the correct type
+                                Get.to(() => OpenProjectScreen(project: selectedProject, orders: selectedOrders));
                               },
+
                               child: Row(
                                 children: [
                                   Stack(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/reg_profile_req.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,17 +63,17 @@ class RegisterPageController extends GetxController {
       var res = await repo.registerProfile(req);
 
       if (res.status == 201) {
-        Get.snackbar("Success", "Successfully Registered!",
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: Colors.green,
-            colorText: Colors.white);
         Get.to(() => HomePageScreen());
+        Future.delayed(Duration(milliseconds: 200), () {
+          showSuccessPopup();
+        });
       } else {
         Get.snackbar("Error", "Something went wrong: ${res.message}",
             snackPosition: SnackPosition.TOP,
             backgroundColor: Colors.red,
             colorText: Colors.white);
       }
+
     } catch (e) {
       Get.snackbar("Error", "Something went wrong: $e",
           snackPosition: SnackPosition.TOP,
@@ -80,6 +81,68 @@ class RegisterPageController extends GetxController {
           colorText: Colors.white);
     }
   }
+
+  void showSuccessPopup() {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            const Icon(Icons.check_circle,
+                size: 50, color: Color(0xFF00A460)),
+            const SizedBox(height: 25),
+            const Text(
+              "You have registered successfully",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "You can now submit your first project",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0x99000000),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Get.back(); // Popup close
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF603EA4),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                child: Text(
+                  "Continue",
+                  style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(height: 20,),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+    );
+  }
+
 
   // Toggle Checkbox
   void toggleCheckbox(bool value) {

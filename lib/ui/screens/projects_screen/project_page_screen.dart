@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_controller.dart';
-import '../../../modals/create_project_res.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
 import '../home_screens/home_page_controller.dart';
@@ -90,22 +89,22 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                 color: Colors.grey.shade200, width: 1.1),
                           ),
                           child: InkWell(
-                            onTap: () {
-                              var controller = Get.find<ProjectPageController>();
-                              var selectedProject = controller.projects[index]; // This is 'Projects'
+                              onTap: () {
+                                var controller = Get.find<ProjectPageController>();
+                                var selectedProject = controller.projects[index];
+                                var selectedOrders = controller.projects[index].orders ?? []; // Ensure it's not null
 
-                              Get.to(() => OpenProjectScreen(project: selectedProject)); // Pass the correct type
-                            },
+                                Get.to(() => OpenProjectScreen(project: selectedProject, orders: selectedOrders));
+                              },
 
-
-                            child: Row(
+                              child: Row(
                               children: [
                                 Stack(
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Image.asset(
-                                        // project.image ??
+                                          // project.image ??
                                           "assets/images/proj_img_2.png",
                                           width: 120,
                                           height: 170),
@@ -119,7 +118,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         decoration: BoxDecoration(
                                           color: Color(0x66000000),
                                           borderRadius:
-                                          BorderRadius.circular(5),
+                                              BorderRadius.circular(5),
                                         ),
                                         child: InkWell(
                                           onTap: () {
@@ -139,8 +138,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                   width: 1.5,
                                   height: 180, // Adjust height as needed
                                   color: Colors.grey.shade100,
-                                  margin:
-                                  EdgeInsets.symmetric(horizontal: 8),
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
@@ -148,7 +146,9 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 5,),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
                                       Text(
                                         '${project.name!} , ${project.location!}',
                                         style: const TextStyle(
@@ -156,7 +156,6 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           fontSize: 14,
                                         ),
                                       ),
-
                                       const SizedBox(height: 4),
                                       Text.rich(
                                         TextSpan(
@@ -204,7 +203,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                       const SizedBox(height: 2),
                                       Text.rich(
                                         TextSpan(
-                                          text: "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
+                                          text:
+                                              "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
                                           style: const TextStyle(
                                             color: Color(0xCC363F72),
                                             fontSize: 10,
@@ -280,8 +280,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         softWrap:
                                             false, // Prevents wrapping to the next line
                                       ),
-                                      if ("${project.status}" ==
-                                          "ACTIVE") ...[
+                                      if ("${project.status}" == "ACTIVE") ...[
                                         Row(
                                           children: [
                                             Text.rich(
@@ -296,8 +295,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   TextSpan(
                                                     text: "${project.budget}",
                                                     style: const TextStyle(
-                                                      color:
-                                                          Color(0xFFB42318),
+                                                      color: Color(0xFFB42318),
                                                       fontSize: 10,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -317,11 +315,10 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                 elevation: 0,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          6),
+                                                      BorderRadius.circular(6),
                                                 ),
-                                                padding: const EdgeInsets
-                                                    .symmetric(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
                                                   vertical: 3,
                                                   horizontal: 8,
                                                 ),

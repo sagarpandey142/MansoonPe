@@ -14,6 +14,7 @@ import 'package:projects/modals/verify_otp_res.dart';
 
 import '../modals/create_project_res.dart';
 import '../modals/modal.dart';
+import '../modals/order_res.dart';
 import '../modals/reg_profile_res.dart';
 import 'api_client.dart';
 import 'dio_config.dart';
@@ -42,6 +43,7 @@ class Repository {
   Future<RegProfileRes> registerProfile(RegProfileReq kr) async {
     return await _apiReq.registerProfile(kr);
   }
+
   Future<UploadRes> uploadFile(FormData kr) async {
     return await _apiReq.upload(kr);
   }
@@ -50,18 +52,24 @@ class Repository {
     return await _apiReq.createProject(kr);
   }
 
-
   Future<ProfileRes> getProfile(dynamic kr) async {
     return await _apiReq.getProfile(kr);
   }
+
   Future<ProjectRes> getProjects(dynamic kr) async {
     return await _apiReq.getProjects(kr);
   }
-  Future<DownloadRes> downloadApi(String endpoint,dynamic kr) async {
-    return await _apiReq.downloadFile(endpoint,kr);
+
+  Future<DownloadRes> downloadApi(String endpoint, dynamic kr) async {
+    return await _apiReq.downloadFile(endpoint, kr);
   }
 
-  Future<AddMaterialRes> addMaterialAPI(String endpoint,AddMaterialReq kr) async {
-    return await _apiReq.addMaterial(endpoint,kr);
+  Future<AddMaterialRes> addMaterialAPI(
+      String endpoint, AddMaterialReq kr) async {
+    return await _apiReq.addMaterial(endpoint, kr);
+  }
+
+  Future<OrdersRes> getOrders(dynamic kr) async {
+    return await _apiReq.getOrders(kr); // Ensure correct method is called
   }
 }

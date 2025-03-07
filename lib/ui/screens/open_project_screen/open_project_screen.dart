@@ -4,15 +4,17 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/ui/screens/open_project_screen/open_project_controller.dart';
+import '../../../modals/add_material_res.dart';
 import '../../../modals/project_res.dart';
 import '../../../model_class/project_model.dart';
 import '../home_screens/home_page_controller.dart';
 import '../home_screens/home_page_screen.dart';
 
 class OpenProjectScreen extends StatefulWidget {
-  final Projects project; // Change Project to Projects
+  final Projects project;
+  final Order? order; // Make sure this is nullable if `orders` can be empty
 
-  const OpenProjectScreen({Key? key, required this.project}) : super(key: key);
+  const OpenProjectScreen({super.key, required this.project, this.order, required List<Orders> orders});
 
   @override
   _OpenProjectScreenState createState() => _OpenProjectScreenState();
@@ -21,6 +23,7 @@ class OpenProjectScreen extends StatefulWidget {
 class _OpenProjectScreenState extends State<OpenProjectScreen> {
   final OpenProjectController controller = Get.put(OpenProjectController());
   List<MaterialModel> materialsList = [];
+  List<Orders> orders = [];
 
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
 
@@ -69,18 +72,17 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    String status = widget.project.status.toString().toLowerCase();
+                    String status =
+                        widget.project.status.toString().toLowerCase();
                     print("Project Status: $status");
 
                     if (status == "in_review") {
                       print("Showing Popup...");
                       OpenProjectController.showTopMessage(
-                          context,
-                          "We are currently reviewing this project."
-                      );
-                    }else if(status == 'active'){
-
-                      controller.showAddMaterialPopup(context,widget.project.id);
+                          context, "We are currently reviewing this project.");
+                    } else if (status == 'active') {
+                      controller.showAddMaterialPopup(
+                          context, widget.project.id);
                     }
                   },
                   child: Text(
@@ -283,42 +285,39 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
               thickness: 1,
             ),
 
-            Expanded(
-              // Wrap the entire Obx() to prevent layout breaking
-              child: Obx(() {
-                return controller.materialsList.isEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/order_file.svg',
-                            width: MediaQuery.of(context).size.width *
-                                0.12, // Reduced width
-                            height: MediaQuery.of(context).size.height *
-                                0.06, // Reduced height
-                          ),
-                          SizedBox(height: 30),
-                          Text(
-                            "You haven't requested any quote yet.",
-                            style: TextStyle(
-                              color: Color(0x66000000),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      )
-                    : ListView.builder(
-                        itemCount: controller.materialsList.length,
-                        itemBuilder: (context, index) {
-                          return buildOrderCard(
-                              controller.materialsList[index].status);
-                        },
-                      );
-              }),
-            ),
+        Expanded(
+          child: Obx(() {
+            debugPrint("Orders Length in UI: ${controller.orders.length}");
+            return controller.orders.isEmpty
+                ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/order_file.svg',
+                  width: MediaQuery.of(context).size.width * 0.12,
+                  height: MediaQuery.of(context).size.height * 0.06,
+                ),
+                SizedBox(height: 30),
+                Text(
+                  "You haven't requested any quote yet.",
+                  style: TextStyle(
+                    color: Color(0x66000000),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            )
+                : ListView.builder(
+              itemCount: controller.orders.length,
+              itemBuilder: (context, index) {
+                return buildOrderCard(controller.orders[index]);
+              },
+            );
+          }),
+        ),
 
-            Divider(
+        Divider(
               color: Colors.grey.shade300,
             ),
             Padding(
@@ -360,17 +359,17 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        String status = widget.project.status.toString().toLowerCase();
+                        String status =
+                            widget.project.status.toString().toLowerCase();
                         print("Project Status: $status");
 
                         if (status == "in_review") {
                           print("Showing Popup...");
-                          OpenProjectController.showTopMessage(
-                              context,
-                              "We are currently reviewing this project."
-                          );
-                        }else if(status == 'active'){
-                          controller.showAddMaterialPopup(context,widget.project.id);
+                          OpenProjectController.showTopMessage(context,
+                              "We are currently reviewing this project.");
+                        } else if (status == 'active') {
+                          controller.showAddMaterialPopup(
+                              context, widget.project.id);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -402,7 +401,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     );
   }
 
-  Widget buildOrderCard(String status) {
+  Widget buildOrderCard(Orders order) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -410,8 +409,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-            color: Colors.grey.shade300, // Grey border color
-            width: 1, // Adjust width as needed
+            color: Colors.grey.shade300,
+            width: 1,
           ),
         ),
         height: 250,
@@ -424,8 +423,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 children: [
                   IntrinsicWidth(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 8), // Add padding for spacing
+                      padding: EdgeInsets.symmetric(horizontal: 8),
                       height: 20,
                       decoration: BoxDecoration(
                         color: Color(0xFFF8F9FC),
@@ -433,7 +431,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          "Order ID: 123456", // Change this dynamically
+                          "Order ID: ${order.id ?? 'N/A'}", // ✅ Dynamic Order ID
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w400,
@@ -445,7 +443,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   ),
                   Chip(
                     label: Text(
-                      status,
+                      order.status ?? "Pending", // ✅ Dynamic Status
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
@@ -453,19 +451,14 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       ),
                     ),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity(
-                        horizontal: -3,
-                        vertical: -4), // Reducing vertical spacing
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: -4), // Reduce top & bottom padding
+                    visualDensity: VisualDensity(horizontal: -3, vertical: -4),
+                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: -4),
                     backgroundColor: Color(0xFFF2F4F7),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          12), // Slightly smaller border radius
+                      borderRadius: BorderRadius.circular(12),
                       side: BorderSide(
                         color: Color(0xFFCBD5E1),
-                        width: 0.5, // Thinner border
+                        width: 0.5,
                       ),
                     ),
                   ),
@@ -495,8 +488,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 color: Color(0x66363F72)),
                           ),
                           Text(
-                            DateFormat('dd-MM-yyyy hh:mm a').format(
-                                DateTime.now()), // Formats date and time
+                            order.createdOn != null
+                                ? DateFormat('dd-MM-yyyy hh:mm a').format(
+                                    DateTime.parse(
+                                        order.createdOn!)) // ✅ Dynamic Date
+                                : "N/A",
                             style: GoogleFonts.poppins(
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w300,
@@ -506,9 +502,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      SizedBox(height: 5),
                       RichText(
                         text: TextSpan(
                           children: [
@@ -521,7 +515,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               ),
                             ),
                             TextSpan(
-                              text: "TMT Bars",
+                              text: order.material ??
+                                  "N/A", // ✅ Dynamic Material Name
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -531,13 +526,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [],
-                      ),
+                      SizedBox(height: 5),
                       RichText(
                         text: TextSpan(
                           children: [
@@ -550,7 +539,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               ),
                             ),
                             TextSpan(
-                              text: "₹8,500",
+                              text: "₹${order.cost ?? 0}", // ✅ Dynamic Cost
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -560,9 +549,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      SizedBox(height: 5),
                       RichText(
                         text: TextSpan(
                           children: [
@@ -575,7 +562,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               ),
                             ),
                             TextSpan(
-                              text: "25 Oct,2024",
+                              text: order.dueDate != null
+                                  ? DateFormat('dd MMM, yyyy').format(
+                                      DateTime.parse(
+                                          order.dueDate!)) // ✅ Dynamic Due Date
+                                  : "N/A",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -585,13 +576,13 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ],
                         ),
                       ),
-                      if (status == "In-Progress") ...[
+                      if (order.status == "In-Progress") ...[
                         SizedBox(height: 15),
                         SizedBox(
                           width: double.infinity,
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {}, // TODO: Add Payment Logic
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF603EA4),
                               shape: RoundedRectangleBorder(

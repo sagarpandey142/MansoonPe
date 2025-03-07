@@ -18,13 +18,19 @@ import '../../../modals/project_res.dart';
 import '../../../model_class/project_model.dart';
 import 'package:dio/dio.dart' as dio;
 
-
 class OpenProjectController extends GetxController {
   TextEditingController dateController = TextEditingController();
   String fileName = "";
 
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   var projects = <Projects>[].obs;
+  var orders = <Orders>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getOrders(); // ✅ Controller initialize hote hi orders fetch karein
+  }
 
   static void showTopMessage(BuildContext context, String message) {
     OverlayEntry overlayEntry = OverlayEntry(
@@ -77,13 +83,38 @@ class OpenProjectController extends GetxController {
     return formatter.format(number);
   }
 
+  getOrders() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getOrders({});
+
+      debugPrint("API Response: ${res.toJson()}"); // Log full response
+
+      if (res.status == 200) {
+        if (res.data == null || res.data!.orders == null) {
+          debugPrint("No orders found in the response.");
+        } else {
+          orders.value = res.data!.orders!.cast<Orders>();
+          debugPrint("Orders Length: ${orders.length}");
+        }
+      } else {
+        debugPrint("API returned status: ${res.status}");
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      Get.snackbar("Error", "Something went wrong!",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+    }
+  }
 
   getProjects() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("auth_token") ?? '';
-      // var uid = prefs.getString("id") ?? '';
-      // var mob= prefs.getString("phone") ?? '';
       Repository repo = Repository(token: token);
       var res = await repo.getProjects({});
       debugPrint("VskingProfileRes:>>>$res");
@@ -101,7 +132,8 @@ class OpenProjectController extends GetxController {
 
   var materialsList = <MaterialModel>[].obs; //  Define as RxList
 
-  Future<void> addMaterial(String name, String cost, String dueDate,context,projectID) async {
+  Future<void> addMaterial(
+      String name, String cost, String dueDate, context, projectID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("auth_token") ?? '';
 
@@ -112,7 +144,7 @@ class OpenProjectController extends GetxController {
       req.dueDate = dueDate;
       req.quoteFile = fileName;
       Repository repo = Repository(token: token);
-      var res = await repo.addMaterialAPI(projectID.toString(),req);
+      var res = await repo.addMaterialAPI(projectID.toString(), req);
 
       if (res.status == 201) {
         showTopMessage(context, "Material Successfully Created!");
@@ -123,25 +155,15 @@ class OpenProjectController extends GetxController {
             behavior: SnackBarBehavior.floating,
           ),
         );
-
-
       } else {
         showTopMessage(context, "Something went wrong!");
       }
     } catch (e) {
       showTopMessage(context, "Something went wrong!");
-
     }
-
-    // materialsList.add(MaterialModel(
-    //   name: name,
-    //   cost: cost,
-    //   dueDate: dueDate,
-    //   status: "In-Progress",
-    // ));
   }
 
-  void showAddMaterialPopup(BuildContext context,projectID) {
+  void showAddMaterialPopup(BuildContext context, projectID) {
     TextEditingController materialNameController = TextEditingController();
     TextEditingController costController = TextEditingController();
     TextEditingController dateController = TextEditingController();
@@ -181,8 +203,10 @@ class OpenProjectController extends GetxController {
                             textFieldWidget("Material Name",
                                 controller: materialNameController),
                             SizedBox(height: 10),
-                            textFieldWidget("Cost of Material",
-                                controller: costController, isCostField: true),
+                            textFieldWidget(
+                              "Cost of Material",
+                              controller: costController,
+                            ),
                             SizedBox(height: 5),
                             _buildCostInfo(),
                             SizedBox(height: 16),
@@ -203,7 +227,8 @@ class OpenProjectController extends GetxController {
                                 context,
                                 materialNameController,
                                 costController,
-                                dateController,projectID),
+                                dateController,
+                                projectID),
                           ],
                         ),
                       ),
@@ -296,7 +321,7 @@ class OpenProjectController extends GetxController {
   }
 
   Widget _buildContinueButton(BuildContext context, TextEditingController name,
-      TextEditingController cost, TextEditingController date,projectID) {
+      TextEditingController cost, TextEditingController date, projectID) {
     return SizedBox(
       width: double.infinity,
       height: 50,
@@ -306,21 +331,16 @@ class OpenProjectController extends GetxController {
               cost.text.trim().isEmpty ||
               date.text.trim().isEmpty) {
             showTopMessage(context, "Please fill all fields");
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   SnackBar(
-            //     content: Text("Please fill all fields"),
-            //     backgroundColor: Colors.red,
-            //   ),
-            // );
+
             return;
-          }else if(fileName.isEmpty){
+          } else if (fileName.isEmpty) {
             showTopMessage(context, "Please upload file");
             return;
           }
 
           final controller = Get.find<OpenProjectController>();
-          controller.addMaterial(
-              name.text.trim(), cost.text, date.text.trim(),context,projectID);
+          controller.addMaterial(name.text.trim(), cost.text, date.text.trim(),
+              context, projectID);
 
           Navigator.pop(context);
         },
@@ -463,7 +483,6 @@ class OpenProjectController extends GetxController {
     }
   }
 
-
   Future<void> pickAndUploadPDF(context, setModalState) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -509,5 +528,4 @@ class OpenProjectController extends GetxController {
       showTopMessage(context, "Please check file size.");
     }
   }
-
 }

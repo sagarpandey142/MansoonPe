@@ -24,7 +24,7 @@ class ProjectPageController extends GetxController {
       Repository repo = Repository(token: token);
       var res = await repo.getProjects({});
       debugPrint("VskingProfileRes:>>>$res");
-
+      print(projects.value);
       if (res.status == 200) {
         projects.value = res.data!.projects!;
       }
@@ -35,7 +35,6 @@ class ProjectPageController extends GetxController {
           backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
-
 
   Future<void> downloadPDF(Projects project) async {
     try {

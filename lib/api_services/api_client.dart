@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:projects/modals/add_material_req.dart';
 import 'package:projects/modals/add_material_res.dart';
 import 'package:projects/modals/download_res.dart';
+import 'package:projects/modals/order_res.dart';
 import 'package:projects/modals/otp_req.dart';
 import 'package:projects/modals/otp_res.dart';
 import 'package:projects/modals/profile_res.dart';
@@ -51,4 +52,8 @@ abstract class ApiClient {
 
   @POST("${Apis.createProjectApi}/{endpoint}/${Apis.orderApi}")
   Future<AddMaterialRes> addMaterial(@Path("endpoint") String endpoint,@Body() AddMaterialReq kr);
+
+  @GET(Apis.createOrdersApi) // Change to GET
+  Future<OrdersRes> getOrders(@Body() dynamic kr);
+
 }

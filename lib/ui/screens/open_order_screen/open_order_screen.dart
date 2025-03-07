@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../../modals/add_material_res.dart';
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import 'open_order_controller.dart';
 
 class OpenOrderScreen extends StatefulWidget {
-  const OpenOrderScreen({super.key});
+  final Order? order;
+
+  const OpenOrderScreen({super.key, this.order});
 
   @override
   _OpenOrderScreenState createState() => _OpenOrderScreenState();
@@ -69,21 +72,222 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   ],
                 ),
               ),
-              _buildOrderCard("Closed", "Yaay! No Pending Amount",
-                  Color.fromRGBO(2, 122, 72, 1),
-                  context: context),
-              _buildOrderCard(
-                  "In-progress", " ", Color.fromRGBO(89, 37, 220, 1),
-                  showButton: true, context: context),
-              _buildOrderCard("In-review", " ", Color.fromRGBO(181, 71, 8, 1),
-                  context: context),
-              _buildOrderCard(
-                  "Not Approved", " ", Color.fromRGBO(180, 35, 24, 1),
-                  context: context),
-              _buildOrderCard("Approved", " ", Color.fromRGBO(2, 122, 72, 1),
-                  context: context),
-
-              SizedBox(height: 20), // Added space at bottom to avoid overflow
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.only(left: 15,right: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: Colors.grey.shade300,
+                      width: 1,
+                    ),
+                  ),
+                  height: 250,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 10, left: 15, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IntrinsicWidth(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF8F9FC),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Order ID: ${widget.order?.id ?? 'N/A'}", // ✅ Dynamic Order ID
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Chip(
+                              label: Text(
+                                widget.order?.status ??
+                                    "Pending", // ✅ Dynamic Status
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF5925DC),
+                                ),
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              visualDensity:
+                                  VisualDensity(horizontal: -3, vertical: -4),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: -4),
+                              backgroundColor: Color(0xFFF2F4F7),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: BorderSide(
+                                  color: Color(0xFFCBD5E1),
+                                  width: 0.5,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, right: 50, left: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF7F5F9),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "You",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          color: Color(0x66363F72)),
+                                    ),
+                                    Text(
+                                      widget.order?.createdOn != null
+                                          ? DateFormat('dd-MM-yyyy hh:mm a')
+                                              .format(DateTime.parse(widget.order!
+                                                  .createdOn!)) // ✅ Dynamic Date
+                                          : "N/A",
+                                      style: GoogleFonts.poppins(
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 10,
+                                        color: Color(0x99363F72),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Material Name: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          color: Color(0xCC363F72),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: widget.order?.material ??
+                                            "N/A", // ✅ Dynamic Material Name
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          color: Color(0xFF363F72),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Cost of material: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          color: Color(0xCC363F72),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            "₹${widget.order?.cost ?? 0}", // ✅ Dynamic Cost
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          color: Color(0xFF363F72),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Requested payment due date: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          color: Color(0xCC363F72),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: widget.order?.dueDate != null
+                                            ? DateFormat('dd MMM, yyyy').format(
+                                                DateTime.parse(widget.order!
+                                                    .dueDate!)) // ✅ Dynamic Due Date
+                                            : "N/A",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          color: Color(0xFF363F72),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (widget.order?.status == "In-Progress") ...[
+                                  SizedBox(height: 15),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 40,
+                                    child: ElevatedButton(
+                                      onPressed: () {}, // TODO: Add Payment Logic
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF603EA4),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Pay Now",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -138,7 +342,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10), // Reduce width padding
+          padding: EdgeInsets.symmetric(
+              vertical: 2, horizontal: 10), // Reduce width padding
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min, // Shrinks button to fit content
@@ -152,13 +357,13 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
               ),
             ),
             SizedBox(width: 3),
-            Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16), // Slightly smaller icon
+            Icon(Icons.keyboard_arrow_down,
+                color: Colors.grey.shade500, size: 16), // Slightly smaller icon
           ],
         ),
       ),
     );
   }
-
 
   Widget _buildOrderCard(String status, String message, Color color,
       {bool showButton = false, required BuildContext context}) {
@@ -171,7 +376,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
           border: Border.all(color: Colors.grey.shade300, width: 1),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Align all children to the start
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // Align all children to the start
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 15, right: 10),
@@ -247,7 +453,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 15), // Aligning to start
               child: Text(
-                DateFormat('hh:mm a, dd MMM, yyyy').format(DateTime.now()), // Updated format
+                DateFormat('hh:mm a, dd MMM, yyyy')
+                    .format(DateTime.now()), // Updated format
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: Color(0xE6363F72),
@@ -263,17 +470,20 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Ensuring text aligns left
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start, // Ensuring text aligns left
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "You",
-                            style: TextStyle(fontSize: 12, color: Color(0x66363F72)),
+                            style: TextStyle(
+                                fontSize: 12, color: Color(0x66363F72)),
                           ),
                           Text(
-                            DateFormat('dd MMM yy, hh:mm a').format(DateTime.now()), // Updated format
+                            DateFormat('dd MMM yy, hh:mm a')
+                                .format(DateTime.now()), // Updated format
                             style: GoogleFonts.poppins(
                               fontSize: 10,
                               fontWeight: FontWeight.w300,
@@ -288,7 +498,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                       SizedBox(height: 5),
                       _buildDetailText("Cost of material: ", "₹8,500"),
                       SizedBox(height: 5),
-                      _buildDetailText("Requested payment due date: ", "25 Oct,2024"),
+                      _buildDetailText(
+                          "Requested payment due date: ", "25 Oct,2024"),
                       if (showButton) ...[
                         SizedBox(height: 15),
                         SizedBox(
