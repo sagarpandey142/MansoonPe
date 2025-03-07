@@ -14,7 +14,11 @@ class OpenProjectScreen extends StatefulWidget {
   final Projects project;
   final Order? order; // Make sure this is nullable if `orders` can be empty
 
-  const OpenProjectScreen({super.key, required this.project, this.order, required List<Orders> orders});
+  const OpenProjectScreen(
+      {super.key,
+      required this.project,
+      this.order,
+      required List<Orders> orders});
 
   @override
   _OpenProjectScreenState createState() => _OpenProjectScreenState();
@@ -285,39 +289,39 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
               thickness: 1,
             ),
 
-        Expanded(
-          child: Obx(() {
-            debugPrint("Orders Length in UI: ${controller.orders.length}");
-            return controller.orders.isEmpty
-                ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/order_file.svg',
-                  width: MediaQuery.of(context).size.width * 0.12,
-                  height: MediaQuery.of(context).size.height * 0.06,
-                ),
-                SizedBox(height: 30),
-                Text(
-                  "You haven't requested any quote yet.",
-                  style: TextStyle(
-                    color: Color(0x66000000),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            )
-                : ListView.builder(
-              itemCount: controller.orders.length,
-              itemBuilder: (context, index) {
-                return buildOrderCard(controller.orders[index]);
-              },
-            );
-          }),
-        ),
+            Expanded(
+              child: Obx(() {
+                debugPrint("Orders Length in UI: ${controller.orders.length}");
+                return controller.orders.isEmpty
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/order_file.svg',
+                            width: MediaQuery.of(context).size.width * 0.12,
+                            height: MediaQuery.of(context).size.height * 0.06,
+                          ),
+                          SizedBox(height: 30),
+                          Text(
+                            "You haven't requested any quote yet.",
+                            style: TextStyle(
+                              color: Color(0x66000000),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      )
+                    : ListView.builder(
+                        itemCount: controller.orders.length,
+                        itemBuilder: (context, index) {
+                          return buildOrderCard(controller.orders[index]);
+                        },
+                      );
+              }),
+            ),
 
-        Divider(
+            Divider(
               color: Colors.grey.shade300,
             ),
             Padding(
