@@ -191,7 +191,7 @@ class OpenProjectController extends GetxController {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+                    BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,9 +207,9 @@ class OpenProjectController extends GetxController {
                                 controller: materialNameController),
                             SizedBox(height: 10),
                             textFieldWidget(
-                              "Cost of Material",
-                              controller: costController,
-                              isCostField: true
+                                "Cost of Material",
+                                controller: costController,
+                                isCostField: true
 
                             ),
                             SizedBox(height: 5),
@@ -224,7 +224,7 @@ class OpenProjectController extends GetxController {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Text(fileName),
                             ),
                             SizedBox(height: 15),
@@ -352,7 +352,7 @@ class OpenProjectController extends GetxController {
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF603EA4),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
         child: Text(
           "Continue",
@@ -365,8 +365,8 @@ class OpenProjectController extends GetxController {
 
   Widget textFieldWidget(String label,
       {bool isDateField = false,
-      TextEditingController? controller,
-      bool isCostField = false}) {
+        TextEditingController? controller,
+        bool isCostField = false}) {
     return SizedBox(
       height: 50,
       child: TextField(
@@ -375,42 +375,42 @@ class OpenProjectController extends GetxController {
         keyboardType: isCostField ? TextInputType.number : TextInputType.text,
         onTap: isDateField
             ? () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: Get.context!,
-                  initialDate: DateTime.now().add(const Duration(days: 1)),
-                  firstDate: DateTime.now().add(const Duration(days: 1)),//DateTime.now().add(const Duration(days: 1)),
-                  lastDate: DateTime(2100),
-                );
-                if (pickedDate != null) {
-                  controller?.text =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
-                }
-              }
+          DateTime? pickedDate = await showDatePicker(
+            context: Get.context!,
+            initialDate: DateTime.now().add(const Duration(days: 1)),
+            firstDate: DateTime.now().add(const Duration(days: 1)),//DateTime.now().add(const Duration(days: 1)),
+            lastDate: DateTime(2100),
+          );
+          if (pickedDate != null) {
+            controller?.text =
+                DateFormat('yyyy-MM-dd').format(pickedDate);
+          }
+        }
             : null,
         onChanged: isCostField
             ? (value) {
-                String formattedValue = formatCost(value);
-                if (controller?.text != formattedValue) {
-                  controller?.value = TextEditingValue(
-                    text: formattedValue,
-                    selection:
-                        TextSelection.collapsed(offset: formattedValue.length),
-                  );
-                }
-              }
+          String formattedValue = formatCost(value);
+          if (controller?.text != formattedValue) {
+            controller?.value = TextEditingValue(
+              text: formattedValue,
+              selection:
+              TextSelection.collapsed(offset: formattedValue.length),
+            );
+          }
+        }
             : null,
         decoration: InputDecoration(
           labelText: label,
           prefixText: isCostField ? '₹ ' : null, // Rupee sign added
           suffixIcon: isDateField
               ? Padding(
-                  padding: const EdgeInsets.all(13),
-                  child: SvgPicture.asset(
-                    'assets/images/date_image.svg',
-                    height: 16,
-                    width: 16,
-                  ),
-                )
+            padding: const EdgeInsets.all(13),
+            child: SvgPicture.asset(
+              'assets/images/date_image.svg',
+              height: 16,
+              width: 16,
+            ),
+          )
               : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

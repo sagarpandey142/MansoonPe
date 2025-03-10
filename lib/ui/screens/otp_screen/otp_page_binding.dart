@@ -9,6 +9,6 @@ class OtpPageBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<OtpPageController>(
-        () => OtpPageController(phoneNumber: phoneNumber));
+            () => OtpPageController(phoneNumber: phoneNumber));
   }
 }

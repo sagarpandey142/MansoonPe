@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/modals/order_res.dart' as oRes;
 import 'package:projects/modals/project_res.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
 import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
@@ -31,7 +30,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   int _currentIndex = 0;
   List<Projects> projects = [];
   List<Orders> orders = [];
-  String businessName="Business Name";
+  String businessName = "Business Name";
 
   @override
   void initState() {
@@ -39,6 +38,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     getProfile();
     getProjects();
   }
+
   getProfile() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,10 +51,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
       if (res.status == 200) {
         var data = res.data!.profile;
         setState(() {
-          businessName=data!.businessName!;
+          businessName = data!.businessName!;
         });
-
-
       }
     } catch (e) {
       debugPrint("Error: $e");
@@ -288,7 +286,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   TextButton(
                     onPressed: () {
                       // Get.to(() => ProjectPageScreen());
-                      projects.isNotEmpty ? Get.offNamed('/project') : Get.offNamed('/Createproject');
+                      projects.isNotEmpty
+                          ? Get.offNamed('/project')
+                          : Get.offNamed('/Createproject');
                     },
                     child: Text(
                       "View all",
@@ -321,36 +321,34 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             ),
                             child: InkWell(
                               onTap: () {
-
                                 var selectedProject = projects[index];
                                 // var selectedOrders = projects[index].orders ?? []; // Ensure it's not null
 
-                                Get.to(() => OpenProjectScreen(projectId: selectedProject.id.toString(),projectStatus: selectedProject.status!));
+                                Get.to(() => OpenProjectScreen(
+                                    projectId: selectedProject.id.toString(),
+                                    projectStatus: selectedProject.status!));
                               },
-
                               child: Row(
                                 children: [
                                   Stack(
                                     children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
+                                        padding: const EdgeInsets.only(left: 10),
                                         child: Image.asset(
-                                            // project.image ??
-                                            "assets/images/proj_img_2.png",
-                                            width: 120,
-                                            height: 170),
+                                          "assets/images/proj_img_2.png",
+                                          width: 120, // Increased width
+                                          height: 180, // Increased height
+                                        ),
                                       ),
                                       Positioned(
-                                        bottom: 5,
+                                        bottom: 2, // Moved further down
                                         right: 0,
                                         child: Container(
-                                          height: 26,
-                                          width: 26,
+                                          height: 32, // Increased height
+                                          width: 32, // Increased width
                                           decoration: BoxDecoration(
                                             color: Color(0x66000000),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
                                           child: InkWell(
                                             onTap: () {
@@ -358,7 +356,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             },
                                             child: SvgPicture.asset(
                                               'assets/images/save_button.svg',
-                                              height: 10,
+                                              height: 14, // Adjusted for better scaling
                                               fit: BoxFit.scaleDown,
                                             ),
                                           ),
@@ -438,7 +436,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                         ),
                                         Text.rich(
                                           TextSpan(
-                                            text: "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
+                                            text:
+                                                "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
                                             style: const TextStyle(
                                               color: Color(0xCC363F72),
                                               fontSize: 10,
@@ -501,76 +500,84 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                           ),
                                         ),
                                         const SizedBox(height: 5),
-                                        Text(
-                                          "- - - - - - - - - - - - - - - - - - - - - -",
-                                          style: TextStyle(
-                                            color: Color(0xFFEDEBF4),
-                                            fontSize: 20,
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 10),
+                                          child: Text(
+                                            "- - - - - - - - - - - - - - - - - - - - - -",
+                                            style: TextStyle(
+                                              color: Color(0xFFEDEBF4),
+                                              fontSize: 20,
+                                            ),
+                                            overflow: TextOverflow
+                                                .clip, // Clips overflowing text without showing "..."
+                                            maxLines:
+                                            1, // Ensures text stays on a single line
+                                            softWrap:
+                                            false, // Prevents wrapping to the next line
                                           ),
-                                          overflow: TextOverflow
-                                              .clip, // Clips overflowing text without showing "..."
-                                          maxLines:
-                                              1, // Ensures text stays on a single line
-                                          softWrap:
-                                              false, // Prevents wrapping to the next line
                                         ),
                                         if ("${project.status}" ==
                                             "ACTIVE") ...[
-                                          Row(
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  text: "Pending: ",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF363F72),
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "${project.budget}",
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFFB42318),
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: Row(
+                                              children: [
+                                                Text.rich(
+                                                  TextSpan(
+                                                    text: "Pending: ",
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF363F72),
+                                                      fontSize: 10,
+                                                      fontWeight: FontWeight.w400,
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Spacer(),
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  side: const BorderSide(
-                                                      color: Color(0xFF603EA4)),
-                                                  elevation: 0,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6),
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    vertical: 3,
-                                                    horizontal: 8,
-                                                  ),
-                                                  minimumSize: Size(0, 24),
-                                                ),
-                                                child: Text(
-                                                  "Pay Now",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF603EA4),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "\$${project.budget}",
+                                                        style: GoogleFonts.poppins(
+                                                          color:
+                                                              Color(0xFFB42318),
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                const Spacer(),
+                                                ElevatedButton(
+                                                  onPressed: () {},
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    side: const BorderSide(
+                                                        color: Color(0xFF603EA4),
+                                                    width: 0.5
+                                                    ),
+                                                    elevation: 0,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                    ),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      vertical: 3,
+                                                      horizontal: 8,
+                                                    ),
+                                                    minimumSize: Size(0, 24),
+                                                  ),
+                                                  child: Text(
+                                                    "Pay Now",
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF603EA4),
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 10,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ] else ...[
                                           Text(
@@ -634,7 +641,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 Future.delayed(Duration(milliseconds: 300), () {
                                   // Delay to ensure screen transition before showing bottom sheet
                                   Get.put(CreateProjectController())
-                                      .showCreateProjectBottomSheet(Get.context!);
+                                      .showCreateProjectBottomSheet(
+                                          Get.context!);
                                 });
                               },
                               child: Row(

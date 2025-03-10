@@ -11,4 +11,3 @@ class Apis {
   static const String orderApi = 'order';
   static const String allOrderApi = 'api/order';
 }
-

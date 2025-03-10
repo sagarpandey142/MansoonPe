@@ -123,7 +123,7 @@ class ProfilePageController extends GetxController {
                             },
                             style: ElevatedButton.styleFrom(
                               elevation:
-                                  0, // Removes the shadow of the ElevatedButton
+                              0, // Removes the shadow of the ElevatedButton
                               backgroundColor: Colors
                                   .transparent, // Transparent background for the button itself
                               shape: RoundedRectangleBorder(
@@ -184,7 +184,7 @@ class ProfilePageController extends GetxController {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPageScreen()),
-      (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
     );
   }
 }

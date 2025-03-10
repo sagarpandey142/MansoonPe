@@ -69,84 +69,84 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                         radius: 30,
                         backgroundColor: Color(0xFFEDE7F6),
                         child: Obx(() => Text(
-                              controller.userName.value[0],
-                              style: GoogleFonts.poppins(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF402387),
-                              ),
-                            )),
+                          controller.userName.value[0],
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF402387),
+                          ),
+                        )),
                       ),
                       SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                                controller.userName.value,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF402387),
-                                ),
-                              )),
+                            controller.userName.value,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF402387),
+                            ),
+                          )),
                           SizedBox(height: 4),
                           Obx(() => Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF8F9FC),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  'GSTIN: ${controller.gstin.value}',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF363F72),
-                                  ),
-                                ),
-                              )),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF8F9FC),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'GSTIN: ${controller.gstin.value}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF363F72),
+                              ),
+                            ),
+                          )),
                         ],
                       ),
                     ],
                   ),
                   SizedBox(height: 20),
                   Obx(() => Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.60,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF8F9FC),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: InfoRow(
-                            label: 'PAN Number:',
-                            value: controller.panNumber.value,
-                            labelColor: Color(0xFF363F72), // Now this will work
-                          ),
-                        ),
-                      )),
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.60,
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF8F9FC),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: InfoRow(
+                        label: 'PAN Number:',
+                        value: controller.panNumber.value,
+                        labelColor: Color(0xFF363F72), // Now this will work
+                      ),
+                    ),
+                  )),
                   SizedBox(height: 5),
                   Obx(() => Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width *
-                              0.55, // Reduced width
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF8F9FC),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: InfoRow(
-                            label: 'Mob No:',
-                            value: controller.mobileNumber.value,
-                            labelColor: Color(0xFF363F72),
-                          ),
-                        ),
-                      )),
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width *
+                          0.55, // Reduced width
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF8F9FC),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: InfoRow(
+                        label: 'Mob No:',
+                        value: controller.mobileNumber.value,
+                        labelColor: Color(0xFF363F72),
+                      ),
+                    ),
+                  )),
                 ],
               ),
             ),

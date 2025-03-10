@@ -10,12 +10,12 @@ part of 'api_client.dart';
 
 class _ApiClient implements ApiClient {
   _ApiClient(
-    this._dio, {
-    this.baseUrl,
-    this.errorLogger,
-  }) {
+      this._dio, {
+        this.baseUrl,
+        this.errorLogger,
+      }) {
     baseUrl ??=
-        'http://ec2-13-127-91-221.ap-south-1.compute.amazonaws.com:8080/';
+    'http://ec2-13-127-91-221.ap-south-1.compute.amazonaws.com:8080/';
   }
 
   final Dio _dio;
@@ -37,13 +37,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/auth/send-otp',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/auth/send-otp',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -71,13 +71,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/auth/verify-otp',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/auth/verify-otp',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -105,13 +105,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/profile',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/profile',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -139,13 +139,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/project',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/project',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -172,13 +172,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/upload',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/upload',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -205,13 +205,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/profile',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/profile',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -238,13 +238,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/project',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/project',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -261,9 +261,9 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<DownloadRes> downloadFile(
-    String endpoint,
-    dynamic kr,
-  ) async {
+      String endpoint,
+      dynamic kr,
+      ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -274,13 +274,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/download/${endpoint}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/download/${endpoint}',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -297,9 +297,9 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<AddMaterialRes> addMaterial(
-    String endpoint,
-    AddMaterialReq kr,
-  ) async {
+      String endpoint,
+      AddMaterialReq kr,
+      ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -311,13 +311,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/project/${endpoint}/order',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/project/${endpoint}/order',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -334,9 +334,9 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<OrdersRes> getOrders(
-    String endpoint,
-    dynamic kr,
-  ) async {
+      String endpoint,
+      dynamic kr,
+      ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -347,13 +347,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/project/${endpoint}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/project/${endpoint}',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -380,13 +380,13 @@ class _ApiClient implements ApiClient {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          'api/order',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      'api/order',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         )));
@@ -415,9 +415,9 @@ class _ApiClient implements ApiClient {
   }
 
   String _combineBaseUrls(
-    String dioBaseUrl,
-    String? baseUrl,
-  ) {
+      String dioBaseUrl,
+      String? baseUrl,
+      ) {
     if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }

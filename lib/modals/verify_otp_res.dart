@@ -1,6 +1,3 @@
-
-
-
 class VerifyOtpRes {
   int? status;
   String? message;
@@ -121,4 +118,3 @@ class UserProfile {
     return data;
   }
 }
-

@@ -8,6 +8,7 @@ import '../../../modals/add_material_res.dart';
 import '../../../modals/all_order_res.dart';
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
+import '../projects_screen/project_page_controller.dart';
 import 'open_order_controller.dart';
 
 class OpenOrderScreen extends StatefulWidget {
@@ -20,14 +21,21 @@ class OpenOrderScreen extends StatefulWidget {
 }
 
 class _OpenOrderScreenState extends State<OpenOrderScreen> {
-  final OpenOrderController controller = Get.put(OpenOrderController());
+  final OpenOrderController openOrderController =
+      Get.put(OpenOrderController());
+  final ProjectPageController projectPageController =
+      Get.find<ProjectPageController>();
+
   int _currentIndex = 2;
   List<Orders> orders = [];
+  String createdOn = "2025-02-25T05:07:14.337787";
+
   @override
   void initState() {
-
     super.initState();
+    getAllOrders();
   }
+
   getAllOrders() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -55,273 +63,122 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        // Wrapped with SingleChildScrollView to prevent overflow
-        child: Padding(
-          padding: const EdgeInsets.only(top: 60),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return LinearGradient(
-                          colors: [
-                            CustomColor.primaryColor,
-                            CustomColor.secondaryColor
-                          ],
-                        ).createShader(bounds);
-                      },
-                      child: Text(
-                        "Orders",
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xCC000000),
-                        ),
-                      ),
-                    ),
-                    Icon(Icons.search, color: Colors.grey),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.grey.shade100, thickness: 2),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, top: 10),
-                child: Row(
-                  children: [
-                    _buildFilterButton("Date"),
-                    SizedBox(width: 10),
-                    _buildFilterButton("Status"),
-                    SizedBox(width: 10),
-                    _buildFilterButton("Project"),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20,),
-              Padding(
-                padding: const EdgeInsets.only(left: 15,right: 15),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                      width: 1,
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return LinearGradient(
+                      colors: [
+                        CustomColor.primaryColor,
+                        CustomColor.secondaryColor
+                      ],
+                    ).createShader(bounds);
+                  },
+                  child: Text(
+                    "Orders",
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xCC000000),
                     ),
                   ),
-                  height: 250,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 15, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IntrinsicWidth(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF8F9FC),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Order ID: ${widget.order?.id ?? 'N/A'}", // ✅ Dynamic Order ID
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF363F72),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Chip(
-                              label: Text(
-                                widget.order?.status ??
-                                    "Pending", // ✅ Dynamic Status
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF5925DC),
-                                ),
-                              ),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              visualDensity:
-                                  VisualDensity(horizontal: -3, vertical: -4),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: -4),
-                              backgroundColor: Color(0xFFF2F4F7),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: BorderSide(
-                                  color: Color(0xFFCBD5E1),
-                                  width: 0.5,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 20, right: 50, left: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF7F5F9),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "You",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          color: Color(0x66363F72)),
-                                    ),
-                                    Text(
-                                      widget.order?.createdOn != null
-                                          ? DateFormat('dd-MM-yyyy hh:mm a')
-                                              .format(DateTime.parse(widget.order!
-                                                  .createdOn!)) // ✅ Dynamic Date
-                                          : "N/A",
-                                      style: GoogleFonts.poppins(
-                                        fontStyle: FontStyle.italic,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 10,
-                                        color: Color(0x99363F72),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Material Name: ",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          color: Color(0xCC363F72),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: widget.order?.material ??
-                                            "N/A", // ✅ Dynamic Material Name
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Color(0xFF363F72),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Cost of material: ",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          color: Color(0xCC363F72),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            "₹${widget.order?.cost ?? 0}", // ✅ Dynamic Cost
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Color(0xFF363F72),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Requested payment due date: ",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          color: Color(0xCC363F72),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: widget.order?.dueDate != null
-                                            ? DateFormat('dd MMM, yyyy').format(
-                                                DateTime.parse(widget.order!
-                                                    .dueDate!)) // ✅ Dynamic Due Date
-                                            : "N/A",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Color(0xFF363F72),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (widget.order?.status == "In-Progress") ...[
-                                  SizedBox(height: 15),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 40,
-                                    child: ElevatedButton(
-                                      onPressed: () {}, // TODO: Add Payment Logic
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF603EA4),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Pay Now",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ]
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              )
-            ],
+                Icon(Icons.search, color: Colors.grey),
+              ],
+            ),
           ),
-        ),
+          Divider(color: Colors.grey.shade100, thickness: 2),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 10),
+            child: Row(
+              children: [
+                _buildFilterButton("Date"),
+                SizedBox(width: 10),
+                _buildFilterButton("Status"),
+                SizedBox(width: 10),
+                _buildFilterButton("Project"),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Obx(() {
+                    if (projectPageController.projects.isEmpty) {
+                      return const Text("No projects available");
+                    }
+
+                    final project = projectPageController.projects.first;
+
+                    return RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Project name: ",
+                            style: TextStyle(
+                              color: Color(0xCC363F72),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                '${project.name ?? "N/A"}, ${project.location ?? "N/A"}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: Color(0xFF363F72),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+                Icon(Icons.arrow_forward_rounded,
+                    size: 15, color: Colors.black54),
+              ],
+            ),
+          ),
+          SizedBox(height: 8), // kam height kar diya
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Date: ${OpenOrderController.formatDate(createdOn)}",
+                  style: const TextStyle(
+                    color: Color(0xE6363F72),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            child: ListView.builder(
+              itemCount: orders.length,
+              itemBuilder: (context, index) {
+                return buildOrderCard(orders[index]);
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: Material(
         color: Colors.transparent,
@@ -361,279 +218,248 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
     );
   }
 
-  Widget _buildFilterButton(String label) {
-    return SizedBox(
-      height: 35, // Reduce height
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          side: BorderSide(color: Colors.grey.shade300, width: 1.3),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          padding: EdgeInsets.symmetric(
-              vertical: 2, horizontal: 10), // Reduce width padding
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min, // Shrinks button to fit content
-          children: [
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                color: Color(0x99000000),
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
-            ),
-            SizedBox(width: 3),
-            Icon(Icons.keyboard_arrow_down,
-                color: Colors.grey.shade500, size: 16), // Slightly smaller icon
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOrderCard(String status, String message, Color color,
-      {bool showButton = false, required BuildContext context}) {
+  Widget buildOrderCard(Orders order) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
+        margin: EdgeInsets.only(bottom: 15), // Adds space between cards
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey.shade300, width: 1),
+          border: Border.all(
+            color: Colors.grey.shade200, // Keeps grey border
+            width: 1,
+          ),
         ),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align all children to the start
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 15, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF8F9FC),
-                      borderRadius: BorderRadius.circular(15),
+        child: IntrinsicHeight( // Ensures all containers have the same height
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12, left: 15, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IntrinsicWidth(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF8F9FC),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Order ID: ${order.id ?? 'N/A'}",
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF363F72),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    child: Center(
-                      child: Text(
-                        "Order ID: 123456",
+                    Chip(
+                      label: Text(
+                        order.status ?? "Pending",
                         style: TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF363F72),
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF5925DC),
+                        ),
+                      ),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity(horizontal: -3, vertical: -4),
+                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: -4),
+                      backgroundColor: Color(0xFFF2F4F7),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: Color(0xFFCBD5E1),
+                          width: 0.5,
                         ),
                       ),
                     ),
-                  ),
-                  Chip(
-                    label: Text(
-                      status,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: getBorderColor(status),
-                      ),
-                    ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity(horizontal: -3, vertical: -4),
-                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: -4),
-                    backgroundColor: getBackgroundColor(status),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: BorderSide(
-                        color: getBorderColor(status),
-                        width: 0.1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 15),
-              child: Row(
-                children: [
-                  Text(
-                    "Project name: ",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xCC363F72),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Text(
-                    "JMD Building, Gurgaon",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF363F72),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 5),
-            Padding(
-              padding: const EdgeInsets.only(left: 15), // Aligning to start
-              child: Text(
-                DateFormat('hh:mm a, dd MMM, yyyy')
-                    .format(DateTime.now()), // Updated format
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: Color(0xE6363F72),
-                  fontWeight: FontWeight.w400,
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30, left: 10, right: 40),
-              child: Card(
-                color: Color(0xFFF7F5F9), // Light background color
-                elevation: 0, // Removes the shadow/border effect
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, // Ensuring text aligns left
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "You",
-                            style: TextStyle(
-                                fontSize: 12, color: Color(0x66363F72)),
-                          ),
-                          Text(
-                            DateFormat('dd MMM yy, hh:mm a')
-                                .format(DateTime.now()), // Updated format
-                            style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300,
-                              color: Color(0x99363F72),
-                              fontStyle: FontStyle.italic,
+              Padding(
+                padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF7F5F9),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "You",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0x66363F72)),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      _buildDetailText("Material Name: ", "TMT Bars"),
-                      SizedBox(height: 5),
-                      _buildDetailText("Cost of material: ", "₹8,500"),
-                      SizedBox(height: 5),
-                      _buildDetailText(
-                          "Requested payment due date: ", "25 Oct,2024"),
-                      if (showButton) ...[
-                        SizedBox(height: 15),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 40,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              controller.showPaymentDialog(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF603EA4),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              "Pay Now",
+                            Text(
+                              order.createdOn != null
+                                  ? DateFormat('dd-MM-yyyy hh:mm a')
+                                  .format(DateTime.parse(order.createdOn!))
+                                  : "N/A",
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 10,
+                                color: Color(0x99363F72),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Material Name: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: order.material ?? "N/A",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Cost of material: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: "₹${order.cost ?? 0}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Requested payment due date: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: order.dueDate != null
+                                    ? DateFormat('dd MMM, yyyy')
+                                    .format(DateTime.parse(order.dueDate!))
+                                    : "N/A",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (order.status == "In-Progress") ...[
+                          SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 40,
+                            child: ElevatedButton(
+                              onPressed: () {}, // TODO: Add Payment Logic
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF603EA4),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                "Pay Now",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ]
                       ],
-                      SizedBox(height: 15),
-                      Center(
-                        child: Text(
-                          message,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: color,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-          ],
+              SizedBox(height: 20,)
+            ],
+          ),
         ),
       ),
     );
   }
 
-// Function to get background color based on order status
-  Color getBackgroundColor(String status) {
-    switch (status) {
-      case 'In-review':
-        return Color(0xFFFFFAEB);
-      case 'Approved':
-        return Color(0xFFECFDF3);
-      case 'In-progress':
-        return Color(0xFFF4F3FF);
-      case 'Closed':
-        return Color(0xFFF2F4F7);
-      case 'Not Approved':
-        return Color(0xFFFEF3F2);
-      default:
-        return Color(0xFFF2F4F7); // Default color
-    }
-  }
+}
 
-  Color getBorderColor(String status) {
-    switch (status) {
-      case 'In-review':
-        return Color.fromRGBO(181, 71, 8, 1);
-      case 'Approved':
-        return Color.fromRGBO(2, 122, 72, 1);
-      case 'In-progress':
-        return Color.fromRGBO(
-            89, 37, 220, 1); // Ensure border color is deep purple
-      case 'Closed':
-        return Color.fromRGBO(52, 64, 84, 1);
-      case 'Not Approved':
-        return Color.fromRGBO(180, 35, 24, 1);
-      default:
-        return Color(0xFFCBD5E1);
-    }
-  }
-
-  Widget _buildDetailText(String label, String value) {
-    return RichText(
-      text: TextSpan(
+Widget _buildFilterButton(String label) {
+  return SizedBox(
+    height: 35, // Reduce height
+    child: ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        side: BorderSide(color: Colors.grey.shade300, width: 1.3),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: EdgeInsets.symmetric(
+            vertical: 2, horizontal: 10), // Reduce width padding
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min, // Shrinks button to fit content
         children: [
-          TextSpan(
-            text: label,
-            style: TextStyle(fontSize: 12, color: Color(0xCC363F72)),
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              color: Color(0x99000000),
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+            ),
           ),
-          TextSpan(
-            text: value,
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF363F72)),
-          ),
+          SizedBox(width: 3),
+          Icon(Icons.keyboard_arrow_down,
+              color: Colors.grey.shade500, size: 16), // Slightly smaller icon
         ],
       ),
-    );
-  }
+    ),
+  );
 }

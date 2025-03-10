@@ -115,4 +115,3 @@ class OtpPageScreen extends StatelessWidget {
     );
   }
 }
-

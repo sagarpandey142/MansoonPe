@@ -22,12 +22,12 @@ class DioConfig{
       "Authorization": token.isEmpty ? basicAuth : bearerToken
     };
     final options= BaseOptions(
-        baseUrl: Apis.baseUrl,
-        connectTimeout: const Duration(minutes: 2),
-        receiveTimeout: const Duration(minutes: 2),
-        sendTimeout: const Duration(minutes: 2),
-        receiveDataWhenStatusError: true,
-        headers:kHeaders,
+      baseUrl: Apis.baseUrl,
+      connectTimeout: const Duration(minutes: 2),
+      receiveTimeout: const Duration(minutes: 2),
+      sendTimeout: const Duration(minutes: 2),
+      receiveDataWhenStatusError: true,
+      headers:kHeaders,
       responseType: ResponseType.plain,
     );
     var dio = Dio(options);
@@ -37,7 +37,7 @@ class DioConfig{
         requestHeader: true,
         responseHeader: true,
         responseBody: true,
-      error: true
+        error: true
     ));
     return dio;
   }

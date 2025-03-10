@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/modals/order_res.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_controller.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
@@ -39,9 +38,9 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
             padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
             child: Row(
               children: [
-                const Text(
+                Text(
                   "Projects",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const Spacer(),
                 TextButton(
@@ -59,9 +58,9 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                       SizedBox(
                         width: 5,
                       ),
-                      const Text(
+                      Text(
                         "New project",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             color: Color(0xFF603EA4),
                             fontSize: 14,
                             fontWeight: FontWeight.w700),
@@ -90,36 +89,40 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                 color: Colors.grey.shade200, width: 1.1),
                           ),
                           child: InkWell(
-                              onTap: () {
-                                var controller = Get.find<ProjectPageController>();
-                                var selectedProject = controller.projects[index];
-                                var selectedOrders = controller.projects[index].orders ?? []; // Ensure it's not null
+                            onTap: () {
+                              var controller =
+                                  Get.find<ProjectPageController>();
+                              var selectedProject = controller.projects[index];
+                              var selectedOrders =
+                                  controller.projects[index].orders ??
+                                      []; // Ensure it's not null
 
-                                Get.to(() => OpenProjectScreen(projectId: selectedProject.id.toString(), projectStatus: selectedProject.status.toString()));
-                              },
-
-                              child: Row(
+                              Get.to(() => OpenProjectScreen(
+                                  projectId: selectedProject.id.toString(),
+                                  projectStatus:
+                                      selectedProject.status.toString()));
+                            },
+                            child: Row(
                               children: [
                                 Stack(
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Image.asset(
-                                          // project.image ??
-                                          "assets/images/proj_img_2.png",
-                                          width: 120,
-                                          height: 170),
+                                        "assets/images/proj_img_2.png",
+                                        width: 120, // Increased width
+                                        height: 180, // Increased height
+                                      ),
                                     ),
                                     Positioned(
-                                      bottom: 5,
+                                      bottom: 2, // Moved further down
                                       right: 0,
                                       child: Container(
-                                        height: 26,
-                                        width: 26,
+                                        height: 32, // Increased height
+                                        width: 32, // Increased width
                                         decoration: BoxDecoration(
                                           color: Color(0x66000000),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
                                         child: InkWell(
                                           onTap: () {
@@ -127,7 +130,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           },
                                           child: SvgPicture.asset(
                                             'assets/images/save_button.svg',
-                                            height: 10,
+                                            height: 14, // Adjusted for better scaling
                                             fit: BoxFit.scaleDown,
                                           ),
                                         ),
@@ -135,6 +138,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                     ),
                                   ],
                                 ),
+
                                 Container(
                                   width: 1.5,
                                   height: 180, // Adjust height as needed
@@ -268,73 +272,80 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         ),
                                       ),
                                       const SizedBox(height: 5),
-                                      Text(
-                                        "- - - - - - - - - - - - - - - - - - - - - -",
-                                        style: TextStyle(
-                                          color: Color(0xFFEDEBF4),
-                                          fontSize: 20,
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          "- - - - - - - - - - - - - - - - - - - - - -",
+                                          style: TextStyle(
+                                            color: Color(0xFFEDEBF4),
+                                            fontSize: 20,
+                                          ),
+                                          overflow: TextOverflow
+                                              .clip, // Clips overflowing text without showing "..."
+                                          maxLines:
+                                              1, // Ensures text stays on a single line
+                                          softWrap:
+                                              false, // Prevents wrapping to the next line
                                         ),
-                                        overflow: TextOverflow
-                                            .clip, // Clips overflowing text without showing "..."
-                                        maxLines:
-                                            1, // Ensures text stays on a single line
-                                        softWrap:
-                                            false, // Prevents wrapping to the next line
                                       ),
                                       if ("${project.status}" == "ACTIVE") ...[
-                                        Row(
-                                          children: [
-                                            Text.rich(
-                                              TextSpan(
-                                                text: "Pending: ",
-                                                style: const TextStyle(
-                                                  color: Color(0xFF363F72),
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: "${project.budget}",
-                                                    style: const TextStyle(
-                                                      color: Color(0xFFB42318),
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 10),
+                                          child: Row(
+                                            children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: "Pending: ",
+                                                  style: GoogleFonts.poppins(
+                                                    color: Color(0xFF363F72),
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w400,
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                side: const BorderSide(
-                                                    color: Color(0xFF603EA4)),
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(6),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 3,
-                                                  horizontal: 8,
-                                                ),
-                                                minimumSize: Size(0, 24),
-                                              ),
-                                              child: Text(
-                                                "Pay Now",
-                                                style: const TextStyle(
-                                                  color: Color(0xFF603EA4),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 10,
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "\$${project.budget}", // $ साइन जोड़ दिया गया
+                                                      style: GoogleFonts.poppins(
+                                                        color: Color(0xFFB42318),
+                                                        fontSize: 10,
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              const Spacer(),
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  side: const BorderSide(
+                                                      color: Color(0xFF603EA4),
+                                                  width: 0.5,
+                                                  ),
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(6),
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                    vertical: 3,
+                                                    horizontal: 8,
+                                                  ),
+                                                  minimumSize: Size(0, 22),
+                                                ),
+                                                child: Text(
+                                                  "Pay Now",
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF603EA4),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ] else ...[
                                         Text(

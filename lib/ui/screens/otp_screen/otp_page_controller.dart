@@ -36,10 +36,10 @@ class OtpPageController extends GetxController {
           margin: const EdgeInsets.only(bottom: 10), // Snackbar ko upar shift karega
         );
         if(res.data!.user!.userProfile != null){
-        //   registered
+          //   registered
           Get.offAll(() => HomePageScreen());
         }else{
-        //   not registered
+          //   not registered
           Get.offAll(() => RegisterPageScreen());
         }
       }else{

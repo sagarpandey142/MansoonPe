@@ -3,13 +3,19 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../api_services/repo.dart';
 import '../../../modals/order_res.dart';
 
 class OpenOrderController extends GetxController {
   var orders = <Orders>[].obs;
+
+  static String formatDate(String dateString) {
+    try {
+      DateTime dateTime = DateTime.parse(dateString);
+      return DateFormat("d MMM yy, hh:mm a").format(dateTime);
+    } catch (e) {
+      return "Invalid Date"; // Error handling
+    }
+  }
 
   void showPaymentDialog(BuildContext context) {
     showModalBottomSheet(
@@ -60,7 +66,7 @@ class OpenOrderController extends GetxController {
                   children: [
                     Padding(
                       padding:
-                          const EdgeInsets.only(top: 5, left: 15, right: 15),
+                      const EdgeInsets.only(top: 5, left: 15, right: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -112,7 +118,7 @@ class OpenOrderController extends GetxController {
                   padding: const EdgeInsets.only(left: 20, right: 15),
                   child: Column(
                     crossAxisAlignment:
-                        CrossAxisAlignment.start, // Add this line
+                    CrossAxisAlignment.start, // Add this line
                     children: [
                       Row(
                         children: [
@@ -176,7 +182,7 @@ class OpenOrderController extends GetxController {
                       ),
                       Row(
                         crossAxisAlignment:
-                            CrossAxisAlignment.start, // Ensures alignment
+                        CrossAxisAlignment.start, // Ensures alignment
                         children: [
                           Text(
                             "Total Payment Received by you: ",
