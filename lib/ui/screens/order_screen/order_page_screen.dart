@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
 import 'package:projects/ui/screens/open_order_screen/open_order_screen.dart';
+import 'package:projects/ui/screens/open_project_screen/open_project_screen.dart';
+import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import 'package:projects/utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
@@ -87,7 +89,7 @@ class _OrderPageScreenState extends State<OrderPageScreen> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(() => OpenOrderScreen());
+                          Get.to(() => ProjectPageScreen());
                         },
                         child: Text(
                           "Go to Projects",

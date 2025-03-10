@@ -25,40 +25,6 @@ class _ApiClient implements ApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<KnowledgeRes> getKnowledgeCenter(KnowledgeReq kr) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(kr.toJson());
-    final _options = _setStreamType<KnowledgeRes>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'API/Service.svc/GetKnowledgeCenterAPI',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late KnowledgeRes _value;
-    try {
-      _value = KnowledgeRes.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
   Future<OtpRes> generateOtp(OtpReq kr) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -294,39 +260,6 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<OrdersRes> getOrders(dynamic kr) async{
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = kr;
-    final _options = _setStreamType<OrdersRes>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-      _dio.options,
-      'api/project/16',
-      queryParameters: queryParameters,
-      data: _data,
-    )
-        .copyWith(
-        baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late OrdersRes _value;
-    try {
-      _value = OrdersRes.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
   Future<DownloadRes> downloadFile(
     String endpoint,
     dynamic kr,
@@ -399,6 +332,75 @@ class _ApiClient implements ApiClient {
     return _value;
   }
 
+  @override
+  Future<OrdersRes> getOrders(
+    String endpoint,
+    dynamic kr,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = kr;
+    final _options = _setStreamType<OrdersRes>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'api/project/${endpoint}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OrdersRes _value;
+    try {
+      _value = OrdersRes.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<AllOrdersRes> getAllOrders(dynamic kr) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = kr;
+    final _options = _setStreamType<AllOrdersRes>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'api/order',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AllOrdersRes _value;
+    try {
+      _value = AllOrdersRes.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
@@ -428,6 +430,4 @@ class _ApiClient implements ApiClient {
 
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
-
-
 }

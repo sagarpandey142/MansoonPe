@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../api_services/repo.dart';
 import '../../../modals/add_material_res.dart';
+import '../../../modals/all_order_res.dart';
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import 'open_order_controller.dart';
@@ -19,6 +22,34 @@ class OpenOrderScreen extends StatefulWidget {
 class _OpenOrderScreenState extends State<OpenOrderScreen> {
   final OpenOrderController controller = Get.put(OpenOrderController());
   int _currentIndex = 2;
+  List<Orders> orders = [];
+  @override
+  void initState() {
+
+    super.initState();
+  }
+  getAllOrders() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+      // var mob= prefs.getString("phone") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getAllOrders({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        setState(() {
+          orders = res.data!.orders!;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

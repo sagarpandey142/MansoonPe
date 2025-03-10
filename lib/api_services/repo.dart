@@ -1,5 +1,6 @@
 import 'package:projects/modals/add_material_req.dart';
 import 'package:projects/modals/add_material_res.dart';
+import 'package:projects/modals/all_order_res.dart';
 import 'package:projects/modals/create_project_req.dart';
 import 'package:dio/dio.dart';
 import 'package:projects/modals/download_res.dart';
@@ -28,9 +29,7 @@ class Repository {
         : ApiClient(DioConfig.getInstance().getDio(token: token));
   }
 
-  Future<KnowledgeRes> getKnowledgeCenter(KnowledgeReq kr) async {
-    return await _apiReq.getKnowledgeCenter(kr);
-  }
+
 
   Future<OtpRes> generateOTP(OtpReq kr) async {
     return await _apiReq.generateOtp(kr);
@@ -69,7 +68,10 @@ class Repository {
     return await _apiReq.addMaterial(endpoint, kr);
   }
 
-  Future<OrdersRes> getOrders(dynamic kr) async {
-    return await _apiReq.getOrders(kr); // Ensure correct method is called
+  Future<OrdersRes> getOrders(String endpoint,dynamic kr) async {
+    return await _apiReq.getOrders(endpoint,kr);
+  }
+  Future<AllOrdersRes> getAllOrders(dynamic kr) async {
+    return await _apiReq.getAllOrders(kr);
   }
 }

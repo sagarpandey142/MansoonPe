@@ -32,8 +32,8 @@ class ProfilePageController extends GetxController {
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      // Get.snackbar("Error", "Something went wrong!",
+      //     backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 

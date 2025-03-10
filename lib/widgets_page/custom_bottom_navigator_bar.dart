@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:projects/modals/all_order_res.dart' as allorder;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api_services/repo.dart';
 import '../modals/project_res.dart';
@@ -23,13 +24,35 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   List<Projects> projects = [];
-  var orders = <Orders>[].obs;
+  List<allorder.Orders> orders = [];
 
   @override
   void initState() {
     super.initState();
     getProjects();
-    getOrders();
+    getAllOrders();
+  }
+  getAllOrders() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+      // var mob= prefs.getString("phone") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getAllOrders({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        setState(() {
+          orders = res.data!.orders!;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
+    }
   }
 
   getProjects() async {
@@ -48,38 +71,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
-    }
-  }
-
-  getOrders() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString("auth_token") ?? '';
-      Repository repo = Repository(token: token);
-      var res = await repo.getOrders({});
-
-      debugPrint("API Response: ${res.toJson()}"); // Log full response
-
-      if (res.status == 200) {
-        if (res.data == null || res.data!.orders == null) {
-          debugPrint("No orders found in the response.");
-        } else {
-          orders.value = res.data!.orders!.cast<Orders>();
-          debugPrint("Orders Length: ${orders.length}");
-        }
-      } else {
-        debugPrint("API returned status: ${res.status}");
-      }
-    } catch (e) {
-      debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
     }
   }
 
@@ -104,7 +99,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             projects.isNotEmpty ? Get.offNamed('/project') : Get.offNamed('/Createproject');
             break;
           case 2:
-            Get.offNamed('/orders');
+            orders.isNotEmpty ? Get.offNamed('/openOrder') : Get.offNamed('/orders');
             break;
           case 3:
             Get.offNamed('/profile');

@@ -1,9 +1,7 @@
-import 'package:projects/modals/project_res.dart' as project_res;
-
 class OrdersRes {
   int? status;
   String? message;
-  OrderData? data;
+  Data? data;
   String? timestamp;
 
   OrdersRes({this.status, this.message, this.data, this.timestamp});
@@ -11,12 +9,12 @@ class OrdersRes {
   OrdersRes.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? OrderData.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     timestamp = json['timestamp'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
     if (this.data != null) {
@@ -27,25 +25,113 @@ class OrdersRes {
   }
 }
 
-class OrderData {
-  List<project_res.Orders>? orders;
+class Data {
+  Project? project;
 
-  OrderData({this.orders});
+  Data({this.project});
 
-  OrderData.fromJson(Map<String, dynamic> json) {
-    if (json['project'] != null && json['project']['orders'] != null) {
-      orders = <project_res.Orders>[];
-      json['project']['orders'].forEach((v) {
-        orders!.add(project_res.Orders.fromJson(v));
-      });
-    }
+  Data.fromJson(Map<String, dynamic> json) {
+    project =
+    json['project'] != null ? Project.fromJson(json['project']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (project != null) {
+      data['project'] = project!.toJson();
+    }
+    return data;
+  }
+}
+
+class Project {
+  int? id;
+  String? name;
+  String? location;
+  String? contractFile;
+  int? budget;
+  String? status;
+  Credit? credit;
+  List<Orders>? orders;
+  String? createdOn;
+  String? updatedOn;
+
+  Project(
+      {this.id,
+        this.name,
+        this.location,
+        this.contractFile,
+        this.budget,
+        this.status,
+        this.credit,
+        this.orders,
+        this.createdOn,
+        this.updatedOn});
+
+  Project.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    location = json['location'];
+    contractFile = json['contractFile'];
+    budget = json['budget'];
+    status = json['status'];
+    credit =
+    json['credit'] != null ? Credit.fromJson(json['credit']) : null;
+    if (json['orders'] != null) {
+      orders = <Orders>[];
+      json['orders'].forEach((v) {
+        orders!.add(Orders.fromJson(v));
+      });
+    }
+    createdOn = json['createdOn'];
+    updatedOn = json['updatedOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['location'] = location;
+    data['contractFile'] = contractFile;
+    data['budget'] = budget;
+    data['status'] = status;
+    if (credit != null) {
+      data['credit'] = credit!.toJson();
+    }
     if (orders != null) {
       data['orders'] = orders!.map((v) => v.toJson()).toList();
     }
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
+    return data;
+  }
+}
+
+class Credit {
+  int? id;
+  int? credited;
+  int? consumed;
+  String? createdOn;
+  String? updatedOn;
+
+  Credit(
+      {this.id, this.credited, this.consumed, this.createdOn, this.updatedOn});
+
+  Credit.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    credited = json['credited'];
+    consumed = json['consumed'];
+    createdOn = json['createdOn'];
+    updatedOn = json['updatedOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['credited'] = credited;
+    data['consumed'] = consumed;
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
     return data;
   }
 }
@@ -62,18 +148,17 @@ class Orders {
   String? createdOn;
   String? updatedOn;
 
-  Orders({
-    this.id,
-    this.material,
-    this.cost,
-    this.dueDate,
-    this.quoteFile,
-    this.status,
-    this.supplierPayment,
-    this.contractorPayment,
-    this.createdOn,
-    this.updatedOn,
-  });
+  Orders(
+      {this.id,
+        this.material,
+        this.cost,
+        this.dueDate,
+        this.quoteFile,
+        this.status,
+        this.supplierPayment,
+        this.contractorPayment,
+        this.createdOn,
+        this.updatedOn});
 
   Orders.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -89,7 +174,7 @@ class Orders {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['material'] = material;
     data['cost'] = cost;

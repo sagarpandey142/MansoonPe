@@ -30,9 +30,9 @@ class ProjectPageController extends GetxController {
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red, colorText: Colors.white);
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:projects/modals/add_material_req.dart';
+import 'package:projects/modals/order_res.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -14,23 +15,19 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../api_services/repo.dart';
-import '../../../modals/project_res.dart';
-import '../../../model_class/project_model.dart';
 import 'package:dio/dio.dart' as dio;
+
+import '../../../modals/project_res.dart' as projectRes;
 
 class OpenProjectController extends GetxController {
   TextEditingController dateController = TextEditingController();
   String fileName = "";
 
   String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
-  var projects = <Projects>[].obs;
+  // var projects = <Projects>[].obs;
   var orders = <Orders>[].obs;
+  var project = Project().obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getOrders(); // ✅ Controller initialize hote hi orders fetch karein
-  }
 
   static void showTopMessage(BuildContext context, String message) {
     OverlayEntry overlayEntry = OverlayEntry(
@@ -83,20 +80,22 @@ class OpenProjectController extends GetxController {
     return formatter.format(number);
   }
 
-  getOrders() async {
+  getOrders(String projectId) async {
+
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("auth_token") ?? '';
       Repository repo = Repository(token: token);
-      var res = await repo.getOrders({});
+      var res = await repo.getOrders(projectId,{});
 
       debugPrint("API Response: ${res.toJson()}"); // Log full response
 
       if (res.status == 200) {
-        if (res.data == null || res.data!.orders == null) {
+        if (res.data == null || res.data!.project == null) {
           debugPrint("No orders found in the response.");
         } else {
-          orders.value = res.data!.orders!.cast<Orders>();
+          project.value=res.data!.project!;
+          orders.value = res.data!.project!.orders!;
           debugPrint("Orders Length: ${orders.length}");
         }
       } else {
@@ -104,39 +103,39 @@ class OpenProjectController extends GetxController {
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
     }
   }
 
-  getProjects() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString("auth_token") ?? '';
-      Repository repo = Repository(token: token);
-      var res = await repo.getProjects({});
-      debugPrint("VskingProfileRes:>>>$res");
-      if (res.status == 200) {
-        projects.value = res.data!.projects!;
-      }
-    } catch (e) {
-      debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
-    }
-  }
+  // getProjects() async {
+  //   try {
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     String token = prefs.getString("auth_token") ?? '';
+  //     Repository repo = Repository(token: token);
+  //     var res = await repo.getProjects({});
+  //     debugPrint("VskingProfileRes:>>>$res");
+  //     if (res.status == 200) {
+  //       projects.value = res.data!.projects!;
+  //     }
+  //   } catch (e) {
+  //     debugPrint("Error: $e");
+  //     // Get.snackbar("Error", "Something went wrong!",
+  //     //     snackPosition: SnackPosition.TOP,
+  //     //     backgroundColor: Colors.red,
+  //     //     colorText: Colors.white);
+  //   }
+  // }
 
-  var materialsList = <MaterialModel>[].obs; //  Define as RxList
+  // var materialsList = <MaterialModel>[].obs; //  Define as RxList
 
   Future<void> addMaterial(
       String name, String cost, String dueDate, context, projectID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("auth_token") ?? '';
-
+    cost = cost.replaceAll(',', '');
     try {
       AddMaterialReq req = AddMaterialReq();
       req.material = name;
@@ -145,9 +144,10 @@ class OpenProjectController extends GetxController {
       req.quoteFile = fileName;
       Repository repo = Repository(token: token);
       var res = await repo.addMaterialAPI(projectID.toString(), req);
-
+      debugPrint("MRES:>>$res");
       if (res.status == 201) {
-        showTopMessage(context, "Material Successfully Created!");
+        Navigator.pop(context);
+        // showTopMessage(context, "Material Successfully Created!");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Material Successfully Created!"),
@@ -155,11 +155,14 @@ class OpenProjectController extends GetxController {
             behavior: SnackBarBehavior.floating,
           ),
         );
+
+        getOrders(projectID);
       } else {
-        showTopMessage(context, "Something went wrong!");
+        showTopMessage(context,"${res.message}");
       }
-    } catch (e) {
-      showTopMessage(context, "Something went wrong!");
+    }on dio.DioException catch (e) {
+      debugPrint("VSKING:>>>${e.message}");
+      showTopMessage(context, "No enough credit");
     }
   }
 
@@ -206,6 +209,8 @@ class OpenProjectController extends GetxController {
                             textFieldWidget(
                               "Cost of Material",
                               controller: costController,
+                              isCostField: true
+
                             ),
                             SizedBox(height: 5),
                             _buildCostInfo(),
@@ -342,7 +347,7 @@ class OpenProjectController extends GetxController {
           controller.addMaterial(name.text.trim(), cost.text, date.text.trim(),
               context, projectID);
 
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF603EA4),
@@ -372,8 +377,8 @@ class OpenProjectController extends GetxController {
             ? () async {
                 DateTime? pickedDate = await showDatePicker(
                   context: Get.context!,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
+                  initialDate: DateTime.now().add(const Duration(days: 1)),
+                  firstDate: DateTime.now().add(const Duration(days: 1)),//DateTime.now().add(const Duration(days: 1)),
                   lastDate: DateTime(2100),
                 );
                 if (pickedDate != null) {
@@ -434,7 +439,7 @@ class OpenProjectController extends GetxController {
     );
   }
 
-  Future<void> downloadPDF(Projects project) async {
+  Future<void> downloadPDF(Project project) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("auth_token") ?? '';

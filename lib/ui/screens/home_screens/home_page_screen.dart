@@ -4,10 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/modals/order_res.dart' as oRes;
 import 'package:projects/modals/project_res.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
 import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
-import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_services/repo.dart';
 import '../../../utils/custom_colour.dart';
@@ -58,8 +58,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      // Get.snackbar("Error", "Something went wrong!",
+      //     backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
@@ -79,10 +79,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
       }
     } catch (e) {
       debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
     }
   }
 
@@ -307,7 +307,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ? Expanded(
                     child: ListView.builder(
                     padding: const EdgeInsets.only(left: 15, right: 15, top: 4),
-                    itemCount: projects.length,
+                    itemCount: projects.length > 2 ? 2 : projects.length,
                     itemBuilder: (context, index) {
                       final project = projects[index];
                       return Column(
@@ -321,11 +321,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             ),
                             child: InkWell(
                               onTap: () {
-                                var controller = Get.find<ProjectPageController>();
-                                var selectedProject = controller.projects[index];
-                                var selectedOrders = controller.projects[index].orders ?? []; // Ensure it's not null
 
-                                Get.to(() => OpenProjectScreen(project: selectedProject, orders: selectedOrders));
+                                var selectedProject = projects[index];
+                                // var selectedOrders = projects[index].orders ?? []; // Ensure it's not null
+
+                                Get.to(() => OpenProjectScreen(projectId: selectedProject.id.toString(),projectStatus: selectedProject.status!));
                               },
 
                               child: Row(

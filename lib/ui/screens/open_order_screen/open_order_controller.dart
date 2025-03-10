@@ -654,33 +654,7 @@ class OpenOrderController extends GetxController {
     );
   }
 
-  getOrders() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString("auth_token") ?? '';
-      Repository repo = Repository(token: token);
-      var res = await repo.getOrders({});
 
-      debugPrint("API Response: ${res.toJson()}"); // Log full response
-
-      if (res.status == 200) {
-        if (res.data == null || res.data!.orders == null) {
-          debugPrint("No orders found in the response.");
-        } else {
-          orders.value = res.data!.orders!.cast<Orders>();
-          debugPrint("Orders Length: ${orders.length}");
-        }
-      } else {
-        debugPrint("API returned status: ${res.status}");
-      }
-    } catch (e) {
-      debugPrint("Error: $e");
-      Get.snackbar("Error", "Something went wrong!",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
-    }
-  }
 
   var orderStatus = ''.obs; // Observable variable for status
 

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/modals/order_res.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_controller.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../create_project_screen/create_project_controller.dart';
@@ -94,7 +95,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                 var selectedProject = controller.projects[index];
                                 var selectedOrders = controller.projects[index].orders ?? []; // Ensure it's not null
 
-                                Get.to(() => OpenProjectScreen(project: selectedProject, orders: selectedOrders));
+                                Get.to(() => OpenProjectScreen(projectId: selectedProject.id.toString(), projectStatus: selectedProject.status.toString()));
                               },
 
                               child: Row(

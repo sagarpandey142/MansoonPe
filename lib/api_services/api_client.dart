@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:projects/modals/add_material_req.dart';
 import 'package:projects/modals/add_material_res.dart';
+import 'package:projects/modals/all_order_res.dart';
 import 'package:projects/modals/download_res.dart';
 import 'package:projects/modals/order_res.dart';
 import 'package:projects/modals/otp_req.dart';
@@ -23,8 +24,7 @@ part 'api_client.g.dart';
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
-  @POST(Apis.knowledgeCenterApi)
-  Future<KnowledgeRes> getKnowledgeCenter(@Body() KnowledgeReq kr);
+
 
   @POST(Apis.generateOTPApi)
   Future<OtpRes> generateOtp(@Body() OtpReq kr);
@@ -53,7 +53,9 @@ abstract class ApiClient {
   @POST("${Apis.createProjectApi}/{endpoint}/${Apis.orderApi}")
   Future<AddMaterialRes> addMaterial(@Path("endpoint") String endpoint,@Body() AddMaterialReq kr);
 
-  @GET(Apis.createOrdersApi) // Change to GET
-  Future<OrdersRes> getOrders(@Body() dynamic kr);
+  @GET("${Apis.createProjectApi}/{endpoint}")
+  Future<OrdersRes> getOrders(@Path("endpoint") String endpoint,@Body() dynamic kr);
 
+  @GET(Apis.allOrderApi)
+  Future<AllOrdersRes> getAllOrders(@Body() dynamic kr);
 }
