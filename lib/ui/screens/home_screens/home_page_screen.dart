@@ -677,41 +677,41 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Material(
-        color: Colors.transparent, // Avoid default material color
-        child: Container(
-          height: 80, // Keep the height same
-          decoration: BoxDecoration(
-            color: Colors.white, // Ensure white background
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2), // Very light shadow
-                spreadRadius: 0, // No extra spread
-                blurRadius: 1.5, // Slight blur for a thin effect
-                offset: Offset(0, -1), // Moves shadow slightly upwards
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: CustomBottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Material(
+      //   color: Colors.transparent, // Avoid default material color
+      //   child: Container(
+      //     height: 80, // Keep the height same
+      //     decoration: BoxDecoration(
+      //       color: Colors.white, // Ensure white background
+      //       borderRadius: BorderRadius.only(
+      //         topLeft: Radius.circular(20),
+      //         topRight: Radius.circular(20),
+      //       ),
+      //       boxShadow: [
+      //         BoxShadow(
+      //           color: Colors.black.withOpacity(0.2), // Very light shadow
+      //           spreadRadius: 0, // No extra spread
+      //           blurRadius: 1.5, // Slight blur for a thin effect
+      //           offset: Offset(0, -1), // Moves shadow slightly upwards
+      //         ),
+      //       ],
+      //     ),
+      //     child: ClipRRect(
+      //       borderRadius: BorderRadius.only(
+      //         topLeft: Radius.circular(20),
+      //         topRight: Radius.circular(20),
+      //       ),
+      //       child: CustomBottomNavigationBar(
+      //         currentIndex: _currentIndex,
+      //         onTap: (index) {
+      //           setState(() {
+      //             _currentIndex = index;
+      //           });
+      //         },
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

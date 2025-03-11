@@ -181,41 +181,41 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: Material(
-        color: Colors.transparent,
-        child: Container(
-          height: 80,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                spreadRadius: 0,
-                blurRadius: 1.5,
-                offset: Offset(0, -1),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: CustomBottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Material(
+      //   color: Colors.transparent,
+      //   child: Container(
+      //     height: 80,
+      //     decoration: BoxDecoration(
+      //       color: Colors.white,
+      //       borderRadius: BorderRadius.only(
+      //         topLeft: Radius.circular(20),
+      //         topRight: Radius.circular(20),
+      //       ),
+      //       boxShadow: [
+      //         BoxShadow(
+      //           color: Colors.black.withOpacity(0.2),
+      //           spreadRadius: 0,
+      //           blurRadius: 1.5,
+      //           offset: Offset(0, -1),
+      //         ),
+      //       ],
+      //     ),
+      //     child: ClipRRect(
+      //       borderRadius: BorderRadius.only(
+      //         topLeft: Radius.circular(20),
+      //         topRight: Radius.circular(20),
+      //       ),
+      //       child: CustomBottomNavigationBar(
+      //         currentIndex: _currentIndex,
+      //         onTap: (index) {
+      //           setState(() {
+      //             _currentIndex = index;
+      //           });
+      //         },
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 

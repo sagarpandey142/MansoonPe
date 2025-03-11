@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/api_services/api_service.dart';
 import 'package:projects/modals/reg_profile_req.dart';
+import 'package:projects/widgets_page/custom_bottom_navigator_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../home_screens/home_page_screen.dart';
 
@@ -63,7 +64,7 @@ class RegisterPageController extends GetxController {
       var res = await repo.registerProfile(req);
 
       if (res.status == 201) {
-        Get.to(() => HomePageScreen());
+        Get.to(() => CustomBottomNavigationBar());
         Future.delayed(Duration(milliseconds: 200), () {
           showSuccessPopup();
         });
