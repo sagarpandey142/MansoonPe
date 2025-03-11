@@ -98,16 +98,17 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             padding: const EdgeInsets.only(left: 15, top: 10),
             child: Row(
               children: [
-                _buildFilterButton("Date"),
-                SizedBox(width: 10),
-                _buildFilterButton("Status"),
-                SizedBox(width: 10),
-                _buildFilterButton("Project"),
+                _buildDateButton(context), // 📅 Date Button
+                SizedBox(width: 15), // 🛠 Adjusted spacing
+                _buildStatusDropdown(context), // 🏷 Status Dropdown (Pill Style)
+                SizedBox(width: 15), // 🛠 Adjusted spacing
+                _buildProjectDropdown(context), // 📌 Project Dropdown (Text-Based)
               ],
             ),
+
           ),
           SizedBox(
-            height: 15,
+            height: 25,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
@@ -231,7 +232,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             width: 1,
           ),
         ),
-        child: IntrinsicHeight( // Ensures all containers have the same height
+        child: IntrinsicHeight(
+          // Ensures all containers have the same height
           child: Column(
             children: [
               Padding(
@@ -268,8 +270,10 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                         ),
                       ),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      visualDensity: VisualDensity(horizontal: -3, vertical: -4),
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: -4),
+                      visualDensity:
+                          VisualDensity(horizontal: -3, vertical: -4),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4, vertical: -4),
                       backgroundColor: Color(0xFFF2F4F7),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -307,7 +311,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             Text(
                               order.createdOn != null
                                   ? DateFormat('dd-MM-yyyy hh:mm a')
-                                  .format(DateTime.parse(order.createdOn!))
+                                      .format(DateTime.parse(order.createdOn!))
                                   : "N/A",
                               style: GoogleFonts.poppins(
                                 fontStyle: FontStyle.italic,
@@ -379,7 +383,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               TextSpan(
                                 text: order.dueDate != null
                                     ? DateFormat('dd MMM, yyyy')
-                                    .format(DateTime.parse(order.dueDate!))
+                                        .format(DateTime.parse(order.dueDate!))
                                     : "N/A",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -419,21 +423,26 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,)
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),
       ),
     );
   }
-
 }
 
-Widget _buildFilterButton(String label) {
+
+// 📅 **Date Button**
+Widget _buildDateButton(BuildContext context) {
   return SizedBox(
-    height: 35, // Reduce height
+    height: 35,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        _selectDate(context);
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         side: BorderSide(color: Colors.grey.shade300, width: 1.3),
@@ -441,14 +450,13 @@ Widget _buildFilterButton(String label) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: EdgeInsets.symmetric(
-            vertical: 2, horizontal: 10), // Reduce width padding
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min, // Shrinks button to fit content
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            label,
+            "Date",
             style: GoogleFonts.poppins(
               color: Color(0x99000000),
               fontWeight: FontWeight.w500,
@@ -456,10 +464,189 @@ Widget _buildFilterButton(String label) {
             ),
           ),
           SizedBox(width: 3),
-          Icon(Icons.keyboard_arrow_down,
-              color: Colors.grey.shade500, size: 16), // Slightly smaller icon
+          Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16),
         ],
       ),
     ),
   );
+}
+
+
+// 📅 **Date Picker Function (Only Calendar)**
+Future<void> _selectDate(BuildContext context) async {
+  DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2101),
+  );
+  if (picked != null) {
+    print("Selected Date: ${picked.toLocal()}");
+  }
+}
+
+Widget _buildStatusDropdown(BuildContext context) {
+  return PopupMenuButton<String>(
+    onSelected: (value) {
+      print("Status Selected: $value");
+    },
+    offset: Offset(0, 40), // ✅ Correct dropdown positioning
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+      side: BorderSide(color: Colors.grey.shade300, width: 1.3),
+    ),
+    itemBuilder: (BuildContext context) {
+      return _getDropdownOptions("Status").map((option) {
+        return PopupMenuItem<String>(
+          value: option,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+            decoration: BoxDecoration(
+              color: _getStatusColor(option).withOpacity(0.10), // ✅ Light background
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: _getStatusColor(option), width: 0),
+            ),
+            child: Text(
+              option,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: _getStatusColor(option),
+              ),
+            ),
+          ),
+        );
+      }).toList();
+    },
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300, width: 1.3),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Status",
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Colors.black54,
+            ),
+          ),
+          SizedBox(width: 5),
+          Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16),
+        ],
+      ),
+    ),
+  );
+}
+
+// 📌 **Status Color Mapping**
+Color _getStatusColor(String status) {
+  switch (status) {
+    case "In-review":
+      return Color(0xFFB54708);
+    case "Approved":
+      return Color(0xFF027A48);
+    case "In-progress":
+      return Color(0xFF5925DC);
+    case "Closed":
+      return Color(0xFF344054);
+    case "Not Approved":
+      return Color(0xFFB52318);
+    default:
+      return Color(0xFFB54708);
+  }
+}
+
+Widget _buildProjectDropdown(BuildContext context) {
+  return PopupMenuButton<String>(
+    onSelected: (value) {
+      print("Project Selected: $value");
+    },
+    offset: Offset(0, 40),
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+      side: BorderSide(color: Colors.grey.shade300, width: 1.3),
+    ),
+    itemBuilder: (BuildContext context) {
+      return _getDropdownOptions("Project").map((option) {
+        return PopupMenuItem<String>(
+          value: option,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Status: ",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.grey.shade500, // ✅ Light grey for "Status"
+                  ),
+                ),
+                TextSpan(
+                  text: option,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: _getProjectOptionColor(option),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList();
+    },
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300, width: 1.3),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Project",
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Colors.black54,
+            ),
+          ),
+          SizedBox(width: 5),
+          Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16),
+        ],
+      ),
+    ),
+  );
+}
+
+// 📌 **Project Color Mapping**
+Color _getProjectOptionColor(String status) {
+  switch (status) {
+    case "Payment Sent to supplier":
+      return Colors.blue.shade900; // Dark blue
+    case "Pending":
+      return Colors.brown.shade700; // Brownish-red
+    case "Order not valid":
+      return Colors.red.shade700; // Red
+    default:
+      return Colors.black;
+  }
+}
+
+List<String> _getDropdownOptions(String type) {
+  if (type == "Status") {
+    return ["In-review", "Approved", "In-progress", "Closed", "Not Approved"];
+  } else if (type == "Project") {
+    return ["Payment Sent to supplier", "Pending", "Order not valid"];
+  }
+  return [];
 }
