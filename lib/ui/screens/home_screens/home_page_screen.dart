@@ -15,6 +15,7 @@ import '../create_project_screen/create_project_controller.dart';
 import '../open_project_screen/open_project_screen.dart';
 import '../profile_screen/profile_page_screen.dart';
 import '../projects_screen/project_page_controller.dart';
+import '../projects_screen/project_page_screen.dart';
 import '../register_screen/register_page_controller.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -285,10 +286,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Get.to(() => ProjectPageScreen());
                       projects.isNotEmpty
-                          ? Get.offNamed('/project')
-                          : Get.offNamed('/Createproject');
+                          ? ProjectPageScreen()
+                          : CreateProjectScreen();
                     },
                     child: Text(
                       "View all",
@@ -322,8 +322,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             child: InkWell(
                               onTap: () {
                                 var selectedProject = projects[index];
-                                // var selectedOrders = projects[index].orders ?? []; // Ensure it's not null
-
                                 Get.to(() => OpenProjectScreen(
                                     projectId: selectedProject.id.toString(),
                                     projectStatus: selectedProject.status!));
@@ -333,7 +331,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   Stack(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 10),
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
                                         child: Image.asset(
                                           "assets/images/proj_img_2.png",
                                           width: 120, // Increased width
@@ -348,7 +347,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                           width: 32, // Increased width
                                           decoration: BoxDecoration(
                                             color: Color(0x66000000),
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
                                           child: InkWell(
                                             onTap: () {
@@ -356,7 +356,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             },
                                             child: SvgPicture.asset(
                                               'assets/images/save_button.svg',
-                                              height: 14, // Adjusted for better scaling
+                                              height:
+                                                  14, // Adjusted for better scaling
                                               fit: BoxFit.scaleDown,
                                             ),
                                           ),
@@ -501,7 +502,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                         ),
                                         const SizedBox(height: 5),
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 10),
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
                                           child: Text(
                                             "- - - - - - - - - - - - - - - - - - - - - -",
                                             style: TextStyle(
@@ -511,15 +513,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             overflow: TextOverflow
                                                 .clip, // Clips overflowing text without showing "..."
                                             maxLines:
-                                            1, // Ensures text stays on a single line
+                                                1, // Ensures text stays on a single line
                                             softWrap:
-                                            false, // Prevents wrapping to the next line
+                                                false, // Prevents wrapping to the next line
                                           ),
                                         ),
                                         if ("${project.status}" ==
                                             "ACTIVE") ...[
                                           Padding(
-                                            padding: const EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 Text.rich(
@@ -528,12 +531,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                     style: const TextStyle(
                                                       color: Color(0xFF363F72),
                                                       fontSize: 10,
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                     ),
                                                     children: [
                                                       TextSpan(
-                                                        text: "\$${project.budget}",
-                                                        style: GoogleFonts.poppins(
+                                                        text:
+                                                            "\$${project.budget}",
+                                                        style:
+                                                            GoogleFonts.poppins(
                                                           color:
                                                               Color(0xFFB42318),
                                                           fontSize: 10,
@@ -547,15 +553,17 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 const Spacer(),
                                                 ElevatedButton(
                                                   onPressed: () {},
-                                                  style: ElevatedButton.styleFrom(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
                                                     backgroundColor:
                                                         Colors.transparent,
                                                     side: const BorderSide(
-                                                        color: Color(0xFF603EA4),
-                                                    width: 0.5
-                                                    ),
+                                                        color:
+                                                            Color(0xFF603EA4),
+                                                        width: 0.5),
                                                     elevation: 0,
-                                                    shape: RoundedRectangleBorder(
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               6),
@@ -571,7 +579,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                     "Pay Now",
                                                     style: const TextStyle(
                                                       color: Color(0xFF603EA4),
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                       fontSize: 10,
                                                     ),
                                                   ),
@@ -599,8 +608,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                              height: 20), // Space added between containers
+                          const SizedBox(height: 20), // Space added between containers
                         ],
                       );
                     },

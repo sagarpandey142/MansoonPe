@@ -28,7 +28,6 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Profile Card
           Padding(
             padding: const EdgeInsets.only(top: 50, left: 15),
             child: Row(
@@ -44,10 +43,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
               ],
             ),
           ),
-          Divider(
-            color: Colors.grey.shade200,
-            thickness: 2,
-          ),
+          Divider(color: Colors.grey.shade200, thickness: 2),
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
             child: Container(
@@ -69,84 +65,84 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                         radius: 30,
                         backgroundColor: Color(0xFFEDE7F6),
                         child: Obx(() => Text(
-                          controller.userName.value[0],
-                          style: GoogleFonts.poppins(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF402387),
-                          ),
-                        )),
+                              controller.userName.value[0],
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF402387),
+                              ),
+                            )),
                       ),
                       SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                            controller.userName.value,
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF402387),
-                            ),
-                          )),
+                                controller.userName.value,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF402387),
+                                ),
+                              )),
                           SizedBox(height: 4),
                           Obx(() => Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF8F9FC),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              'GSTIN: ${controller.gstin.value}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF363F72),
-                              ),
-                            ),
-                          )),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF8F9FC),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  'GSTIN: ${controller.gstin.value}',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF363F72),
+                                  ),
+                                ),
+                              )),
                         ],
                       ),
                     ],
                   ),
                   SizedBox(height: 20),
                   Obx(() => Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.60,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF8F9FC),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: InfoRow(
-                        label: 'PAN Number:',
-                        value: controller.panNumber.value,
-                        labelColor: Color(0xFF363F72), // Now this will work
-                      ),
-                    ),
-                  )),
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.60,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: InfoRow(
+                            label: 'PAN Number:',
+                            value: controller.panNumber.value,
+                            labelColor: Color(0xFF363F72), // Now this will work
+                          ),
+                        ),
+                      )),
                   SizedBox(height: 5),
                   Obx(() => Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width *
-                          0.55, // Reduced width
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF8F9FC),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: InfoRow(
-                        label: 'Mob No:',
-                        value: controller.mobileNumber.value,
-                        labelColor: Color(0xFF363F72),
-                      ),
-                    ),
-                  )),
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width *
+                              0.55, // Reduced width
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF8F9FC),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: InfoRow(
+                            label: 'Mob No:',
+                            value: controller.mobileNumber.value,
+                            labelColor: Color(0xFF363F72),
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -220,12 +216,10 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
             child: InkWell(
               onTap: () {
-                // Call the showLogoutBottomSheet method when the button is pressed
                 Get.put(ProfilePageController()).showLogoutBottomSheet(context);
               },
               child: Container(
@@ -307,6 +301,7 @@ class InfoRow extends StatelessWidget {
   final Color labelColor; // Change type from String to Color
 
   const InfoRow({
+    super.key,
     required this.label,
     required this.value,
     required this.labelColor, // Now accepts a Color directly

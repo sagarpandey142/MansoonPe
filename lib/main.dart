@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.noTransition,
       initialRoute: '/splash', // Set Splash Screen as the first route
       getPages: [
         GetPage(

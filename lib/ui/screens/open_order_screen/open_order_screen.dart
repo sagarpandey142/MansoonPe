@@ -25,7 +25,6 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       Get.put(OpenOrderController());
   final ProjectPageController projectPageController =
       Get.find<ProjectPageController>();
-
   int _currentIndex = 2;
   List<Orders> orders = [];
   String createdOn = "2025-02-25T05:07:14.337787";
@@ -98,18 +97,15 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             padding: const EdgeInsets.only(left: 15, top: 10),
             child: Row(
               children: [
-                _buildDateButton(context), // 📅 Date Button
-                SizedBox(width: 15), // 🛠 Adjusted spacing
-                _buildStatusDropdown(context), // 🏷 Status Dropdown (Pill Style)
-                SizedBox(width: 15), // 🛠 Adjusted spacing
-                _buildProjectDropdown(context), // 📌 Project Dropdown (Text-Based)
+                _buildDateButton(context),
+                SizedBox(width: 15),
+                _buildStatusDropdown(context),
+                SizedBox(width: 15),
+                _buildProjectDropdown(context),
               ],
             ),
-
           ),
-          SizedBox(
-            height: 25,
-          ),
+          SizedBox(height: 25),
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: Row(
@@ -120,9 +116,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     if (projectPageController.projects.isEmpty) {
                       return const Text("No projects available");
                     }
-
                     final project = projectPageController.projects.first;
-
                     return RichText(
                       text: TextSpan(
                         children: [
@@ -148,13 +142,11 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     );
                   }),
                 ),
-                Icon(Icons.arrow_forward_rounded,
-                    size: 15, color: Colors.black54),
+                Icon(Icons.arrow_forward_rounded, size: 15, color: Colors.black54),
               ],
             ),
           ),
-          SizedBox(height: 8), // kam height kar diya
-
+          SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
@@ -398,9 +390,9 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
-                            height: 40,
+                            height: 45,
                             child: ElevatedButton(
-                              onPressed: () {}, // TODO: Add Payment Logic
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF603EA4),
                                 shape: RoundedRectangleBorder(
@@ -434,8 +426,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
   }
 }
 
-
-// 📅 **Date Button**
+// Date Button
 Widget _buildDateButton(BuildContext context) {
   return SizedBox(
     height: 35,
@@ -464,15 +455,15 @@ Widget _buildDateButton(BuildContext context) {
             ),
           ),
           SizedBox(width: 3),
-          Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16),
+          Icon(Icons.keyboard_arrow_down,
+              color: Colors.grey.shade500, size: 16),
         ],
       ),
     ),
   );
 }
 
-
-// 📅 **Date Picker Function (Only Calendar)**
+// Date Picker Function (Only Calendar)
 Future<void> _selectDate(BuildContext context) async {
   DateTime? picked = await showDatePicker(
     context: context,
@@ -490,7 +481,7 @@ Widget _buildStatusDropdown(BuildContext context) {
     onSelected: (value) {
       print("Status Selected: $value");
     },
-    offset: Offset(0, 40), // ✅ Correct dropdown positioning
+    offset: Offset(0, 40), // Correct dropdown positioning
     color: Colors.white,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -503,7 +494,8 @@ Widget _buildStatusDropdown(BuildContext context) {
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
-              color: _getStatusColor(option).withOpacity(0.10), // ✅ Light background
+              color:
+                  _getStatusColor(option).withOpacity(0.10), // Light background
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: _getStatusColor(option), width: 0),
             ),
@@ -538,14 +530,15 @@ Widget _buildStatusDropdown(BuildContext context) {
             ),
           ),
           SizedBox(width: 5),
-          Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16),
+          Icon(Icons.keyboard_arrow_down,
+              color: Colors.grey.shade500, size: 16),
         ],
       ),
     ),
   );
 }
 
-// 📌 **Status Color Mapping**
+// Status Color Mapping
 Color _getStatusColor(String status) {
   switch (status) {
     case "In-review":
@@ -585,7 +578,7 @@ Widget _buildProjectDropdown(BuildContext context) {
                   text: "Status: ",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
-                    color: Colors.grey.shade500, // ✅ Light grey for "Status"
+                    color: Colors.grey.shade500, // Light grey for "Status"
                   ),
                 ),
                 TextSpan(
@@ -621,14 +614,15 @@ Widget _buildProjectDropdown(BuildContext context) {
             ),
           ),
           SizedBox(width: 5),
-          Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade500, size: 16),
+          Icon(Icons.keyboard_arrow_down,
+              color: Colors.grey.shade500, size: 16),
         ],
       ),
     ),
   );
 }
 
-// 📌 **Project Color Mapping**
+// Project Color Mapping
 Color _getProjectOptionColor(String status) {
   switch (status) {
     case "Payment Sent to supplier":

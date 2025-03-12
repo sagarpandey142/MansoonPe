@@ -104,10 +104,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       ],
                     ),
 
-                    Divider(
-                      color: Colors.grey.shade300,
-                      thickness: 2,
-                    ),
+                    Divider(color: Colors.grey.shade300, thickness: 2),
                     // Purchase Details
                     Obx(() {
                       return Padding(
@@ -123,11 +120,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                     style: GoogleFonts.poppins(
                                         color: Color(0xFF363F72),
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w600)),
+                                        fontWeight: FontWeight.w600),
+                                ),
                                 TextButton(
                                   onPressed: () {
-                                    controller
-                                        .downloadPDF(controller.project.value);
+                                    controller.downloadPDF(controller.project.value);
                                   },
                                   child: Text("Download Contract",
                                       style: GoogleFonts.poppins(
@@ -152,8 +149,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                     children: [
                                       TextSpan(
                                         text: HomePageController.formatDate(
-                                            controller
-                                                .project.value.createdOn!),
+                                            controller.project.value.createdOn!),
                                         // Calling controller function
                                         style: const TextStyle(
                                           color: Color(0xCC000000),
@@ -296,18 +292,12 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
+                            SizedBox(height: 5),
                           ],
                         ),
                       );
                     }),
-
-                    Divider(
-                      thickness: 1,
-                    ),
-
+                    Divider(thickness: 1),
                     Expanded(
                       child: Obx(() {
                         return controller.orders.isEmpty
@@ -341,10 +331,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               );
                       }),
                     ),
-
-                    Divider(
-                      color: Colors.grey.shade300,
-                    ),
+                    Divider(color: Colors.grey.shade300),
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Row(
@@ -608,9 +595,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
-                            height: 40,
+                            height: 45,
                             child: ElevatedButton(
-                              onPressed: () {}, // TODO: Add Payment Logic
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF603EA4),
                                 shape: RoundedRectangleBorder(

@@ -112,7 +112,6 @@ class OpenOrderController extends GetxController {
                   ],
                 ),
                 const SizedBox(height: 10),
-
                 // Project & Material name
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 15),
@@ -280,7 +279,6 @@ class OpenOrderController extends GetxController {
                     ],
                   ),
                 ),
-
                 SizedBox(height: 5,),
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
@@ -371,7 +369,7 @@ class OpenOrderController extends GetxController {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 8),
                             RichText(
                               text: TextSpan(
                                 children: [
@@ -396,9 +394,7 @@ class OpenOrderController extends GetxController {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         SizedBox(
                           width: double.infinity,
                           height: 42,
@@ -619,17 +615,13 @@ class OpenOrderController extends GetxController {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Close button
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {
-                        //
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFF0EEF6), // Light background
                         shape: RoundedRectangleBorder(
@@ -649,9 +641,7 @@ class OpenOrderController extends GetxController {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
               ],
             ),
           ),

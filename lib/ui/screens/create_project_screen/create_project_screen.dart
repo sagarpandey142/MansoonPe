@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_controller.dart';
 import 'package:projects/utils/custom_colour.dart';
-
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 
 class CreateProjectScreen extends StatefulWidget {
@@ -21,7 +20,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     Get.put(CreateProjectController());
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -155,5 +153,3 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 }
-
-

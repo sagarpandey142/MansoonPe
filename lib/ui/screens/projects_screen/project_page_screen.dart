@@ -40,7 +40,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
               children: [
                 Text(
                   "Projects",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 20),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w700, fontSize: 20),
                 ),
                 const Spacer(),
                 TextButton(
@@ -92,11 +93,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                             onTap: () {
                               var controller =
                                   Get.find<ProjectPageController>();
-                              var selectedProject = controller.projects[index];
-                              var selectedOrders =
-                                  controller.projects[index].orders ??
-                                      []; // Ensure it's not null
-
+                              var selectedProject = controller
+                                  .projects[index]; // Ensure it's not null
                               Get.to(() => OpenProjectScreen(
                                   projectId: selectedProject.id.toString(),
                                   projectStatus:
@@ -122,7 +120,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         width: 32, // Increased width
                                         decoration: BoxDecoration(
                                           color: Color(0x66000000),
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                         child: InkWell(
                                           onTap: () {
@@ -130,7 +129,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           },
                                           child: SvgPicture.asset(
                                             'assets/images/save_button.svg',
-                                            height: 14, // Adjusted for better scaling
+                                            height:
+                                                14, // Adjusted for better scaling
                                             fit: BoxFit.scaleDown,
                                           ),
                                         ),
@@ -138,7 +138,6 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                     ),
                                   ],
                                 ),
-
                                 Container(
                                   width: 1.5,
                                   height: 180, // Adjust height as needed
@@ -217,7 +216,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           ),
                                           children: [
                                             TextSpan(
-                                              text: "",
+                                              text: " ",
                                               style: const TextStyle(
                                                 color: Color(0xFF363F72),
                                                 fontSize: 10,
@@ -280,17 +279,15 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                             color: Color(0xFFEDEBF4),
                                             fontSize: 20,
                                           ),
-                                          overflow: TextOverflow
-                                              .clip, // Clips overflowing text without showing "..."
-                                          maxLines:
-                                              1, // Ensures text stays on a single line
-                                          softWrap:
-                                              false, // Prevents wrapping to the next line
+                                          overflow: TextOverflow.clip, // Clips overflowing text without showing "..."
+                                          maxLines: 1, // Ensures text stays on a single line
+                                          softWrap: false, // Prevents wrapping to the next line
                                         ),
                                       ),
                                       if ("${project.status}" == "ACTIVE") ...[
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 10),
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
                                           child: Row(
                                             children: [
                                               Text.rich(
@@ -303,11 +300,15 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: "\$${project.budget}", // $ साइन जोड़ दिया गया
-                                                      style: GoogleFonts.poppins(
-                                                        color: Color(0xFFB42318),
+                                                      text:
+                                                          "\$${project.budget}", // $ साइन जोड़ दिया गया
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color:
+                                                            Color(0xFFB42318),
                                                         fontSize: 10,
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
                                                     ),
                                                   ],
@@ -320,16 +321,17 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   backgroundColor:
                                                       Colors.transparent,
                                                   side: const BorderSide(
-                                                      color: Color(0xFF603EA4),
-                                                  width: 0.5,
+                                                    color: Color(0xFF603EA4),
+                                                    width: 0.5,
                                                   ),
                                                   elevation: 0,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(6),
+                                                        BorderRadius.circular(
+                                                            6),
                                                   ),
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                     vertical: 3,
                                                     horizontal: 8,
                                                   ),

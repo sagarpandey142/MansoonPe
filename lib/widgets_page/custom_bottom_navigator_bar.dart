@@ -156,7 +156,6 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -164,7 +163,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api_services/repo.dart';
 import '../modals/project_res.dart';
 import 'package:projects/modals/all_order_res.dart' as allorder;
+import '../ui/screens/create_project_screen/create_project_screen.dart';
 import '../ui/screens/home_screens/home_page_screen.dart';
+import '../ui/screens/open_order_screen/open_order_screen.dart';
 import '../ui/screens/order_screen/order_page_screen.dart';
 import '../ui/screens/profile_screen/profile_page_screen.dart';
 import '../ui/screens/projects_screen/project_page_screen.dart';
@@ -173,26 +174,32 @@ class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({super.key});
 
   @override
-  State<CustomBottomNavigationBar> createState() => _CustomBottomNavigationBarState();
+  State<CustomBottomNavigationBar> createState() =>
+      _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int currentIndex = 0;
   List<Projects> projects = [];
   List<allorder.Orders> orders = [];
-
-  final List<Widget> pages = [
-    HomePageScreen(),
-    ProjectPageScreen(),
-    OrderPageScreen(),
-    ProfilePageScreen(),
-  ];
+  List<Widget> pages = [];
 
   @override
   void initState() {
     super.initState();
     getProjects();
     getAllOrders();
+  }
+
+  void updatePages() {
+    setState(() {
+      pages = [
+        HomePageScreen(),
+        projects.isNotEmpty ? ProjectPageScreen() : CreateProjectScreen(),
+        orders.isNotEmpty ? OpenOrderScreen() : OrderPageScreen(),
+        ProfilePageScreen(),
+      ];
+    });
   }
 
   getAllOrders() async {
@@ -204,6 +211,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       if (res.status == 200) {
         setState(() {
           orders = res.data!.orders!;
+          updatePages(); // Update pages after fetching orders
         });
       }
     } catch (e) {
@@ -220,6 +228,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       if (res.status == 200) {
         setState(() {
           projects = res.data!.projects!;
+          updatePages(); // Update pages after fetching projects
         });
       }
     } catch (e) {
@@ -229,6 +238,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    // Show a loader while pages are still being initialized
+    if (pages.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(

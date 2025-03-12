@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projects/ui/screens/login_screen/login_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../api_services/repo.dart';
 
 class ProfilePageController extends GetxController {
@@ -72,9 +71,7 @@ class ProfilePageController extends GetxController {
                       width: MediaQuery.of(context).size.width * 0.2,
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Center(
                     child: Text(
                       "Do you Want to log out?",
@@ -85,9 +82,7 @@ class ProfilePageController extends GetxController {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Center(
                     child: Text(
                       "You will be logged out of this device",
@@ -123,7 +118,7 @@ class ProfilePageController extends GetxController {
                             },
                             style: ElevatedButton.styleFrom(
                               elevation:
-                              0, // Removes the shadow of the ElevatedButton
+                                  0, // Removes the shadow of the ElevatedButton
                               backgroundColor: Colors
                                   .transparent, // Transparent background for the button itself
                               shape: RoundedRectangleBorder(
@@ -141,7 +136,6 @@ class ProfilePageController extends GetxController {
                           ),
                         ),
                       ),
-
                       SizedBox(width: 10), // Space between the buttons
                       SizedBox(
                         width: 180, // Adjust width as per your requirement
@@ -184,7 +178,7 @@ class ProfilePageController extends GetxController {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPageScreen()),
-          (Route<dynamic> route) => false,
+      (Route<dynamic> route) => false,
     );
   }
 }

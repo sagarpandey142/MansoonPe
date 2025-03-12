@@ -1,3 +1,5 @@
 import 'package:get/get.dart';
 
-class OrderPageController extends GetxController {}
+class OrderPageController extends GetxController {
+
+}

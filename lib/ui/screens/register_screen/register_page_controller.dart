@@ -74,7 +74,6 @@ class RegisterPageController extends GetxController {
             backgroundColor: Colors.red,
             colorText: Colors.white);
       }
-
     } catch (e) {
       Get.snackbar("Error", "Something went wrong: $e",
           snackPosition: SnackPosition.TOP,
@@ -95,8 +94,7 @@ class RegisterPageController extends GetxController {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 10),
-            const Icon(Icons.check_circle,
-                size: 50, color: Color(0xFF00A460)),
+            const Icon(Icons.check_circle, size: 50, color: Color(0xFF00A460)),
             const SizedBox(height: 25),
             const Text(
               "You have registered successfully",
@@ -135,7 +133,9 @@ class RegisterPageController extends GetxController {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
@@ -143,7 +143,6 @@ class RegisterPageController extends GetxController {
       barrierColor: Colors.black.withOpacity(0.5),
     );
   }
-
 
   // Toggle Checkbox
   void toggleCheckbox(bool value) {
