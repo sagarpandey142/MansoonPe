@@ -1,8 +1,11 @@
 import 'package:projects/modals/add_material_req.dart';
 import 'package:projects/modals/add_material_res.dart';
 import 'package:projects/modals/all_order_res.dart';
+import 'package:projects/modals/cont_pay_req.dart';
+import 'package:projects/modals/cont_pay_res.dart';
 import 'package:projects/modals/create_project_req.dart';
 import 'package:dio/dio.dart';
+import 'package:projects/modals/credit_res.dart';
 import 'package:projects/modals/download_res.dart';
 import 'package:projects/modals/otp_req.dart';
 import 'package:projects/modals/otp_res.dart';
@@ -73,5 +76,18 @@ class Repository {
   }
   Future<AllOrdersRes> getAllOrders(dynamic kr) async {
     return await _apiReq.getAllOrders(kr);
+  }
+
+  Future<AllOrdersRes> getAllOrdersById(id,dynamic kr) async {
+    return await _apiReq.getOrdersById(id,kr);
+  }
+
+  Future<ContPayRes> payAmountAPI(
+      String endpoint, ContPayReq kr) async {
+    return await _apiReq.payAmount(endpoint, kr);
+  }
+
+  Future<CreditRes> getAllCredits(dynamic kr) async {
+    return await _apiReq.getAllCredits(kr);
   }
 }

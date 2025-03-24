@@ -3,11 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:projects/modals/all_order_res.dart' as all_order;
 import 'package:projects/ui/screens/open_project_screen/open_project_controller.dart';
 import '../../../modals/order_res.dart';
 import '../../../model_class/project_model.dart';
 import '../home_screens/home_page_controller.dart';
 import '../home_screens/home_page_screen.dart';
+import '../open_order_screen/open_order_controller.dart';
 
 class OpenProjectScreen extends StatefulWidget {
   final String projectStatus;
@@ -77,7 +79,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             String status = controller.project.value.status
                                 .toString()
                                 .toLowerCase();
@@ -88,8 +90,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               OpenProjectController.showTopMessage(context,
                                   "We are currently reviewing this project.");
                             } else if (status == 'active') {
-                              controller.showAddMaterialPopup(
-                                  context, controller.project.value.id);
+                               controller.showAddMaterialPopup(
+                                  context, controller.project.value.id).then((_){
+                                    debugPrint("Bottom sheet dismissed");
+                                    controller.getOrders(widget.projectId.toString());
+                              });
                             }
                           },
                           child: Text(
@@ -382,7 +387,10 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                       "We are currently reviewing this project.");
                                 } else if (status == 'active') {
                                   controller.showAddMaterialPopup(
-                                      context, controller.project.value.id);
+                                      context, controller.project.value.id).then((_){
+                                    debugPrint("Bottom sheet dismissed");
+                                    controller.getOrders(widget.projectId.toString());
+                                  });
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -463,15 +471,15 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF5925DC),
+                          color: _getStatusColor(order.status ?? "Pending"),//Color(0xFF5925DC),
                         ),
                       ),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity:
-                          VisualDensity(horizontal: -3, vertical: -4),
+                      VisualDensity(horizontal: -3, vertical: -4),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 4, vertical: -4),
-                      backgroundColor: Color(0xFFF2F4F7),
+                      EdgeInsets.symmetric(horizontal: 4, vertical: -4),
+                      backgroundColor: _getStatusColor(order.status ?? "Pending").withAlpha(10),//Color(0xFFF2F4F7),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
@@ -483,6 +491,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   ],
                 ),
               ),
+              // You start
               Padding(
                 padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
                 child: Container(
@@ -508,7 +517,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             Text(
                               order.createdOn != null
                                   ? DateFormat('dd-MM-yyyy hh:mm a')
-                                      .format(DateTime.parse(order.createdOn!))
+                                  .format(DateTime.parse(order.createdOn!))
                                   : "N/A",
                               style: GoogleFonts.poppins(
                                 fontStyle: FontStyle.italic,
@@ -580,7 +589,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               TextSpan(
                                 text: order.dueDate != null
                                     ? DateFormat('dd MMM, yyyy')
-                                        .format(DateTime.parse(order.dueDate!))
+                                    .format(DateTime.parse(order.dueDate!))
                                     : "N/A",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -591,13 +600,307 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ],
                           ),
                         ),
-                        if (order.status == "In-Progress") ...[
+                        // if (order.status.toString().toLowerCase() == "in_progress") ...[
+                        //   SizedBox(height: 12),
+                        //   SizedBox(
+                        //     width: double.infinity,
+                        //     height: 45,
+                        //     child: ElevatedButton(
+                        //       onPressed: () {},
+                        //       style: ElevatedButton.styleFrom(
+                        //         backgroundColor: Color(0xFF603EA4),
+                        //         shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //       ),
+                        //       child: Text(
+                        //         "Pay Now",
+                        //         style: GoogleFonts.poppins(
+                        //           fontSize: 14,
+                        //           fontWeight: FontWeight.w500,
+                        //           color: Colors.white,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ]
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              // You end
+              //   Mason Supplier Pay start
+              order.supplierPayment != null ?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, right: 10, left: 40),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF7F5F9),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Mason",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0x66363F72)),
+                                ),
+                                Text(
+                                  order.createdOn != null
+                                      ? DateFormat('dd-MM-yyyy hh:mm a')
+                                      .format(DateTime.parse(order.supplierPayment!.createdOn!))
+                                      : "N/A",
+                                  style: GoogleFonts.poppins(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 10,
+                                    color: Color(0x99363F72),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Supplier payment status: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xCC363F72),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: order.supplierPayment!.status!,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Sent Amount: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xCC363F72),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "₹${order.supplierPayment!.amount ?? 0}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Date of payment: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xCC363F72),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: order.dueDate != null
+                                        ? DateFormat('dd MMM, yyyy')
+                                        .format(DateTime.parse(order.supplierPayment!.updatedOn!))
+                                        : "N/A",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ) :
+              Container(),
+              order.supplierPayment != null ?
+              SizedBox(
+                height: 20,
+              ) : Container(),
+              //   Mason Supplier Pay end
+              //   Contractor Pay start
+              order.contractorPayment != null ?
+              Padding(
+                padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF7F5F9),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "You",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0x66363F72)),
+                            ),
+                            Text(
+                              order.contractorPayment!.createdOn != null
+                                  ? DateFormat('dd-MM-yyyy hh:mm a')
+                                  .format(DateTime.parse(order.contractorPayment!.createdOn!))
+                                  : "N/A",
+                              style: GoogleFonts.poppins(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 10,
+                                color: Color(0x99363F72),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        SizedBox(height: 5),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Last date of payment: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: order.contractorPayment!.dueDate != null
+                                    ? DateFormat('dd MMM, yyyy')
+                                    .format(DateTime.parse(order.contractorPayment!.dueDate!))
+                                    : "N/A",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Due Amount: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: "₹${order.contractorPayment!.dueAmount ?? 0}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        if (order.contractorPayment!.dueAmount! > 0 ) ...[
                           SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
                             height: 45,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                all_order.Orders mOrder= all_order.Orders(
+                                    id:order.id,
+                                    material:order.material,
+                                    cost:order.cost,
+                                    dueDate:order.dueDate,
+                                    quoteFile:order.quoteFile,
+                                    status:order.status,
+                                    user:null,
+                                    project:all_order.Project(
+                                        id:controller.project.value.id,
+                                        name:controller.project.value.name,
+                                        location:controller.project.value.location,
+                                        contractFile:controller.project.value.contractFile,
+                                        budget:controller.project.value.budget,
+                                        status:controller.project.value.status,
+                                        createdOn:controller.project.value.createdOn,
+                                        updatedOn:controller.project.value.updatedOn
+                                    ),
+                                    supplierPayment:all_order.SupplierPayment(
+                                        id:order.supplierPayment?.id,
+                                        amount:order.supplierPayment?.amount,
+                                        status:order.supplierPayment?.status,
+                                        createdOn:order.supplierPayment?.createdOn,
+                                        updatedOn:order.supplierPayment?.updatedOn
+                                    ),
+                                    contractorPayment:all_order.ContractorPayment(
+                                        id:order.contractorPayment?.id,
+                                        dueAmount:order.contractorPayment?.dueAmount,
+                                        dueDate:order.contractorPayment?.dueDate,
+                                        payments:order.contractorPayment?.payments,
+                                        createdOn:order.contractorPayment?.createdOn,
+                                        updatedOn:order.contractorPayment?.updatedOn
+                                    ),
+                                    createdOn:order.createdOn,
+                                    updatedOn:order.updatedOn
+
+                                );
+
+
+                                OpenOrderController().showPaymentDialog(context,mOrder).then((_){
+                                  debugPrint("Bottom sheet dismissed");
+                                  // getAllOrders();
+                                  controller.getOrders(widget.projectId.toString());
+                                });
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF603EA4),
                                 shape: RoundedRectangleBorder(
@@ -619,14 +922,241 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
               )
+                  :
+              Container(),
+              //   Contractor Pay end
             ],
           ),
         ),
       ),
     );
+    // return Padding(
+    //   padding: const EdgeInsets.symmetric(horizontal: 15),
+    //   child: Container(
+    //     margin: EdgeInsets.only(bottom: 15), // Adds space between cards
+    //     decoration: BoxDecoration(
+    //       color: Colors.white,
+    //       borderRadius: BorderRadius.circular(15),
+    //       border: Border.all(
+    //         color: Colors.grey.shade200, // Keeps grey border
+    //         width: 1,
+    //       ),
+    //     ),
+    //     child: IntrinsicHeight(
+    //       // Ensures all containers have the same height
+    //       child: Column(
+    //         children: [
+    //           Padding(
+    //             padding: const EdgeInsets.only(top: 12, left: 15, right: 10),
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //               children: [
+    //                 IntrinsicWidth(
+    //                   child: Container(
+    //                     padding: EdgeInsets.symmetric(horizontal: 8),
+    //                     decoration: BoxDecoration(
+    //                       color: Color(0xFFF8F9FC),
+    //                       borderRadius: BorderRadius.circular(15),
+    //                     ),
+    //                     child: Center(
+    //                       child: Text(
+    //                         "Order ID: ${order.id ?? 'N/A'}",
+    //                         style: TextStyle(
+    //                           fontSize: 10,
+    //                           fontWeight: FontWeight.w400,
+    //                           color: Color(0xFF363F72),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 Chip(
+    //                   label: Text(
+    //                     order.status ?? "Pending",
+    //                     style: TextStyle(
+    //                       fontSize: 10,
+    //                       fontWeight: FontWeight.w500,
+    //                       color: Color(0xFF5925DC),
+    //                     ),
+    //                   ),
+    //                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    //                   visualDensity:
+    //                       VisualDensity(horizontal: -3, vertical: -4),
+    //                   padding:
+    //                       EdgeInsets.symmetric(horizontal: 4, vertical: -4),
+    //                   backgroundColor: Color(0xFFF2F4F7),
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(12),
+    //                     side: BorderSide(
+    //                       color: Color(0xFFCBD5E1),
+    //                       width: 0.5,
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           Padding(
+    //             padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+    //             child: Container(
+    //               decoration: BoxDecoration(
+    //                 color: Color(0xFFF7F5F9),
+    //                 borderRadius: BorderRadius.circular(15),
+    //               ),
+    //               child: Padding(
+    //                 padding: const EdgeInsets.all(14.0),
+    //                 child: Column(
+    //                   crossAxisAlignment: CrossAxisAlignment.start,
+    //                   children: [
+    //                     Row(
+    //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                       children: [
+    //                         Text(
+    //                           "You",
+    //                           style: TextStyle(
+    //                               fontWeight: FontWeight.w400,
+    //                               fontSize: 12,
+    //                               color: Color(0x66363F72)),
+    //                         ),
+    //                         Text(
+    //                           order.createdOn != null
+    //                               ? DateFormat('dd-MM-yyyy hh:mm a')
+    //                                   .format(DateTime.parse(order.createdOn!))
+    //                               : "N/A",
+    //                           style: GoogleFonts.poppins(
+    //                             fontStyle: FontStyle.italic,
+    //                             fontWeight: FontWeight.w300,
+    //                             fontSize: 10,
+    //                             color: Color(0x99363F72),
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                     SizedBox(height: 5),
+    //                     RichText(
+    //                       text: TextSpan(
+    //                         children: [
+    //                           TextSpan(
+    //                             text: "Material Name: ",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.w400,
+    //                               fontSize: 12,
+    //                               color: Color(0xCC363F72),
+    //                             ),
+    //                           ),
+    //                           TextSpan(
+    //                             text: order.material ?? "N/A",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.w600,
+    //                               fontSize: 12,
+    //                               color: Color(0xFF363F72),
+    //                             ),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     SizedBox(height: 5),
+    //                     RichText(
+    //                       text: TextSpan(
+    //                         children: [
+    //                           TextSpan(
+    //                             text: "Cost of material: ",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.w400,
+    //                               fontSize: 12,
+    //                               color: Color(0xCC363F72),
+    //                             ),
+    //                           ),
+    //                           TextSpan(
+    //                             text: "₹${order.cost ?? 0}",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.w600,
+    //                               fontSize: 12,
+    //                               color: Color(0xFF363F72),
+    //                             ),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     SizedBox(height: 5),
+    //                     RichText(
+    //                       text: TextSpan(
+    //                         children: [
+    //                           TextSpan(
+    //                             text: "Requested payment due date: ",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.w400,
+    //                               fontSize: 12,
+    //                               color: Color(0xCC363F72),
+    //                             ),
+    //                           ),
+    //                           TextSpan(
+    //                             text: order.dueDate != null
+    //                                 ? DateFormat('dd MMM, yyyy')
+    //                                     .format(DateTime.parse(order.dueDate!))
+    //                                 : "N/A",
+    //                             style: TextStyle(
+    //                               fontWeight: FontWeight.w600,
+    //                               fontSize: 12,
+    //                               color: Color(0xFF363F72),
+    //                             ),
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ),
+    //                     if (order.status == "In-Progress") ...[
+    //                       SizedBox(height: 12),
+    //                       SizedBox(
+    //                         width: double.infinity,
+    //                         height: 45,
+    //                         child: ElevatedButton(
+    //                           onPressed: () {},
+    //                           style: ElevatedButton.styleFrom(
+    //                             backgroundColor: Color(0xFF603EA4),
+    //                             shape: RoundedRectangleBorder(
+    //                               borderRadius: BorderRadius.circular(10),
+    //                             ),
+    //                           ),
+    //                           child: Text(
+    //                             "Pay Now",
+    //                             style: GoogleFonts.poppins(
+    //                               fontSize: 14,
+    //                               fontWeight: FontWeight.w500,
+    //                               color: Colors.white,
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ]
+    //                   ],
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           SizedBox(
+    //             height: 20,
+    //           )
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+  }
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case "in_review":
+        return Color(0xFFB54708);
+      case "approved":
+        return Color(0xFF027A48);
+      case "in_progress":
+        return Color(0xFF5925DC);
+      case "closed":
+        return Color(0xFF344054);
+      case "not_approved":
+        return Color(0xFFB52318);
+      default:
+        return Color(0xFFB54708);
+    }
   }
 }

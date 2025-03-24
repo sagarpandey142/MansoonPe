@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projects/ui/screens/home_screens/home_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../login_screen/login_page_screen.dart';
 
 class SplashPageController extends GetxController {

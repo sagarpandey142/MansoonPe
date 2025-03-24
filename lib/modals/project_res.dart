@@ -9,18 +9,18 @@ class ProjectRes {
   ProjectRes.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     timestamp = json['timestamp'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['timestamp'] = this.timestamp;
+    data['timestamp'] = timestamp;
     return data;
   }
 }
@@ -34,15 +34,15 @@ class Data {
     if (json['projects'] != null) {
       projects = <Projects>[];
       json['projects'].forEach((v) {
-        projects!.add(new Projects.fromJson(v));
+        projects!.add(Projects.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.projects != null) {
-      data['projects'] = this.projects!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (projects != null) {
+      data['projects'] = projects!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -80,11 +80,11 @@ class Projects {
     budget = json['budget'];
     status = json['status'];
     credit =
-    json['credit'] != null ? new Credit.fromJson(json['credit']) : null;
+    json['credit'] != null ? Credit.fromJson(json['credit']) : null;
     if (json['orders'] != null) {
       orders = <Orders>[];
       json['orders'].forEach((v) {
-        orders!.add(new Orders.fromJson(v));
+        orders!.add(Orders.fromJson(v));
       });
     }
     createdOn = json['createdOn'];
@@ -92,21 +92,21 @@ class Projects {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['location'] = this.location;
-    data['contractFile'] = this.contractFile;
-    data['budget'] = this.budget;
-    data['status'] = this.status;
-    if (this.credit != null) {
-      data['credit'] = this.credit!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['location'] = location;
+    data['contractFile'] = contractFile;
+    data['budget'] = budget;
+    data['status'] = status;
+    if (credit != null) {
+      data['credit'] = credit!.toJson();
     }
-    if (this.orders != null) {
-      data['orders'] = this.orders!.map((v) => v.toJson()).toList();
+    if (orders != null) {
+      data['orders'] = orders!.map((v) => v.toJson()).toList();
     }
-    data['createdOn'] = this.createdOn;
-    data['updatedOn'] = this.updatedOn;
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
     return data;
   }
 }
@@ -130,12 +130,12 @@ class Credit {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['credited'] = this.credited;
-    data['consumed'] = this.consumed;
-    data['createdOn'] = this.createdOn;
-    data['updatedOn'] = this.updatedOn;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['credited'] = credited;
+    data['consumed'] = consumed;
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
     return data;
   }
 }
@@ -147,8 +147,9 @@ class Orders {
   String? dueDate;
   String? quoteFile;
   String? status;
-  Null? supplierPayment;
-  Null? contractorPayment;
+  int? project;
+  SupplierPayment? supplierPayment;
+  ContractorPayment? contractorPayment;
   String? createdOn;
   String? updatedOn;
 
@@ -159,6 +160,7 @@ class Orders {
         this.dueDate,
         this.quoteFile,
         this.status,
+        this.project,
         this.supplierPayment,
         this.contractorPayment,
         this.createdOn,
@@ -171,24 +173,135 @@ class Orders {
     dueDate = json['dueDate'];
     quoteFile = json['quoteFile'];
     status = json['status'];
-    supplierPayment = json['supplierPayment'];
-    contractorPayment = json['contractorPayment'];
+    project = json['project'];
+    supplierPayment = json['supplierPayment'] != null
+        ? SupplierPayment.fromJson(json['supplierPayment'])
+        : null;
+    contractorPayment = json['contractorPayment'] != null
+        ? ContractorPayment.fromJson(json['contractorPayment'])
+        : null;
     createdOn = json['createdOn'];
     updatedOn = json['updatedOn'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['material'] = this.material;
-    data['cost'] = this.cost;
-    data['dueDate'] = this.dueDate;
-    data['quoteFile'] = this.quoteFile;
-    data['status'] = this.status;
-    data['supplierPayment'] = this.supplierPayment;
-    data['contractorPayment'] = this.contractorPayment;
-    data['createdOn'] = this.createdOn;
-    data['updatedOn'] = this.updatedOn;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['material'] = material;
+    data['cost'] = cost;
+    data['dueDate'] = dueDate;
+    data['quoteFile'] = quoteFile;
+    data['status'] = status;
+    data['project'] = project;
+    if (supplierPayment != null) {
+      data['supplierPayment'] = supplierPayment!.toJson();
+    }
+    if (contractorPayment != null) {
+      data['contractorPayment'] = contractorPayment!.toJson();
+    }
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
+    return data;
+  }
+}
+
+class SupplierPayment {
+  int? id;
+  int? amount;
+  String? status;
+  String? createdOn;
+  String? updatedOn;
+
+  SupplierPayment(
+      {this.id, this.amount, this.status, this.createdOn, this.updatedOn});
+
+  SupplierPayment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    amount = json['amount'];
+    status = json['status'];
+    createdOn = json['createdOn'];
+    updatedOn = json['updatedOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['amount'] = amount;
+    data['status'] = status;
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
+    return data;
+  }
+}
+
+class ContractorPayment {
+  int? id;
+  int? dueAmount;
+  String? dueDate;
+  List<Payments>? payments;
+  String? createdOn;
+  String? updatedOn;
+
+  ContractorPayment(
+      {this.id,
+        this.dueAmount,
+        this.dueDate,
+        this.payments,
+        this.createdOn,
+        this.updatedOn});
+
+  ContractorPayment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    dueAmount = json['dueAmount'];
+    dueDate = json['dueDate'];
+    if (json['payments'] != null) {
+      payments = <Payments>[];
+      json['payments'].forEach((v) {
+        payments!.add(Payments.fromJson(v));
+      });
+    }
+    createdOn = json['createdOn'];
+    updatedOn = json['updatedOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['dueAmount'] = dueAmount;
+    data['dueDate'] = dueDate;
+    if (payments != null) {
+      data['payments'] = payments!.map((v) => v.toJson()).toList();
+    }
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
+    return data;
+  }
+}
+
+class Payments {
+  int? id;
+  int? amount;
+  String? mode;
+  String? createdOn;
+  String? updatedOn;
+
+  Payments({this.id, this.amount, this.mode, this.createdOn, this.updatedOn});
+
+  Payments.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    amount = json['amount'];
+    mode = json['mode'];
+    createdOn = json['createdOn'];
+    updatedOn = json['updatedOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['amount'] = amount;
+    data['mode'] = mode;
+    data['createdOn'] = createdOn;
+    data['updatedOn'] = updatedOn;
     return data;
   }
 }

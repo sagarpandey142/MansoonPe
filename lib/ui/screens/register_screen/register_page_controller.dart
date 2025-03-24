@@ -64,7 +64,7 @@ class RegisterPageController extends GetxController {
       var res = await repo.registerProfile(req);
 
       if (res.status == 201) {
-        Get.to(() => CustomBottomNavigationBar());
+        Get.to(() => HomePageScreen());
         Future.delayed(Duration(milliseconds: 200), () {
           showSuccessPopup();
         });

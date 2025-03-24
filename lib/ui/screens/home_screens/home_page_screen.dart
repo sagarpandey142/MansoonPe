@@ -19,6 +19,7 @@ import '../projects_screen/project_page_screen.dart';
 import '../register_screen/register_page_controller.dart';
 
 class HomePageScreen extends StatefulWidget {
+
   const HomePageScreen({super.key});
 
   @override
@@ -32,12 +33,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
   List<Projects> projects = [];
   List<Orders> orders = [];
   String businessName = "Business Name";
+  int totalCredits=0;
+  int totalSpends=0;
 
   @override
   void initState() {
     super.initState();
     getProfile();
     getProjects();
+    getCredits();
   }
 
   getProfile() async {
@@ -62,6 +66,29 @@ class _HomePageScreenState extends State<HomePageScreen> {
     }
   }
 
+  getCredits() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getAllCredits({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        try{
+          var data = res.data!.credits;
+          setState(() {
+            totalCredits = data!.fold(0, (sum, item) => sum + (item.credited!));
+            totalSpends = data.fold(0, (sum, item) => sum + (item.consumed!));
+          });
+        }catch(e){}
+
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      // Get.snackbar("Error", "Something went wrong!",
+      //     backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
   getProjects() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -196,7 +223,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 fontWeight: FontWeight.w400)),
                         SizedBox(height: 4),
                         Text(
-                          "₹ 0",
+                          "₹ ${totalCredits - totalSpends}",
                           style: TextStyle(
                             color: Color(0xFFFFFFFF),
                             fontSize: 18,
@@ -245,7 +272,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: " ₹ 0",
+                                    text: " ₹ $totalCredits",
                                     style: TextStyle(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 14,
@@ -287,8 +314,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   TextButton(
                     onPressed: () {
                       projects.isNotEmpty
-                          ? ProjectPageScreen()
-                          : CreateProjectScreen();
+                          ? Get.to(() =>
+                          ProjectPageScreen())
+                          : Get.to(() =>
+                          CreateProjectScreen());
                     },
                     child: Text(
                       "View all",
@@ -369,7 +398,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     width: 1.5,
                                     height: 180, // Adjust height as needed
                                     color: Colors.grey.shade100,
-                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                    margin: EdgeInsets.symmetric(horizontal: 4),
                                   ),
                                   SizedBox(
                                     width: 10,
@@ -552,7 +581,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 ),
                                                 const Spacer(),
                                                 ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    var selectedProject = projects[index];
+                                                    Get.to(() => OpenProjectScreen(
+                                                        projectId: selectedProject.id.toString(),
+                                                        projectStatus: selectedProject.status!));
+                                                  },
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     backgroundColor:
@@ -644,6 +678,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             ),
                             child: TextButton(
                               onPressed: () {
+
+                                // CustomBottomNavigationBar.globalKey.currentState?.changeTab(1);
+
                                 Get.to(() =>
                                     CreateProjectScreen()); // Navigate to CreateProjectScreen
                                 Future.delayed(Duration(milliseconds: 300), () {
@@ -685,41 +722,41 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ],
         ),
       ),
-      // bottomNavigationBar: Material(
-      //   color: Colors.transparent, // Avoid default material color
-      //   child: Container(
-      //     height: 80, // Keep the height same
-      //     decoration: BoxDecoration(
-      //       color: Colors.white, // Ensure white background
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(20),
-      //         topRight: Radius.circular(20),
-      //       ),
-      //       boxShadow: [
-      //         BoxShadow(
-      //           color: Colors.black.withOpacity(0.2), // Very light shadow
-      //           spreadRadius: 0, // No extra spread
-      //           blurRadius: 1.5, // Slight blur for a thin effect
-      //           offset: Offset(0, -1), // Moves shadow slightly upwards
-      //         ),
-      //       ],
-      //     ),
-      //     child: ClipRRect(
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(20),
-      //         topRight: Radius.circular(20),
-      //       ),
-      //       child: CustomBottomNavigationBar(
-      //         currentIndex: _currentIndex,
-      //         onTap: (index) {
-      //           setState(() {
-      //             _currentIndex = index;
-      //           });
-      //         },
-      //       ),
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar: Material(
+        color: Colors.transparent, // Avoid default material color
+        child: Container(
+          height: 80, // Keep the height same
+          decoration: BoxDecoration(
+            color: Colors.white, // Ensure white background
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Very light shadow
+                spreadRadius: 0, // No extra spread
+                blurRadius: 1.5, // Slight blur for a thin effect
+                offset: Offset(0, -1), // Moves shadow slightly upwards
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -142,7 +142,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                   width: 1.5,
                                   height: 180, // Adjust height as needed
                                   color: Colors.grey.shade100,
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
@@ -316,7 +316,16 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                               ),
                                               const Spacer(),
                                               ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  var controller =
+                                                  Get.find<ProjectPageController>();
+                                                  var selectedProject = controller
+                                                      .projects[index]; // Ensure it's not null
+                                                  Get.to(() => OpenProjectScreen(
+                                                      projectId: selectedProject.id.toString(),
+                                                      projectStatus:
+                                                      selectedProject.status.toString()));
+                                                },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       Colors.transparent,
@@ -378,41 +387,41 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
           ),
         ],
       ),
-      // bottomNavigationBar: Material(
-      //   color: Colors.transparent, // Avoid default material color
-      //   child: Container(
-      //     height: 80, // Keep the height same
-      //     decoration: BoxDecoration(
-      //       color: Colors.white, // Ensure white background
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(20),
-      //         topRight: Radius.circular(20),
-      //       ),
-      //       boxShadow: [
-      //         BoxShadow(
-      //           color: Colors.black.withOpacity(0.2), // Very light shadow
-      //           spreadRadius: 0, // No extra spread
-      //           blurRadius: 1.5, // Slight blur for a thin effect
-      //           offset: Offset(0, -1), // Moves shadow slightly upwards
-      //         ),
-      //       ],
-      //     ),
-      //     child: ClipRRect(
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(20),
-      //         topRight: Radius.circular(20),
-      //       ),
-      //       child: CustomBottomNavigationBar(
-      //         currentIndex: _currentIndex,
-      //         onTap: (index) {
-      //           setState(() {
-      //             _currentIndex = index;
-      //           });
-      //         },
-      //       ),
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar: Material(
+        color: Colors.transparent, // Avoid default material color
+        child: Container(
+          height: 80, // Keep the height same
+          decoration: BoxDecoration(
+            color: Colors.white, // Ensure white background
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2), // Very light shadow
+                spreadRadius: 0, // No extra spread
+                blurRadius: 1.5, // Slight blur for a thin effect
+                offset: Offset(0, -1), // Moves shadow slightly upwards
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

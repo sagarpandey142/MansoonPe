@@ -10,4 +10,7 @@ class Apis {
   static const String downloadApi = 'api/download';
   static const String orderApi = 'order';
   static const String allOrderApi = 'api/order';
+  static const String contractorPayApi = 'api/contractor-payment';
+  static const String payApi = 'payment';
+  static const String creditApi = 'api/credit';
 }

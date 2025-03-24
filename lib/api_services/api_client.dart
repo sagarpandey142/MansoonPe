@@ -12,8 +12,11 @@ import 'package:projects/modals/upload_res.dart';
 import 'package:projects/modals/verify_otp_req.dart';
 import 'package:projects/modals/verify_otp_res.dart';
 import 'package:retrofit/retrofit.dart';
+import '../modals/cont_pay_req.dart';
+import '../modals/cont_pay_res.dart';
 import '../modals/create_project_req.dart';
 import '../modals/create_project_res.dart';
+import '../modals/credit_res.dart';
 import '../modals/modal.dart';
 import '../modals/reg_profile_req.dart';
 import '../modals/reg_profile_res.dart';
@@ -58,4 +61,13 @@ abstract class ApiClient {
 
   @GET(Apis.allOrderApi)
   Future<AllOrdersRes> getAllOrders(@Body() dynamic kr);
+
+  @GET("${Apis.createProjectApi}/{endpoint}/${Apis.orderApi}")
+  Future<AllOrdersRes> getOrdersById(@Path("endpoint") String endpoint,@Body() dynamic kr);
+
+  @POST("${Apis.contractorPayApi}/{endpoint}/${Apis.payApi}")
+  Future<ContPayRes> payAmount(@Path("endpoint") String endpoint,@Body() ContPayReq kr);
+
+  @GET(Apis.creditApi)
+  Future<CreditRes> getAllCredits(@Body() dynamic kr);
 }

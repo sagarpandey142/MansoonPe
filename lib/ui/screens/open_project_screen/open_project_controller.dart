@@ -156,7 +156,7 @@ class OpenProjectController extends GetxController {
           ),
         );
 
-        getOrders(projectID);
+        // getOrders(projectID);
       } else {
         showTopMessage(context,"${res.message}");
       }
@@ -166,13 +166,13 @@ class OpenProjectController extends GetxController {
     }
   }
 
-  void showAddMaterialPopup(BuildContext context, projectID) {
+  Future<void> showAddMaterialPopup(BuildContext context, projectID) async {
     TextEditingController materialNameController = TextEditingController();
     TextEditingController costController = TextEditingController();
     TextEditingController dateController = TextEditingController();
     fileName = "";
 
-    showModalBottomSheet(
+    return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

@@ -100,7 +100,7 @@ class ProfilePageController extends GetxController {
                     children: [
                       // Add a SizedBox for spacing between buttons
                       SizedBox(
-                        width: 180, // Adjust width as per your requirement
+                        width: MediaQuery.of(context).size.width * 0.43, // Adjust width as per your requirement
                         height: 50, // Adjust height as per your requirement
                         child: Container(
                           decoration: BoxDecoration(
@@ -138,7 +138,7 @@ class ProfilePageController extends GetxController {
                       ),
                       SizedBox(width: 10), // Space between the buttons
                       SizedBox(
-                        width: 180, // Adjust width as per your requirement
+                        width: MediaQuery.of(context).size.width * 0.43, // Adjust width as per your requirement
                         height: 50, // Adjust height as per your requirement
                         child: ElevatedButton(
                           onPressed: () {

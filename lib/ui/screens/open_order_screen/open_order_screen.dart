@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_services/repo.dart';
 import '../../../modals/add_material_res.dart';
-import '../../../modals/all_order_res.dart';
+import '../../../modals/all_order_res.dart' as all_order;
+import '../../../modals/project_res.dart';
 import '../../../utils/custom_colour.dart';
 import '../../../widgets_page/custom_bottom_navigator_bar.dart';
 import '../projects_screen/project_page_controller.dart';
@@ -26,14 +27,46 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
   final ProjectPageController projectPageController =
       Get.find<ProjectPageController>();
   int _currentIndex = 2;
-  List<Orders> orders = [];
-  String createdOn = "2025-02-25T05:07:14.337787";
+  List<all_order.Orders> orders = [];
+  List<all_order.Orders> originalOrders = [];
+  List<Projects> projects = [];
+  List<Projects> filteredProjects=[];
+  String selectedProject="Project";
+  String selectedStatus="Status";
+  String selectedDate="Date";
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    getProjects();
     getAllOrders();
   }
+
+  getProjects() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+      // var mob= prefs.getString("phone") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getProjects({});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        setState(() {
+          projects = res.data!.projects!;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
+    }
+  }
+
 
   getAllOrders() async {
     try {
@@ -47,6 +80,31 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       if (res.status == 200) {
         setState(() {
           orders = res.data!.orders!;
+          originalOrders=orders;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      // Get.snackbar("Error", "Something went wrong!",
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white);
+    }
+  }
+
+  getAllOrdersById(id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("auth_token") ?? '';
+      // var uid = prefs.getString("id") ?? '';
+      // var mob= prefs.getString("phone") ?? '';
+      Repository repo = Repository(token: token);
+      var res = await repo.getAllOrdersById(id,{});
+      debugPrint("VskingProfileRes:>>>$res");
+      if (res.status == 200) {
+        setState(() {
+          orders = res.data!.orders!;
+          originalOrders=orders;
         });
       }
     } catch (e) {
@@ -65,18 +123,75 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       ShaderMask(
+          //         shaderCallback: (Rect bounds) {
+          //           return LinearGradient(
+          //             colors: [
+          //               CustomColor.primaryColor,
+          //               CustomColor.secondaryColor
+          //             ],
+          //           ).createShader(bounds);
+          //         },
+          //         child: Text(
+          //           "Orders",
+          //           style: GoogleFonts.poppins(
+          //             fontSize: 20,
+          //             fontWeight: FontWeight.w700,
+          //             color: Color(0xCC000000),
+          //           ),
+          //         ),
+          //       ),
+          //       Icon(Icons.search, color: Colors.grey),
+          //     ],
+          //   ),
+          // ),
           Padding(
-            padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ShaderMask(
+                _isSearching
+                    ? Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    autofocus: true,
+                    onChanged: (value) {
+                      setState(() {
+                        orders = originalOrders
+                            .where((order) => order.material.toString().toLowerCase().contains(value.toString().toLowerCase()))
+                            .toList();
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Search orders...",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.close, color: Colors.grey),
+                        onPressed: () {
+                          setState(() {
+                            _isSearching = false;
+                            _searchController.clear();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                )
+                    : ShaderMask(
                   shaderCallback: (Rect bounds) {
                     return LinearGradient(
-                      colors: [
-                        CustomColor.primaryColor,
-                        CustomColor.secondaryColor
-                      ],
+                      colors: [CustomColor.primaryColor, CustomColor.secondaryColor],
                     ).createShader(bounds);
                   },
                   child: Text(
@@ -88,7 +203,14 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     ),
                   ),
                 ),
-                Icon(Icons.search, color: Colors.grey),
+                IconButton(
+                  icon: Icon(Icons.search, color: Colors.grey),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -106,18 +228,21 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             ),
           ),
           SizedBox(height: 25),
+          filteredProjects.isNotEmpty ?
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Obx(() {
-                    if (projectPageController.projects.isEmpty) {
-                      return const Text("No projects available");
-                    }
-                    final project = projectPageController.projects.first;
-                    return RichText(
+                  // child: Obx(() {
+                    // if (filteredProjects.isEmpty) {
+                    //   return const Text("No projects available");
+                    // }
+                    // final project = filteredProjects.isNotEmpty ? filteredProjects[0] : null;
+                    // return
+                     child:
+                      RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
@@ -130,7 +255,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           ),
                           TextSpan(
                             text:
-                                '${project.name ?? "N/A"}, ${project.location ?? "N/A"}',
+                                '${filteredProjects[0].name ?? "N/A"}, ${filteredProjects[0].location ?? "N/A"}',
                             style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -139,21 +264,22 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           ),
                         ],
                       ),
-                    );
-                  }),
+                    )
+                  // }),
                 ),
                 Icon(Icons.arrow_forward_rounded, size: 15, color: Colors.black54),
               ],
             ),
-          ),
+          ) : Container(),
           SizedBox(height: 8),
+          filteredProjects.isNotEmpty ?
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Date: ${OpenOrderController.formatDate(createdOn)}",
+                  "Date: ${OpenOrderController.formatDate(filteredProjects[0].createdOn.toString())}",
                   style: const TextStyle(
                     color: Color(0xE6363F72),
                     fontSize: 12,
@@ -162,7 +288,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                 ),
               ],
             ),
-          ),
+          ) : Container(),
+
           Flexible(
             child: ListView.builder(
               itemCount: orders.length,
@@ -173,45 +300,45 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
           ),
         ],
       ),
-      // bottomNavigationBar: Material(
-      //   color: Colors.transparent,
-      //   child: Container(
-      //     height: 80,
-      //     decoration: BoxDecoration(
-      //       color: Colors.white,
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(20),
-      //         topRight: Radius.circular(20),
-      //       ),
-      //       boxShadow: [
-      //         BoxShadow(
-      //           color: Colors.black.withOpacity(0.2),
-      //           spreadRadius: 0,
-      //           blurRadius: 1.5,
-      //           offset: Offset(0, -1),
-      //         ),
-      //       ],
-      //     ),
-      //     child: ClipRRect(
-      //       borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(20),
-      //         topRight: Radius.circular(20),
-      //       ),
-      //       child: CustomBottomNavigationBar(
-      //         currentIndex: _currentIndex,
-      //         onTap: (index) {
-      //           setState(() {
-      //             _currentIndex = index;
-      //           });
-      //         },
-      //       ),
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar: Material(
+        color: Colors.transparent,
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 1.5,
+                offset: Offset(0, -1),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: CustomBottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget buildOrderCard(Orders order) {
+  Widget buildOrderCard(all_order.Orders order) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
@@ -258,7 +385,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF5925DC),
+                          color: _getStatusColor(order.status ?? "Pending"),//Color(0xFF5925DC),
                         ),
                       ),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -266,7 +393,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           VisualDensity(horizontal: -3, vertical: -4),
                       padding:
                           EdgeInsets.symmetric(horizontal: 4, vertical: -4),
-                      backgroundColor: Color(0xFFF2F4F7),
+                      backgroundColor: _getStatusColor(order.status ?? "Pending").withAlpha(10),//Color(0xFFF2F4F7),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
@@ -278,6 +405,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   ],
                 ),
               ),
+              // You start
               Padding(
                 padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
                 child: Container(
@@ -386,13 +514,267 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ],
                           ),
                         ),
-                        if (order.status == "In-Progress") ...[
+                        // if (order.status.toString().toLowerCase() == "in_progress") ...[
+                        //   SizedBox(height: 12),
+                        //   SizedBox(
+                        //     width: double.infinity,
+                        //     height: 45,
+                        //     child: ElevatedButton(
+                        //       onPressed: () {},
+                        //       style: ElevatedButton.styleFrom(
+                        //         backgroundColor: Color(0xFF603EA4),
+                        //         shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //       ),
+                        //       child: Text(
+                        //         "Pay Now",
+                        //         style: GoogleFonts.poppins(
+                        //           fontSize: 14,
+                        //           fontWeight: FontWeight.w500,
+                        //           color: Colors.white,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ]
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              // You end
+            //   Mason Supplier Pay start
+              order.supplierPayment != null ?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, right: 10, left: 40),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF7F5F9),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Mason",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0x66363F72)),
+                                ),
+                                Text(
+                                  order.createdOn != null
+                                      ? DateFormat('dd-MM-yyyy hh:mm a')
+                                      .format(DateTime.parse(order.supplierPayment!.createdOn!))
+                                      : "N/A",
+                                  style: GoogleFonts.poppins(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 10,
+                                    color: Color(0x99363F72),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Supplier payment status: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xCC363F72),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: order.supplierPayment!.status!,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Sent Amount: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xCC363F72),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "₹${order.supplierPayment!.amount ?? 0}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Date of payment: ",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: Color(0xCC363F72),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: order.dueDate != null
+                                        ? DateFormat('dd MMM, yyyy')
+                                        .format(DateTime.parse(order.supplierPayment!.updatedOn!))
+                                        : "N/A",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: Color(0xFF363F72),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ) :
+              Container(),
+              order.supplierPayment != null ?
+              SizedBox(
+                height: 20,
+              ) : Container(),
+            //   Mason Supplier Pay end
+              //   Contractor Pay start
+              order.contractorPayment != null ?
+              Padding(
+                padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF7F5F9),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "You",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0x66363F72)),
+                            ),
+                            Text(
+                              order.contractorPayment!.createdOn != null
+                                  ? DateFormat('dd-MM-yyyy hh:mm a')
+                                  .format(DateTime.parse(order.contractorPayment!.createdOn!))
+                                  : "N/A",
+                              style: GoogleFonts.poppins(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 10,
+                                color: Color(0x99363F72),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        SizedBox(height: 5),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Last date of payment: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: order.contractorPayment!.dueDate != null
+                                    ? DateFormat('dd MMM, yyyy')
+                                    .format(DateTime.parse(order.contractorPayment!.dueDate!))
+                                    : "N/A",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Due Amount: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Color(0xCC363F72),
+                                ),
+                              ),
+                              TextSpan(
+                                text: "₹${order.contractorPayment!.dueAmount ?? 0}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        if (order.contractorPayment!.dueAmount! > 0 ) ...[
                           SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
                             height: 45,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                OpenOrderController().showPaymentDialog(context,order).then((_){
+                                  debugPrint("Bottom sheet dismissed");
+                                  getAllOrders();
+                                });
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF603EA4),
                                 shape: RoundedRectangleBorder(
@@ -414,213 +796,245 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
               )
+                  :
+              Container(),
+              //   Contractor Pay end
             ],
           ),
         ),
       ),
     );
   }
-}
 
-// Date Button
-Widget _buildDateButton(BuildContext context) {
-  return SizedBox(
-    height: 35,
-    child: ElevatedButton(
-      onPressed: () {
-        _selectDate(context);
+
+  Widget _buildProjectDropdown(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: (value) {
+        print("Project Selected: $value");
+        getAllOrdersById(value);
+        setState(() {
+          filteredProjects = projects
+              .where((project) => project.id.toString().toLowerCase() == value.toLowerCase())
+              .toList();
+          if(filteredProjects.isNotEmpty){
+            // setState(() {
+              selectedProject = filteredProjects[0].name!;
+            // });
+          }
+        });
+
+
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
+      offset: Offset(0, 40),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
         side: BorderSide(color: Colors.grey.shade300, width: 1.3),
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Date",
-            style: GoogleFonts.poppins(
-              color: Color(0x99000000),
-              fontWeight: FontWeight.w500,
-              fontSize: 12,
-            ),
-          ),
-          SizedBox(width: 3),
-          Icon(Icons.keyboard_arrow_down,
-              color: Colors.grey.shade500, size: 16),
-        ],
-      ),
-    ),
-  );
-}
-
-// Date Picker Function (Only Calendar)
-Future<void> _selectDate(BuildContext context) async {
-  DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(2000),
-    lastDate: DateTime(2101),
-  );
-  if (picked != null) {
-    print("Selected Date: ${picked.toLocal()}");
-  }
-}
-
-Widget _buildStatusDropdown(BuildContext context) {
-  return PopupMenuButton<String>(
-    onSelected: (value) {
-      print("Status Selected: $value");
-    },
-    offset: Offset(0, 40), // Correct dropdown positioning
-    color: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-      side: BorderSide(color: Colors.grey.shade300, width: 1.3),
-    ),
-    itemBuilder: (BuildContext context) {
-      return _getDropdownOptions("Status").map((option) {
-        return PopupMenuItem<String>(
-          value: option,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-            decoration: BoxDecoration(
-              color:
-                  _getStatusColor(option).withOpacity(0.10), // Light background
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: _getStatusColor(option), width: 0),
-            ),
-            child: Text(
-              option,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: _getStatusColor(option),
+      itemBuilder: (BuildContext context) {
+        return projects.map((option) {
+          return PopupMenuItem<String>(
+            value: option.id.toString(),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: Colors.grey.shade500, // Light grey for "Status"
+                    ),
+                  ),
+                  TextSpan(
+                    text: option.name,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: _getProjectOptionColor('default'),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        );
-      }).toList();
-    },
-    child: Container(
-      padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300, width: 1.3),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Status",
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Colors.black54,
+          );
+        }).toList();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300, width: 1.3),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              selectedProject,
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.black54,
+              ),
             ),
-          ),
-          SizedBox(width: 5),
-          Icon(Icons.keyboard_arrow_down,
-              color: Colors.grey.shade500, size: 16),
-        ],
+            SizedBox(width: 5),
+            Icon(Icons.keyboard_arrow_down,
+                color: Colors.grey.shade500, size: 16),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
+
+
+  Widget _buildStatusDropdown(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: (value) {
+        print("Status Selected: $value");
+        setState(() {
+          selectedStatus=value;
+          orders = originalOrders
+          .where((order) => order.status.toString().toLowerCase().contains(value.toString().toLowerCase()))
+              .toList();
+        });
+      },
+      offset: Offset(0, 40), // Correct dropdown positioning
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Colors.grey.shade300, width: 1.3),
+      ),
+      itemBuilder: (BuildContext context) {
+        return _getDropdownOptions("Status").map((option) {
+          return PopupMenuItem<String>(
+            value: option,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+              decoration: BoxDecoration(
+                color:
+                _getStatusColor(option).withOpacity(0.10), // Light background
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: _getStatusColor(option), width: 0),
+              ),
+              child: Text(
+                option,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: _getStatusColor(option),
+                ),
+              ),
+            ),
+          );
+        }).toList();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300, width: 1.3),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              selectedStatus,
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.black54,
+              ),
+            ),
+            SizedBox(width: 5),
+            Icon(Icons.keyboard_arrow_down,
+                color: Colors.grey.shade500, size: 16),
+          ],
+        ),
+      ),
+    );
+  }
+// Date Picker Function (Only Calendar)
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+
+      String formattedDate = DateFormat('yyyy-MM-dd').format(picked.toLocal());
+      setState(() {
+        selectedDate = formattedDate;
+        orders = originalOrders
+            .where((order) => order.dueDate.toString().toLowerCase().contains(formattedDate.toString().toLowerCase()))
+            .toList();
+      });
+      print("Selected Date: ${picked.toLocal()},$formattedDate");
+    }
+  }
+  // Date Button
+  Widget _buildDateButton(BuildContext context) {
+    return SizedBox(
+      height: 35,
+      child: ElevatedButton(
+        onPressed: () {
+          _selectDate(context);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          side: BorderSide(color: Colors.grey.shade300, width: 1.3),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              selectedDate,
+              style: GoogleFonts.poppins(
+                color: Color(0x99000000),
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(width: 3),
+            Icon(Icons.keyboard_arrow_down,
+                color: Colors.grey.shade500, size: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
+
+
+
 
 // Status Color Mapping
 Color _getStatusColor(String status) {
-  switch (status) {
-    case "In-review":
+  switch (status.toLowerCase()) {
+    case "in_review":
       return Color(0xFFB54708);
-    case "Approved":
+    case "approved":
       return Color(0xFF027A48);
-    case "In-progress":
+    case "in_progress":
       return Color(0xFF5925DC);
-    case "Closed":
+    case "closed":
       return Color(0xFF344054);
-    case "Not Approved":
+    case "not_approved":
       return Color(0xFFB52318);
     default:
       return Color(0xFFB54708);
   }
 }
 
-Widget _buildProjectDropdown(BuildContext context) {
-  return PopupMenuButton<String>(
-    onSelected: (value) {
-      print("Project Selected: $value");
-    },
-    offset: Offset(0, 40),
-    color: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-      side: BorderSide(color: Colors.grey.shade300, width: 1.3),
-    ),
-    itemBuilder: (BuildContext context) {
-      return _getDropdownOptions("Project").map((option) {
-        return PopupMenuItem<String>(
-          value: option,
-          child: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: "Status: ",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    color: Colors.grey.shade500, // Light grey for "Status"
-                  ),
-                ),
-                TextSpan(
-                  text: option,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: _getProjectOptionColor(option),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList();
-    },
-    child: Container(
-      padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300, width: 1.3),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Project",
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Colors.black54,
-            ),
-          ),
-          SizedBox(width: 5),
-          Icon(Icons.keyboard_arrow_down,
-              color: Colors.grey.shade500, size: 16),
-        ],
-      ),
-    ),
-  );
-}
 
 // Project Color Mapping
 Color _getProjectOptionColor(String status) {
@@ -638,7 +1052,7 @@ Color _getProjectOptionColor(String status) {
 
 List<String> _getDropdownOptions(String type) {
   if (type == "Status") {
-    return ["In-review", "Approved", "In-progress", "Closed", "Not Approved"];
+    return ["In_review", "Approved", "In_progress", "Closed", "Not_Approved"];
   } else if (type == "Project") {
     return ["Payment Sent to supplier", "Pending", "Order not valid"];
   }
