@@ -122,14 +122,14 @@ class CreateProjectController extends ChangeNotifier {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 4,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: Text(fileName),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 2,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),

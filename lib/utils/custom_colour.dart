@@ -13,5 +13,6 @@ class CustomColor {
   static const Color blure = Color.fromRGBO(0, 0, 0, 0.5);
   static const Color black100Light = Color(0xFF21242C);
   static const Color black200 = Color(0xFF1C2025);
+  static const Color blackTrans = Color(0x32252526);
   static const Color black300 = Color(0xFF002435);
 }

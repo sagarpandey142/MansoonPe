@@ -77,14 +77,21 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Obx(() => Text(
-                                controller.userName.value,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF402387),
+                          Obx(() =>
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Text(
+                                  controller.userName.value,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF402387),
+                                  ),
                                 ),
-                              )),
+                              ),
+                          ),
                           SizedBox(height: 4),
                           Obx(() => Container(
                                 padding: EdgeInsets.symmetric(
@@ -110,7 +117,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                   Obx(() => Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.60,
+                          width: MediaQuery.of(context).size.width * 0.7,
                           padding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
@@ -153,6 +160,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
             child: GestureDetector(
               onTap: () {
                 // Handle "Orders Placed" button tap
+                Get.offNamed('/openOrder');
               },
               child: Container(
                 padding: EdgeInsets.all(20.0),
@@ -313,21 +321,23 @@ class InfoRow extends StatelessWidget {
       children: [
         Icon(Icons.circle, size: 8, color: Color(0xFF363F72)),
         SizedBox(width: 8),
-        RichText(
-          text: TextSpan(
-            style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
-            children: [
-              TextSpan(
-                text: ' $label ',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: labelColor), // Use labelColor here
-              ),
-              TextSpan(
-                text: value,
-                style: TextStyle(color: Color(0xFF363F72)),
-              ),
-            ],
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: GoogleFonts.poppins(fontSize: 14, color: Colors.black),
+              children: [
+                TextSpan(
+                  text: ' $label ',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: labelColor), // Use labelColor here
+                ),
+                TextSpan(
+                  text: value,
+                  style: TextStyle(color: Color(0xFF363F72)),
+                ),
+              ],
+            ),
           ),
         ),
       ],

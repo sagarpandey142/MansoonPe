@@ -121,7 +121,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    "Total Purchases: ${controller.project.value.budget}",
+                                    "Total Purchases: ${controller.totalPurchases.value}",
                                     style: GoogleFonts.poppins(
                                         color: Color(0xFF363F72),
                                         fontSize: 14,

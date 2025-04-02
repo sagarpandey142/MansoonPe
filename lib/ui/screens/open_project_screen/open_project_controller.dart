@@ -27,6 +27,7 @@ class OpenProjectController extends GetxController {
   // var projects = <Projects>[].obs;
   var orders = <Orders>[].obs;
   var project = Project().obs;
+  var totalPurchases = 0.obs;
 
 
   static void showTopMessage(BuildContext context, String message) {
@@ -97,6 +98,7 @@ class OpenProjectController extends GetxController {
           project.value=res.data!.project!;
           orders.value = res.data!.project!.orders!;
           debugPrint("Orders Length: ${orders.length}");
+          calculateTotalPurchase(res.data!.project!.orders!);
         }
       } else {
         debugPrint("API returned status: ${res.status}");
@@ -109,27 +111,17 @@ class OpenProjectController extends GetxController {
       //     colorText: Colors.white);
     }
   }
+  calculateTotalPurchase(List<Orders> orders){
+    for(int i=0; i< orders.length;i++){
+      totalPurchases.value = totalPurchases.value+orders[i].cost!;
+      // if(orders[i].supplierPayment != null){
+      //   if(orders[i].supplierPayment!.status == "SENT"){
+      //     totalPurchases.value = totalPurchases.value+orders[i].supplierPayment!.amount!;
+      //   }
+      // }
+    }
+  }
 
-  // getProjects() async {
-  //   try {
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     String token = prefs.getString("auth_token") ?? '';
-  //     Repository repo = Repository(token: token);
-  //     var res = await repo.getProjects({});
-  //     debugPrint("VskingProfileRes:>>>$res");
-  //     if (res.status == 200) {
-  //       projects.value = res.data!.projects!;
-  //     }
-  //   } catch (e) {
-  //     debugPrint("Error: $e");
-  //     // Get.snackbar("Error", "Something went wrong!",
-  //     //     snackPosition: SnackPosition.TOP,
-  //     //     backgroundColor: Colors.red,
-  //     //     colorText: Colors.white);
-  //   }
-  // }
-
-  // var materialsList = <MaterialModel>[].obs; //  Define as RxList
 
   Future<void> addMaterial(
       String name, String cost, String dueDate, context, projectID) async {
@@ -220,14 +212,14 @@ class OpenProjectController extends GetxController {
                             SizedBox(height: 10),
                             _buildUploadButton(context, setModalState),
                             SizedBox(
-                              height: 5,
+                              height: 2,
                             ),
                             Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Text(fileName),
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 2),
                             _buildContinueButton(
                                 context,
                                 materialNameController,

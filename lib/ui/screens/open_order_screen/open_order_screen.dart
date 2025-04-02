@@ -216,7 +216,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
           ),
           Divider(color: Colors.grey.shade100, thickness: 2),
           Padding(
-            padding: const EdgeInsets.only(left: 15, top: 10),
+            padding: const EdgeInsets.only(left: 15, top: 0),
             child: Row(
               children: [
                 _buildDateButton(context),
@@ -227,10 +227,10 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
               ],
             ),
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 0),
           filteredProjects.isNotEmpty ?
           Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
+            padding: const EdgeInsets.only(left: 15, right: 15,top: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -271,7 +271,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
               ],
             ),
           ) : Container(),
-          SizedBox(height: 8),
+          SizedBox(height: 0),
           filteredProjects.isNotEmpty ?
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

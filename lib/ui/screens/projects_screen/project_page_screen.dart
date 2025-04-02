@@ -208,7 +208,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                       Text.rich(
                                         TextSpan(
                                           text:
-                                              "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
+                                              "Consumption: ",
                                           style: const TextStyle(
                                             color: Color(0xCC363F72),
                                             fontSize: 10,
@@ -216,7 +216,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           ),
                                           children: [
                                             TextSpan(
-                                              text: " ",
+                                              text: "₹ ${NumberFormat('#,##,###').format(project.credit != null ? project.credit!.consumed : 0)} ",
                                               style: const TextStyle(
                                                 color: Color(0xFF363F72),
                                                 fontSize: 10,
@@ -284,7 +284,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           softWrap: false, // Prevents wrapping to the next line
                                         ),
                                       ),
-                                      if ("${project.status}" == "ACTIVE") ...[
+                                      if (("${project.status}" == "ACTIVE") && (controller.getDueAmount(project.orders) > 0)) ...[
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(right: 10),
@@ -301,7 +301,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   children: [
                                                     TextSpan(
                                                       text:
-                                                          "\$${project.budget}", // $ साइन जोड़ दिया गया
+                                                          "\$${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}", // $ साइन जोड़ दिया गया
                                                       style:
                                                           GoogleFonts.poppins(
                                                         color:
@@ -362,7 +362,8 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         Text(
                                           "${project.status}" == "IN_REVIEW"
                                               ? "Please wait while we are reviewing it"
-                                              : "This project is not approved yet",
+                                              : "${project.status}" == "ACTIVE" ? ""
+                                          : "This project is not approved yet",
                                           style: TextStyle(
                                             color: Color(0xFF363F72),
                                             fontWeight: FontWeight.w400,

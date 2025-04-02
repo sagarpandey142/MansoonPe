@@ -84,4 +84,20 @@ class ProjectPageController extends GetxController {
       print("Error saving file: $e");
     }
   }
+
+  int getDueAmount(List<Orders>? orders){
+    int dueAmount=0;
+    if(orders == null){
+      return dueAmount;
+    }
+    if(orders.isEmpty){
+      return dueAmount;
+    }
+    for(int i=0;i<orders.length;i++){
+      if(orders[i].contractorPayment != null){
+        dueAmount = dueAmount+orders[i].contractorPayment!.dueAmount!;
+      }
+    }
+    return dueAmount;
+  }
 }

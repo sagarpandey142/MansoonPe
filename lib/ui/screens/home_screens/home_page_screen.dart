@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:projects/modals/project_res.dart';
 import 'package:projects/ui/screens/create_project_screen/create_project_screen.dart';
 import 'package:projects/ui/screens/home_screens/home_page_controller.dart';
@@ -35,6 +36,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   String businessName = "Business Name";
   int totalCredits=0;
   int totalSpends=0;
+  int totalApprovedCredits=0;
 
   @override
   void initState() {
@@ -101,6 +103,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       if (res.status == 200) {
         setState(() {
           projects = res.data!.projects!;
+          getApprovedCredit();
         });
       }
     } catch (e) {
@@ -109,6 +112,22 @@ class _HomePageScreenState extends State<HomePageScreen> {
       //     snackPosition: SnackPosition.TOP,
       //     backgroundColor: Colors.red,
       //     colorText: Colors.white);
+    }
+  }
+  getApprovedCredit(){
+    if(projects.isNotEmpty){
+      for(int i=0; i< projects.length; i++){
+        try{
+          if(projects[i].orders != null && projects[i].orders!.isNotEmpty){
+            for(int j=0;j < projects[i].orders!.length;j++){
+              if((projects[i].orders![j].supplierPayment != null) && (projects[i].orders![j].supplierPayment!.status == 'SENT')){
+                totalApprovedCredits = totalApprovedCredits + projects[i].orders![j].supplierPayment!.amount!;
+                debugPrint("totalApprovedCredits:>>>$totalApprovedCredits");
+              }
+            }
+          }
+        }catch(e){}
+      }
     }
   }
 
@@ -158,7 +177,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ],
               ),
             ),
-            Padding(
+            totalCredits <= 0 ? Padding(
               padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
               child: Container(
                 height: 25,
@@ -192,7 +211,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   ],
                 ),
               ),
-            ),
+            ) : Container(),
             SizedBox(
               height: 10,
             ),
@@ -222,23 +241,52 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400)),
                         SizedBox(height: 4),
-                        Text(
-                          "₹ ${totalCredits - totalSpends}",
-                          style: TextStyle(
-                            color: Color(0xFFFFFFFF),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black, //  Black shadow
-                                offset: Offset(0, 2), //  Move shadow downward
-                                blurRadius: 8, //  Smooth effect
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "₹ ${totalApprovedCredits > 0 && totalSpends > 0 ? NumberFormat('#,##,###').format(totalApprovedCredits - totalSpends) : 0}",
+                              style: TextStyle(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black, //  Black shadow
+                                    offset: Offset(0, 2), //  Move shadow downward
+                                    blurRadius: 8, //  Smooth effect
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                            totalApprovedCredits > 0 && totalSpends > 0 ?
+                            // progressbar start
+                            Padding(
+                              padding: const EdgeInsets.only(right: 6.0),
+                              child: CircularPercentIndicator(
+                                radius: 30.0,
+                                lineWidth: 6.0,
+                                animation: true,
+                                percent: totalSpends/totalApprovedCredits > 1 ? 1 : totalSpends/totalApprovedCredits,
+                                center:  Text(
+                                  "${(((totalSpends/totalApprovedCredits)*100)*10).roundToDouble() / 10}%",
+                                  style:
+                                  TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 9.0),
+                                ),
+                                circularStrokeCap: CircularStrokeCap.round,
+                                progressColor: Colors.white,
+                                backgroundColor : CustomColor.blackTrans,
+                              ),
+                            ) : Container(),
+                            // progressbar end
+                          ],
                         ),
+
+
+
                       ],
                     ),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -265,14 +313,19 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Limit:",
-                                    style: TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                    style: GoogleFonts.inter(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                    )
+                                    // TextStyle(
+                                    //   color: Color(0xFFFFFFFF),
+                                    //   fontSize: 12,
+                                    //   fontWeight: FontWeight.w400,
+                                    // ),
                                   ),
                                   TextSpan(
-                                    text: " ₹ $totalCredits",
+                                    text: " ₹ ${NumberFormat('#,##,###').format(totalApprovedCredits)}",
                                     style: TextStyle(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 14,
@@ -408,6 +461,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        const SizedBox(height: 6),
                                         Text(
                                           '${project.name!} , ${project.location!}',
                                           style: const TextStyle(
@@ -467,7 +521,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                         Text.rich(
                                           TextSpan(
                                             text:
-                                                "Consumption: ${project.credit != null ? project.credit!.consumed : ''}",
+                                                "Consumption: ",
                                             style: const TextStyle(
                                               color: Color(0xCC363F72),
                                               fontSize: 10,
@@ -475,7 +529,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             ),
                                             children: [
                                               TextSpan(
-                                                text: "",
+                                                text: "₹ ${NumberFormat('#,##,###').format(project.credit != null ? project.credit!.consumed : 0)}",
                                                 style: const TextStyle(
                                                   color: Color(0xFF363F72),
                                                   fontSize: 10,
@@ -547,10 +601,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 false, // Prevents wrapping to the next line
                                           ),
                                         ),
-                                        if ("${project.status}" ==
-                                            "ACTIVE") ...[
+                                        if (("${project.status}" ==
+                                            "ACTIVE") && (controller.getDueAmount(project.orders) > 0) ) ...[
                                           Padding(
                                             padding: const EdgeInsets.only(
+
                                                 right: 10),
                                             child: Row(
                                               children: [
@@ -566,7 +621,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                            "\$${project.budget}",
+                                                            "\$${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}",
                                                         style:
                                                             GoogleFonts.poppins(
                                                           color:
@@ -626,6 +681,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                           Text(
                                             "${project.status}" == "IN_REVIEW"
                                                 ? "Please wait while we are reviewing it"
+                                                : "${project.status}" == "ACTIVE" ? ""
                                                 : "This project is not approved yet",
                                             style: TextStyle(
                                               color: Color(0xFF363F72),
