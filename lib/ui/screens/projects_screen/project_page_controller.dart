@@ -24,7 +24,7 @@ class ProjectPageController extends GetxController {
       Repository repo = Repository(token: token);
       var res = await repo.getProjects({});
       debugPrint("VskingProfileRes:>>>$res");
-      print(projects.value);
+
       if (res.status == 200) {
         projects.value = res.data!.projects!;
       }
@@ -77,11 +77,11 @@ class ProjectPageController extends GetxController {
       await file.writeAsBytes(bytes);
 
       // Share or notify user
-      print("File saved at: $filePath");
+      debugPrint("File saved at: $filePath");
       // Share.shareXFiles([XFile(filePath)], text: "Here is your downloaded file");
       await OpenFilex.open(filePath);
     } catch (e) {
-      print("Error saving file: $e");
+      debugPrint("Error saving file: $e");
     }
   }
 

@@ -83,10 +83,10 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             String status = controller.project.value.status
                                 .toString()
                                 .toLowerCase();
-                            print("Project Status: $status");
+                            debugPrint("Project Status: $status");
 
                             if (status == "in_review") {
-                              print("Showing Popup...");
+                              debugPrint("Showing Popup...");
                               OpenProjectController.showTopMessage(context,
                                   "We are currently reviewing this project.");
                             } else if (status == 'active') {
@@ -630,7 +630,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               // You end
               //   Mason Supplier Pay start
@@ -640,7 +640,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
 
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 10, left: 40),
+                    padding: const EdgeInsets.only(top: 8, right: 10, left: 40),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       decoration: BoxDecoration(
@@ -656,7 +656,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Mason",
+                                  "MasonPe",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
@@ -758,13 +758,13 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
               Container(),
               order.supplierPayment != null ?
               SizedBox(
-                height: 20,
+                height: 10,
               ) : Container(),
               //   Mason Supplier Pay end
               //   Contractor Pay start
               order.contractorPayment != null ?
               Padding(
-                padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+                padding: const EdgeInsets.only(top: 8, right: 40, left: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F5F9),
@@ -848,6 +848,19 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ],
                           ),
                         ),
+                        order.contractorPayment!.dueAmount! <= 0 ?
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "😎 Yayyyy! No pending amount ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Color(0xFF027A48),
+                            ),
+                          ),
+                        ) : Container(),
 
                         if (order.contractorPayment!.dueAmount! > 0 ) ...[
                           SizedBox(height: 12),

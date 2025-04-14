@@ -112,14 +112,15 @@ class OpenProjectController extends GetxController {
     }
   }
   calculateTotalPurchase(List<Orders> orders){
-    for(int i=0; i< orders.length;i++){
-      totalPurchases.value = totalPurchases.value+orders[i].cost!;
+    totalPurchases.value=orders.length;
+    // for(int i=0; i< orders.length;i++){
+    //   totalPurchases.value = totalPurchases.value+orders[i].cost!;
       // if(orders[i].supplierPayment != null){
       //   if(orders[i].supplierPayment!.status == "SENT"){
       //     totalPurchases.value = totalPurchases.value+orders[i].supplierPayment!.amount!;
       //   }
       // }
-    }
+    // }
   }
 
 
@@ -209,7 +210,7 @@ class OpenProjectController extends GetxController {
                             SizedBox(height: 16),
                             textFieldWidget("Requested Payment Due Date",
                                 isDateField: true, controller: dateController),
-                            SizedBox(height: 10),
+                            SizedBox(height: 18),
                             _buildUploadButton(context, setModalState),
                             SizedBox(
                               height: 2,

@@ -30,8 +30,9 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
   List<all_order.Orders> orders = [];
   List<all_order.Orders> originalOrders = [];
   List<Projects> projects = [];
+  List<ProOptionItem> proOptList = [];
   List<Projects> filteredProjects=[];
-  String selectedProject="Project";
+  String selectedProject="All";
   String selectedStatus="Status";
   String selectedDate="Date";
   bool _isSearching = false;
@@ -56,6 +57,18 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       if (res.status == 200) {
         setState(() {
           projects = res.data!.projects!;
+          for(int i=0;i<projects.length;i++){
+            var proOptItem=ProOptionItem()
+                ..id=projects[i].id ?? 0
+                ..name=projects[i].name ?? "";
+            proOptList.add(proOptItem);
+          }
+
+          proOptList.insert(0, ProOptionItem()
+              ..id=0
+              ..name="All"
+          );
+
         });
       }
     } catch (e) {
@@ -290,7 +303,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             ),
           ) : Container(),
 
-          Flexible(
+          Expanded(
             child: ListView.builder(
               itemCount: orders.length,
               itemBuilder: (context, index) {
@@ -312,7 +325,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 spreadRadius: 0,
                 blurRadius: 1.5,
                 offset: Offset(0, -1),
@@ -381,7 +394,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     ),
                     Chip(
                       label: Text(
-                        order.status ?? "Pending",
+                        order.status.toString().toLowerCase() == "in_review" ? "In-Review" : order.status.toString().toLowerCase() == "in_progress" ? "In-Progress" : order.status.toString().toLowerCase() == "not_approved" ? "Not-Approved" : order.status.toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -405,9 +418,67 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   ],
                 ),
               ),
+
+              // project details
+              order.project != null ?
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15,top: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child:
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Project name: ",
+                                style: TextStyle(
+                                  color: Color(0xCC363F72),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                '${order.project!.name ?? "N/A"}, ${order.project!.location ?? "N/A"}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Color(0xFF363F72),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      // }),
+                    ),
+                    // Icon(Icons.arrow_forward_rounded, size: 15, color: Colors.black54),
+                  ],
+                ),
+              ) : Container(),
+              order.project != null ?
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Date: ${OpenOrderController.formatDate(order.project!.createdOn.toString())}",
+                      style: const TextStyle(
+                        color: Color(0xE6363F72),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ) : Container(),
+              // project details
+
               // You start
               Padding(
-                padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+                padding: const EdgeInsets.only(top: 8, right: 40, left: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F5F9),
@@ -430,7 +501,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ),
                             Text(
                               order.createdOn != null
-                                  ? DateFormat('dd-MM-yyyy hh:mm a')
+                                  ? DateFormat('dd MMM yy, hh:mm a')
                                       .format(DateTime.parse(order.createdOn!))
                                   : "N/A",
                               style: GoogleFonts.poppins(
@@ -544,7 +615,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               // You end
             //   Mason Supplier Pay start
@@ -554,7 +625,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
 
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 10, left: 40),
+                    padding: const EdgeInsets.only(top: 4, right: 10, left: 40),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       decoration: BoxDecoration(
@@ -570,7 +641,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Mason",
+                                  "MasonPe",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
@@ -578,8 +649,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 ),
                                 Text(
                                   order.createdOn != null
-                                      ? DateFormat('dd-MM-yyyy hh:mm a')
-                                      .format(DateTime.parse(order.supplierPayment!.createdOn!))
+                                      ? DateFormat('dd MMM yy, hh:mm a')
+                                      .format(DateTime.parse(order.supplierPayment!.updatedOn!))
                                       : "N/A",
                                   style: GoogleFonts.poppins(
                                     fontStyle: FontStyle.italic,
@@ -603,7 +674,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: order.supplierPayment!.status!,
+                                    text: order.supplierPayment!.status!.toString().toLowerCase() == "sent" ? "Payment Sent to supplier" : order.supplierPayment!.status!.toString(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
@@ -672,13 +743,13 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
               Container(),
               order.supplierPayment != null ?
               SizedBox(
-                height: 20,
+                height: 10,
               ) : Container(),
             //   Mason Supplier Pay end
               //   Contractor Pay start
               order.contractorPayment != null ?
               Padding(
-                padding: const EdgeInsets.only(top: 10, right: 40, left: 10),
+                padding: const EdgeInsets.only(top: 8, right: 40, left: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F5F9),
@@ -701,7 +772,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ),
                             Text(
                               order.contractorPayment!.createdOn != null
-                                  ? DateFormat('dd-MM-yyyy hh:mm a')
+                                  ? DateFormat('dd MMM yy, hh:mm a')
                                   .format(DateTime.parse(order.contractorPayment!.createdOn!))
                                   : "N/A",
                               style: GoogleFonts.poppins(
@@ -762,6 +833,20 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ],
                           ),
                         ),
+                        order.contractorPayment!.dueAmount! <= 0 ?
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "😎 Yayyyy! No pending amount ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Color(0xFF027A48),
+                            ),
+                          ),
+                        ) : Container(),
+
 
                         if (order.contractorPayment!.dueAmount! > 0 ) ...[
                           SizedBox(height: 12),
@@ -812,8 +897,20 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
     return PopupMenuButton<String>(
       onSelected: (value) {
         print("Project Selected: $value");
-        getAllOrdersById(value);
+        if(value.toString() == "0"){
+          getAllOrders();
+          setState(() {
+            filteredProjects=[];
+            selectedProject="All";
+          });
+          return;
+        }else{
+          getAllOrdersById(value);
+        }
+
         setState(() {
+
+
           filteredProjects = projects
               .where((project) => project.id.toString().toLowerCase() == value.toLowerCase())
               .toList();
@@ -833,7 +930,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
         side: BorderSide(color: Colors.grey.shade300, width: 1.3),
       ),
       itemBuilder: (BuildContext context) {
-        return projects.map((option) {
+        return proOptList.map((option) {
           return PopupMenuItem<String>(
             value: option.id.toString(),
             child: RichText(
@@ -870,12 +967,17 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              selectedProject,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
+            SizedBox(
+              width: 80,
+              child: Text(
+                selectedProject,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
               ),
             ),
             SizedBox(width: 5),
@@ -894,8 +996,9 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
         print("Status Selected: $value");
         setState(() {
           selectedStatus=value;
+          // ["In_review", "Approved", "In_progress", "Closed", "Not_Approved"]
           orders = originalOrders
-          .where((order) => order.status.toString().toLowerCase().contains(value.toString().toLowerCase()))
+          .where((order) => order.status.toString().toLowerCase().contains(value.toString().replaceAll("-", "_").toLowerCase()))
               .toList();
         });
       },
@@ -913,16 +1016,16 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
               padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
               decoration: BoxDecoration(
                 color:
-                _getStatusColor(option).withOpacity(0.10), // Light background
+                _getStatusColor(option.replaceAll("-", "_")).withOpacity(0.10), // Light background
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: _getStatusColor(option), width: 0),
+                border: Border.all(color: _getStatusColor(option.replaceAll("-", "_")), width: 0),
               ),
               child: Text(
                 option,
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: _getStatusColor(option),
+                  color: _getStatusColor(option.replaceAll("-", "_")),
                 ),
               ),
             ),
@@ -957,23 +1060,25 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
   }
 // Date Picker Function (Only Calendar)
   Future<void> _selectDate(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
+    DateTimeRange? selectedDateRange;
+    DateTimeRange? picked1 = await showDateRangePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+      initialDateRange: selectedDateRange,
     );
-    if (picked != null) {
 
-      String formattedDate = DateFormat('yyyy-MM-dd').format(picked.toLocal());
+    if (picked1 != null) {
       setState(() {
-        selectedDate = formattedDate;
-        orders = originalOrders
-            .where((order) => order.dueDate.toString().toLowerCase().contains(formattedDate.toString().toLowerCase()))
-            .toList();
+        selectedDateRange = picked1;
+        debugPrint("selectedDateRange:>>>$selectedDateRange");
+        orders = originalOrders.where((order) {
+          DateTime createdOn = DateTime.parse(order.createdOn.toString());
+          return createdOn.isAfter(selectedDateRange!.start) && createdOn.isBefore(selectedDateRange!.end);
+        }).toList();
       });
-      print("Selected Date: ${picked.toLocal()},$formattedDate");
     }
+
   }
   // Date Button
   Widget _buildDateButton(BuildContext context) {
@@ -1052,9 +1157,29 @@ Color _getProjectOptionColor(String status) {
 
 List<String> _getDropdownOptions(String type) {
   if (type == "Status") {
-    return ["In_review", "Approved", "In_progress", "Closed", "Not_Approved"];
+    return ["In-review", "Approved", "In-progress", "Closed", "Not-Approved"];
   } else if (type == "Project") {
     return ["Payment Sent to supplier", "Pending", "Order not valid"];
   }
   return [];
+}
+
+
+class ProOptionItem {
+  int? id;
+  String? name;
+
+  ProOptionItem({this.id, this.name});
+
+  ProOptionItem.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    return data;
+  }
 }

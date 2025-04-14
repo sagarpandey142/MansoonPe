@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:projects/modals/create_project_req.dart';
 import 'package:projects/ui/screens/projects_screen/project_page_screen.dart';
 import 'package:dio/dio.dart';
@@ -82,6 +83,7 @@ class CreateProjectController extends ChangeNotifier {
                             textFieldWidget(
                                 "Overall Project Cost", projectCostController,
                                 isNumeric: true,
+                                isCostField: true,
                                 prefixText: "₹ "), // Dollar sign & numbers only
                             SizedBox(height: 10),
                             textFieldWidget("Enter Location",
@@ -185,7 +187,7 @@ class CreateProjectController extends ChangeNotifier {
       try {
         CreateProjectReq req = CreateProjectReq();
         req.name = projectNameController.text;
-        req.budget = projectCostController.text;
+        req.budget = projectCostController.text.replaceAll(',', '');
         req.location = projectLocationController.text;
         req.contractFile = fileName;
         Repository repo = Repository(token: token);
@@ -302,9 +304,17 @@ class CreateProjectController extends ChangeNotifier {
       overlayEntry.remove();
     });
   }
+  String formatCost(String value) {
+    if (value.isEmpty) return ''; // Empty string return karein instead of "0"
 
+    double? number = double.tryParse(value.replaceAll(',', ''));
+    if (number == null) return '';
+
+    final formatter = NumberFormat('#,##0', 'en_US');
+    return formatter.format(number);
+  }
   Widget textFieldWidget(String label, TextEditingController controller,
-      {bool isNumeric = false, String? prefixText}) {
+      {bool isNumeric = false, String? prefixText,bool isCostField = false}) {
     return SizedBox(
       height: 60, // Fixed height to prevent shrinking
       child: TextFormField(
@@ -318,6 +328,18 @@ class CreateProjectController extends ChangeNotifier {
           }
           return null;
         },
+        onChanged: isCostField
+            ? (value) {
+          String formattedValue = formatCost(value);
+          if (controller?.text != formattedValue) {
+            controller?.value = TextEditingValue(
+              text: formattedValue,
+              selection:
+              TextSelection.collapsed(offset: formattedValue.length),
+            );
+          }
+        }
+            : null,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(

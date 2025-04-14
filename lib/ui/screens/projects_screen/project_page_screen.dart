@@ -151,7 +151,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                        height: 5,
+                                        height: 8,
                                       ),
                                       Text(
                                         '${project.name!} , ${project.location!}',
@@ -166,7 +166,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           text: "Date: ",
                                           style: const TextStyle(
                                             color: Color(0xCC363F72),
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w400,
                                           ),
                                           children: [
@@ -175,7 +175,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   createdOn), // Calling controller function
                                               style: const TextStyle(
                                                 color: Color(0xE6363F72),
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
@@ -188,7 +188,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           text: "Project Cost: ",
                                           style: const TextStyle(
                                             color: Color(0xCC363F72),
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w400,
                                           ),
                                           children: [
@@ -197,7 +197,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   "₹ ${NumberFormat('#,##,###').format(project.budget)}",
                                               style: const TextStyle(
                                                 color: Color(0xFF363F72),
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -211,7 +211,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                               "Consumption: ",
                                           style: const TextStyle(
                                             color: Color(0xCC363F72),
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w400,
                                           ),
                                           children: [
@@ -219,7 +219,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                               text: "₹ ${NumberFormat('#,##,###').format(project.credit != null ? project.credit!.consumed : 0)} ",
                                               style: const TextStyle(
                                                 color: Color(0xFF363F72),
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -277,6 +277,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                           "- - - - - - - - - - - - - - - - - - - - - -",
                                           style: TextStyle(
                                             color: Color(0xFFEDEBF4),
+
                                             fontSize: 20,
                                           ),
                                           overflow: TextOverflow.clip, // Clips overflowing text without showing "..."
@@ -301,7 +302,7 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
                                                   children: [
                                                     TextSpan(
                                                       text:
-                                                          "\$${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}", // $ साइन जोड़ दिया गया
+                                                          "₹ ${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}", // $ साइन जोड़ दिया गया
                                                       style:
                                                           GoogleFonts.poppins(
                                                         color:

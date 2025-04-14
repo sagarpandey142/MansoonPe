@@ -102,7 +102,7 @@ class OpenOrderController extends GetxController {
                                   color: Color(0xFF5925FF), width: 0.1),
                             ),
                             child: Text(
-                              "${order.status}",
+                              "${order.status.toString().toLowerCase() == 'in_progress' ? 'In-progress' : order.status}",
                               style: GoogleFonts.poppins(
                                 color: Color(0xFF5925DC),
                                 fontWeight: FontWeight.w500,
@@ -137,7 +137,7 @@ class OpenOrderController extends GetxController {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "${order.project?.name}",
+                                  text: "${order.project?.name},${order.project?.location}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14,
@@ -204,7 +204,7 @@ class OpenOrderController extends GetxController {
                               border: Border.all(color: Color(0xFF1066B5),width: 0.1),
                             ),
                             child: Text(
-                              "₹ ${order.supplierPayment?.amount}",
+                              "₹ ${NumberFormat('#,##,###').format(order.supplierPayment?.amount)}",
                               style: GoogleFonts.poppins(
                                 color: Color(0xFF1066B5),
                                 fontWeight: FontWeight.w600,
@@ -221,7 +221,7 @@ class OpenOrderController extends GetxController {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Total Payment mode: ",
+                            "Total Payment made: ",
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
@@ -230,14 +230,14 @@ class OpenOrderController extends GetxController {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 2),
+                                horizontal: 12, vertical: 3),
                             decoration: BoxDecoration(
                               color: Color(0xFFECFDF3),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: Color(0xFF027A48),width: 0.1),
                             ),
                             child: Text(
-                              "₹ ${order.contractorPayment?.dueAmount}",
+                              "₹ ${NumberFormat('#,##,###').format(getTotalPaymentMade(order.contractorPayment))}",//order.contractorPayment?.dueAmount)
                               style: GoogleFonts.poppins(
                                 color: Color(0xFF027A48),
                                 fontWeight: FontWeight.w600,
@@ -270,7 +270,7 @@ class OpenOrderController extends GetxController {
                               border: Border.all(color: Color(0xFFB54708),width: 0.1),
                             ),
                             child: Text(
-                              "₹ ${order.contractorPayment?.dueAmount}",
+                              "₹ ${NumberFormat('#,##,###').format(order.contractorPayment?.dueAmount)}",
                               style: GoogleFonts.poppins(
                                 color: Color(0xFFB54708),
                                 fontWeight: FontWeight.w600,
@@ -339,7 +339,7 @@ class OpenOrderController extends GetxController {
                                   ),
                                 ),
                                 Text(
-                                  order.dueDate != null ? DateFormat('dd-MM-yyyy hh:mm a').format(
+                                  order.dueDate != null ? DateFormat('dd MMM yy, hh:mm a').format(
                                       DateTime.parse("${order.dueDate}")
                                   ) : "", // Formats date and time
                                   style: GoogleFonts.poppins(
@@ -364,7 +364,7 @@ class OpenOrderController extends GetxController {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: order.contractorPayment?.dueDate != null ? DateFormat('dd-MM-yyyy hh:mm a').format(
+                                    text: order.contractorPayment?.dueDate != null ? DateFormat('dd MMM ,yyyy').format(
                                         DateTime.parse("${order.contractorPayment?.dueDate}")
                                     ) : "",
                                     style: TextStyle(
@@ -389,7 +389,7 @@ class OpenOrderController extends GetxController {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: "₹ ${order.contractorPayment?.dueAmount}",
+                                    text: "₹ ${NumberFormat('#,##,###').format(order.contractorPayment?.dueAmount)}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
@@ -467,7 +467,7 @@ class OpenOrderController extends GetxController {
                                               ),
                                               Spacer(), // Pushes next items to the right
                                               Text(
-                                                "₹ ${payment.amount}",
+                                                "₹ ${NumberFormat('#,##,###').format(payment.amount)}",
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 14,
@@ -498,7 +498,7 @@ class OpenOrderController extends GetxController {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                DateFormat('dd-MM-yyyy hh:mm a').format(
+                                                DateFormat('MMM dd, yyyy, hh:mm a').format(
                                                     DateTime.parse("${payment.createdOn}")
                                                 ),
                                                 style: GoogleFonts.poppins(
@@ -713,5 +713,16 @@ class OpenOrderController extends GetxController {
   // Function to update order status
   void updateOrderStatus(String status) {
     orderStatus.value = status;
+  }
+  int getTotalPaymentMade(ContractorPayment? contractorPayment){
+    int total=0;
+    if(contractorPayment != null){
+      var payment=contractorPayment.payments;
+      if(payment == null)return total;
+      for(int i=0;i<payment.length;i++){
+        total += payment[i].amount!;
+      }
+    }
+    return total;
   }
 }

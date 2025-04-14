@@ -235,7 +235,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Credit Left",
+                        Text("Total Credit Left",
                             style: TextStyle(
                                 color: Color(0x99FFFFFF),
                                 fontSize: 14,
@@ -245,7 +245,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "₹ ${totalApprovedCredits > 0 && totalSpends > 0 ? NumberFormat('#,##,###').format(totalApprovedCredits - totalSpends) : 0}",
+                              "₹ ${totalCredits > 0 ? NumberFormat('#,##,###').format(totalCredits - totalSpends) : 0}",
                               style: TextStyle(
                                 color: Color(0xFFFFFFFF),
                                 fontSize: 18,
@@ -259,7 +259,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 ],
                               ),
                             ),
-                            totalApprovedCredits > 0 && totalSpends > 0 ?
+                            totalCredits > 0 && totalSpends > 0 ?
                             // progressbar start
                             Padding(
                               padding: const EdgeInsets.only(right: 6.0),
@@ -267,9 +267,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 radius: 30.0,
                                 lineWidth: 6.0,
                                 animation: true,
-                                percent: totalSpends/totalApprovedCredits > 1 ? 1 : totalSpends/totalApprovedCredits,
+                                percent: totalSpends/totalCredits > 1 ? 1 : totalSpends/totalCredits,
                                 center:  Text(
-                                  "${(((totalSpends/totalApprovedCredits)*100)*10).roundToDouble() / 10}%",
+                                  "${(((totalSpends/totalCredits)*100)*10).roundToDouble() / 10}%",
                                   style:
                                   TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 9.0),
                                 ),
@@ -312,7 +312,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: "Limit:",
+                                    text: "Overall Limit:",
                                     style: GoogleFonts.inter(
                                         color: Color(0xFFFFFFFF),
                                         fontSize: 12,
@@ -325,7 +325,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     // ),
                                   ),
                                   TextSpan(
-                                    text: " ₹ ${NumberFormat('#,##,###').format(totalApprovedCredits)}",
+                                    text: " ₹ ${NumberFormat('#,##,###').format(totalCredits)}",
                                     style: TextStyle(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 14,
@@ -621,7 +621,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                            "\$${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}",
+                                                            "₹ ${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}",
                                                         style:
                                                             GoogleFonts.poppins(
                                                           color:
