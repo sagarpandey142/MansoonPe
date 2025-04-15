@@ -12,12 +12,9 @@ class HomePageController {
 
   /// Function to format date from API response
   static String formatDate(String dateString) {
-    try {
-      DateTime dateTime = DateTime.parse(dateString);
-      return DateFormat("d MMM yy, hh:mm a").format(dateTime);
-    } catch (e) {
-      return "Invalid Date"; // Error handling
-    }
+    final dateTime = DateTime.parse(dateString);
+    final formattedDate = DateFormat('dd MMM yy, hh:mm a').format(dateTime);
+    return formattedDate.replaceAll("AM", "am").replaceAll("PM", "pm");
   }
 
   void showSuccessBottomSheet(BuildContext context) {

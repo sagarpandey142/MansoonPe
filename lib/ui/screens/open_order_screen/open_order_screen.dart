@@ -23,18 +23,18 @@ class OpenOrderScreen extends StatefulWidget {
 
 class _OpenOrderScreenState extends State<OpenOrderScreen> {
   final OpenOrderController openOrderController =
-      Get.put(OpenOrderController());
+  Get.put(OpenOrderController());
   final ProjectPageController projectPageController =
-      Get.find<ProjectPageController>();
+  Get.find<ProjectPageController>();
   int _currentIndex = 2;
   List<all_order.Orders> orders = [];
   List<all_order.Orders> originalOrders = [];
   List<Projects> projects = [];
   List<ProOptionItem> proOptList = [];
-  List<Projects> filteredProjects=[];
-  String selectedProject="All";
-  String selectedStatus="Status";
-  String selectedDate="Date";
+  List<Projects> filteredProjects = [];
+  String selectedProject = "All";
+  String selectedStatus = "Status";
+  String selectedDate = "Date";
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -57,18 +57,18 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       if (res.status == 200) {
         setState(() {
           projects = res.data!.projects!;
-          for(int i=0;i<projects.length;i++){
-            var proOptItem=ProOptionItem()
-                ..id=projects[i].id ?? 0
-                ..name=projects[i].name ?? "";
+          for (int i = 0; i < projects.length; i++) {
+            var proOptItem = ProOptionItem()
+              ..id = projects[i].id ?? 0
+              ..name = projects[i].name ?? "";
             proOptList.add(proOptItem);
           }
 
-          proOptList.insert(0, ProOptionItem()
-              ..id=0
-              ..name="All"
-          );
-
+          proOptList.insert(
+              0,
+              ProOptionItem()
+                ..id = 0
+                ..name = "All");
         });
       }
     } catch (e) {
@@ -79,7 +79,6 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       //     colorText: Colors.white);
     }
   }
-
 
   getAllOrders() async {
     try {
@@ -93,7 +92,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       if (res.status == 200) {
         setState(() {
           orders = res.data!.orders!;
-          originalOrders=orders;
+          originalOrders = orders;
         });
       }
     } catch (e) {
@@ -112,12 +111,12 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       // var uid = prefs.getString("id") ?? '';
       // var mob= prefs.getString("phone") ?? '';
       Repository repo = Repository(token: token);
-      var res = await repo.getAllOrdersById(id,{});
+      var res = await repo.getAllOrdersById(id, {});
       debugPrint("VskingProfileRes:>>>$res");
       if (res.status == 200) {
         setState(() {
           orders = res.data!.orders!;
-          originalOrders=orders;
+          originalOrders = orders;
         });
       }
     } catch (e) {
@@ -176,7 +175,10 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     onChanged: (value) {
                       setState(() {
                         orders = originalOrders
-                            .where((order) => order.material.toString().toLowerCase().contains(value.toString().toLowerCase()))
+                            .where((order) => order.material
+                            .toString()
+                            .toLowerCase()
+                            .contains(value.toString().toLowerCase()))
                             .toList();
                       });
                     },
@@ -204,7 +206,10 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     : ShaderMask(
                   shaderCallback: (Rect bounds) {
                     return LinearGradient(
-                      colors: [CustomColor.primaryColor, CustomColor.secondaryColor],
+                      colors: [
+                        CustomColor.primaryColor,
+                        CustomColor.secondaryColor
+                      ],
                     ).createShader(bounds);
                   },
                   child: Text(
@@ -229,7 +234,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
           ),
           Divider(color: Colors.grey.shade100, thickness: 2),
           Padding(
-            padding: const EdgeInsets.only(left: 15, top: 0),
+            padding: const EdgeInsets.only(left: 15, top: 8),
             child: Row(
               children: [
                 _buildDateButton(context),
@@ -241,58 +246,62 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             ),
           ),
           SizedBox(height: 0),
-          filteredProjects.isNotEmpty ?
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15,top: 15),
+          filteredProjects.isNotEmpty
+              ? Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   // child: Obx(() {
-                    // if (filteredProjects.isEmpty) {
-                    //   return const Text("No projects available");
-                    // }
-                    // final project = filteredProjects.isNotEmpty ? filteredProjects[0] : null;
-                    // return
-                     child:
-                      RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Project name: ",
-                            style: TextStyle(
-                              color: Color(0xCC363F72),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
+                  // if (filteredProjects.isEmpty) {
+                  //   return const Text("No projects available");
+                  // }
+                  // final project = filteredProjects.isNotEmpty ? filteredProjects[0] : null;
+                  // return
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Project name: ",
+                          style: TextStyle(
+                            color: Color(0xCC363F72),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
                           ),
-                          TextSpan(
-                            text:
-                                '${filteredProjects[0].name ?? "N/A"}, ${filteredProjects[0].location ?? "N/A"}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: Color(0xFF363F72),
-                            ),
+                        ),
+                        TextSpan(
+                          text:
+                          ('${filteredProjects[0].name ?? "N/A"}, ${filteredProjects[0].location ?? "N/A"}')
+                              .substring(0, 18) +
+                              '...',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: Color(0xFF363F72),
                           ),
-                        ],
-                      ),
-                    )
+                        ),
+                      ],
+                    ),
+                  ),
                   // }),
                 ),
-                Icon(Icons.arrow_forward_rounded, size: 15, color: Colors.black54),
+                Icon(Icons.arrow_forward_rounded,
+                    size: 18, color: Colors.black54),
               ],
             ),
-          ) : Container(),
+          )
+              : Container(),
           SizedBox(height: 0),
-          filteredProjects.isNotEmpty ?
-          Padding(
+          filteredProjects.isNotEmpty
+              ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Date: ${OpenOrderController.formatDate(filteredProjects[0].createdOn.toString())}",
+                  OpenOrderController.formatDate(
+                      filteredProjects[0].createdOn.toString()),
                   style: const TextStyle(
                     color: Color(0xE6363F72),
                     fontSize: 12,
@@ -301,7 +310,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                 ),
               ],
             ),
-          ) : Container(),
+          )
+              : Container(),
 
           Expanded(
             child: ListView.builder(
@@ -375,10 +385,14 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   children: [
                     IntrinsicWidth(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        height: 28, // Increased height
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                            12), // Optional: slightly more horizontal padding
                         decoration: BoxDecoration(
                           color: Color(0xFFF8F9FC),
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius:
+                          BorderRadius.circular(5), // Updated border radius
                         ),
                         child: Center(
                           child: Text(
@@ -394,19 +408,32 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     ),
                     Chip(
                       label: Text(
-                        order.status.toString().toLowerCase() == "in_review" ? "In-Review" : order.status.toString().toLowerCase() == "in_progress" ? "In-Progress" : order.status.toString().toLowerCase() == "not_approved" ? "Not-Approved" : order.status.toString(),
-                        style: TextStyle(
+                        (order.status ?? "Pending")
+                            .replaceAll(
+                            '_', ' ') // Replace underscores with spaces
+                            .toLowerCase() // Convert the entire string to lowercase
+                            .replaceFirst(
+                            (order.status ?? "Pending")
+                                .substring(0, 1)
+                                .toLowerCase(),
+                            (order.status ?? "Pending")
+                                .substring(0, 1)
+                                .toUpperCase()) // Capitalize the first letter
+                            .replaceAll(' ', '-'), // Replace spaces with dashes
+                        style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          color: _getStatusColor(order.status ?? "Pending"),//Color(0xFF5925DC),
+                          color: _getStatusColor(order.status ?? "Pending"),
                         ),
                       ),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity:
-                          VisualDensity(horizontal: -3, vertical: -4),
+                      VisualDensity(horizontal: -3, vertical: -4),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 4, vertical: -4),
-                      backgroundColor: _getStatusColor(order.status ?? "Pending").withAlpha(10),//Color(0xFFF2F4F7),
+                      EdgeInsets.symmetric(horizontal: 4, vertical: -4),
+                      backgroundColor:
+                      _getStatusColor(order.status ?? "Pending")
+                          .withAlpha(10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
@@ -418,17 +445,17 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   ],
                 ),
               ),
-
+              SizedBox(height: 10),
               // project details
-              order.project != null ?
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15,top: 15),
+              order.project != null
+                  ? Padding(
+                padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                        child:
-                        RichText(
+                        child: RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
@@ -456,10 +483,11 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     // Icon(Icons.arrow_forward_rounded, size: 15, color: Colors.black54),
                   ],
                 ),
-              ) : Container(),
-              order.project != null ?
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+              )
+                  : Container(),
+              order.project != null
+                  ? Padding(
+                padding: const EdgeInsets.only(left: 15, top: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -473,12 +501,12 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     ),
                   ],
                 ),
-              ) : Container(),
+              )
+                  : Container(),
               // project details
-
               // You start
               Padding(
-                padding: const EdgeInsets.only(top: 8, right: 40, left: 10),
+                padding: const EdgeInsets.only(top: 15, right: 40, left: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F5F9),
@@ -502,7 +530,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             Text(
                               order.createdOn != null
                                   ? DateFormat('dd MMM yy, hh:mm a')
-                                      .format(DateTime.parse(order.createdOn!))
+                                  .format(DateTime.parse(order.createdOn!))
+                                  .toLowerCase()
                                   : "N/A",
                               style: GoogleFonts.poppins(
                                 fontStyle: FontStyle.italic,
@@ -513,7 +542,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
                             children: [
@@ -549,7 +578,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: "₹${order.cost ?? 0}",
+                                text:
+                                "₹ ${NumberFormat('#,##,###').format(order.cost ?? 0)}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -574,7 +604,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               TextSpan(
                                 text: order.dueDate != null
                                     ? DateFormat('dd MMM, yyyy')
-                                        .format(DateTime.parse(order.dueDate!))
+                                    .format(DateTime.parse(order.dueDate!))
                                     : "N/A",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -618,14 +648,14 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                 height: 10,
               ),
               // You end
-            //   Mason Supplier Pay start
-              order.supplierPayment != null ?
-              Row(
+              //   Mason Supplier Pay start
+              order.supplierPayment != null
+                  ? Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 4, right: 10, left: 40),
+                    padding: const EdgeInsets.only(
+                        top: 8, right: 10, left: 40),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       decoration: BoxDecoration(
@@ -638,7 +668,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "MasonPe",
@@ -650,7 +681,9 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 Text(
                                   order.createdOn != null
                                       ? DateFormat('dd MMM yy, hh:mm a')
-                                      .format(DateTime.parse(order.supplierPayment!.updatedOn!))
+                                      .format(DateTime.parse(
+                                      order.createdOn!))
+                                      .toLowerCase()
                                       : "N/A",
                                   style: GoogleFonts.poppins(
                                     fontStyle: FontStyle.italic,
@@ -661,12 +694,12 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5),
+                            SizedBox(height: 10),
                             RichText(
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: "Supplier payment status: ",
+                                    text: "Status: ",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
@@ -674,7 +707,13 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: order.supplierPayment!.status!.toString().toLowerCase() == "sent" ? "Payment Sent to supplier" : order.supplierPayment!.status!.toString(),
+                                    text: order.supplierPayment!.status!
+                                        .toString()
+                                        .toLowerCase() ==
+                                        "sent"
+                                        ? "Payment Sent to supplier"
+                                        : order.supplierPayment!.status!
+                                        .toString(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
@@ -697,7 +736,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: "₹${order.supplierPayment!.amount ?? 0}",
+                                    text:
+                                    "₹ ${NumberFormat('#,##,###').format(order.supplierPayment?.amount ?? 0)}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
@@ -722,7 +762,9 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                   TextSpan(
                                     text: order.dueDate != null
                                         ? DateFormat('dd MMM, yyyy')
-                                        .format(DateTime.parse(order.supplierPayment!.updatedOn!))
+                                        .format(DateTime.parse(order
+                                        .supplierPayment!
+                                        .updatedOn!))
                                         : "N/A",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -739,17 +781,19 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                     ),
                   ),
                 ],
-              ) :
-              Container(),
-              order.supplierPayment != null ?
-              SizedBox(
+              )
+                  : Container(),
+              order.supplierPayment != null
+                  ? SizedBox(
                 height: 10,
-              ) : Container(),
-            //   Mason Supplier Pay end
+              )
+                  : Container(),
+              //   Mason Supplier Pay end
               //   Contractor Pay start
-              order.contractorPayment != null ?
-              Padding(
-                padding: const EdgeInsets.only(top: 8, right: 40, left: 10),
+              order.contractorPayment != null
+                  ? Padding(
+                padding:
+                const EdgeInsets.only(top: 8, right: 40, left: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F5F9),
@@ -761,7 +805,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "You",
@@ -771,9 +816,11 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                   color: Color(0x66363F72)),
                             ),
                             Text(
-                              order.contractorPayment!.createdOn != null
+                              order.createdOn != null
                                   ? DateFormat('dd MMM yy, hh:mm a')
-                                  .format(DateTime.parse(order.contractorPayment!.createdOn!))
+                                  .format(DateTime.parse(
+                                  order.createdOn!))
+                                  .toLowerCase()
                                   : "N/A",
                               style: GoogleFonts.poppins(
                                 fontStyle: FontStyle.italic,
@@ -784,8 +831,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
-                        SizedBox(height: 5),
+                        SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
                             children: [
@@ -798,9 +844,11 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: order.contractorPayment!.dueDate != null
-                                    ? DateFormat('dd MMM, yyyy')
-                                    .format(DateTime.parse(order.contractorPayment!.dueDate!))
+                                text: order.contractorPayment!.dueDate !=
+                                    null
+                                    ? DateFormat('dd MMM, yyyy').format(
+                                    DateTime.parse(order
+                                        .contractorPayment!.dueDate!))
                                     : "N/A",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -811,6 +859,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 5),
                         RichText(
                           text: TextSpan(
                             children: [
@@ -823,7 +872,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: "₹${order.contractorPayment!.dueAmount ?? 0}",
+                                text:
+                                "₹${order.contractorPayment!.dueAmount ?? 0}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -833,9 +883,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             ],
                           ),
                         ),
-                        order.contractorPayment!.dueAmount! <= 0 ?
-
-                        Padding(
+                        order.contractorPayment!.dueAmount! <= 0
+                            ? Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             "😎 Yayyyy! No pending amount ",
@@ -845,17 +894,18 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               color: Color(0xFF027A48),
                             ),
                           ),
-                        ) : Container(),
-
-
-                        if (order.contractorPayment!.dueAmount! > 0 ) ...[
+                        )
+                            : Container(),
+                        if (order.contractorPayment!.dueAmount! > 0) ...[
                           SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
                             height: 45,
                             child: ElevatedButton(
                               onPressed: () {
-                                OpenOrderController().showPaymentDialog(context,order).then((_){
+                                OpenOrderController()
+                                    .showPaymentDialog(context, order)
+                                    .then((_) {
                                   debugPrint("Bottom sheet dismissed");
                                   getAllOrders();
                                 });
@@ -882,8 +932,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   ),
                 ),
               )
-                  :
-              Container(),
+                  : Container(),
               //   Contractor Pay end
             ],
           ),
@@ -892,36 +941,32 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
     );
   }
 
-
   Widget _buildProjectDropdown(BuildContext context) {
     return PopupMenuButton<String>(
       onSelected: (value) {
         print("Project Selected: $value");
-        if(value.toString() == "0"){
+        if (value.toString() == "0") {
           getAllOrders();
           setState(() {
-            filteredProjects=[];
-            selectedProject="All";
+            filteredProjects = [];
+            selectedProject = "All";
           });
           return;
-        }else{
+        } else {
           getAllOrdersById(value);
         }
 
         setState(() {
-
-
           filteredProjects = projects
-              .where((project) => project.id.toString().toLowerCase() == value.toLowerCase())
+              .where((project) =>
+          project.id.toString().toLowerCase() == value.toLowerCase())
               .toList();
-          if(filteredProjects.isNotEmpty){
+          if (filteredProjects.isNotEmpty) {
             // setState(() {
-              selectedProject = filteredProjects[0].name!;
+            selectedProject = filteredProjects[0].name!;
             // });
           }
         });
-
-
       },
       offset: Offset(0, 40),
       color: Colors.white,
@@ -989,16 +1034,16 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
     );
   }
 
-
   Widget _buildStatusDropdown(BuildContext context) {
     return PopupMenuButton<String>(
       onSelected: (value) {
         print("Status Selected: $value");
         setState(() {
-          selectedStatus=value;
+          selectedStatus = value;
           // ["In_review", "Approved", "In_progress", "Closed", "Not_Approved"]
           orders = originalOrders
-          .where((order) => order.status.toString().toLowerCase().contains(value.toString().replaceAll("-", "_").toLowerCase()))
+              .where((order) => order.status.toString().toLowerCase().contains(
+              value.toString().replaceAll("-", "_").toLowerCase()))
               .toList();
         });
       },
@@ -1015,15 +1060,17 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
               decoration: BoxDecoration(
-                color:
-                _getStatusColor(option.replaceAll("-", "_")).withOpacity(0.10), // Light background
+                color: _getStatusColor(option.replaceAll("-", "_"))
+                    .withOpacity(0.10), // Light background
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: _getStatusColor(option.replaceAll("-", "_")), width: 0),
+                border: Border.all(
+                    color: _getStatusColor(option.replaceAll("-", "_")),
+                    width: 0),
               ),
               child: Text(
                 option,
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
+                  fontSize: 10,
                   fontWeight: FontWeight.w500,
                   color: _getStatusColor(option.replaceAll("-", "_")),
                 ),
@@ -1058,6 +1105,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       ),
     );
   }
+
 // Date Picker Function (Only Calendar)
   Future<void> _selectDate(BuildContext context) async {
     DateTimeRange? selectedDateRange;
@@ -1074,12 +1122,13 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
         debugPrint("selectedDateRange:>>>$selectedDateRange");
         orders = originalOrders.where((order) {
           DateTime createdOn = DateTime.parse(order.createdOn.toString());
-          return createdOn.isAfter(selectedDateRange!.start) && createdOn.isBefore(selectedDateRange!.end);
+          return createdOn.isAfter(selectedDateRange!.start) &&
+              createdOn.isBefore(selectedDateRange!.end);
         }).toList();
       });
     }
-
   }
+
   // Date Button
   Widget _buildDateButton(BuildContext context) {
     return SizedBox(
@@ -1116,30 +1165,25 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       ),
     );
   }
-
 }
-
-
-
 
 // Status Color Mapping
 Color _getStatusColor(String status) {
   switch (status.toLowerCase()) {
-    case "in_review":
+    case "in-review":
       return Color(0xFFB54708);
     case "approved":
       return Color(0xFF027A48);
-    case "in_progress":
+    case "in-progress":
       return Color(0xFF5925DC);
     case "closed":
       return Color(0xFF344054);
-    case "not_approved":
+    case "not-approved":
       return Color(0xFFB52318);
     default:
       return Color(0xFFB54708);
   }
 }
-
 
 // Project Color Mapping
 Color _getProjectOptionColor(String status) {
@@ -1163,7 +1207,6 @@ List<String> _getDropdownOptions(String type) {
   }
   return [];
 }
-
 
 class ProOptionItem {
   int? id;

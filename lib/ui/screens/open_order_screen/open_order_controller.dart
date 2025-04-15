@@ -13,13 +13,12 @@ import '../../../modals/all_order_res.dart';
 class OpenOrderController extends GetxController {
 
   static String formatDate(String dateString) {
-    try {
-      DateTime dateTime = DateTime.parse(dateString);
-      return DateFormat("d MMM yy, hh:mm a").format(dateTime);
-    } catch (e) {
-      return "Invalid Date"; // Error handling
-    }
+    DateTime dateTime = DateTime.parse(dateString);
+    String time = DateFormat.jm().format(dateTime); // e.g. 10:45 AM
+    String date = DateFormat('dd MMM, yyyy').format(dateTime); // e.g. 15 Apr 2025
+    return '$time, $date'; // final format: 10:45 AM · 15 Apr 2025
   }
+
 
   Future<void> showPaymentDialog(BuildContext context,Orders order) async {
     return showModalBottomSheet(
@@ -99,14 +98,14 @@ class OpenOrderController extends GetxController {
                                   0xFFF4F3FF), // Reduced opacity (33 instead of 66)
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                  color: Color(0xFF5925FF), width: 0.1),
+                                  color: Color(0x335925FF), width: 1),
                             ),
                             child: Text(
                               "${order.status.toString().toLowerCase() == 'in_progress' ? 'In-progress' : order.status}",
                               style: GoogleFonts.poppins(
                                 color: Color(0xFF5925DC),
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14,
+                                fontSize: 10,
                               ),
                             ),
                           ),
@@ -115,7 +114,7 @@ class OpenOrderController extends GetxController {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 // Project & Material name
                 Padding(
                   padding: const EdgeInsets.only(left: 12, right: 12),
@@ -137,7 +136,7 @@ class OpenOrderController extends GetxController {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "${order.project?.name},${order.project?.location}",
+                                  text: "${order.project?.name}, ${order.project?.location}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14,
@@ -156,7 +155,7 @@ class OpenOrderController extends GetxController {
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       RichText(
                         text: TextSpan(
@@ -181,7 +180,7 @@ class OpenOrderController extends GetxController {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       Row(
                         crossAxisAlignment:
@@ -201,7 +200,7 @@ class OpenOrderController extends GetxController {
                             decoration: BoxDecoration(
                               color: Color(0xFFEFF4F9),
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Color(0xFF1066B5),width: 0.1),
+                              border: Border.all(color: Color(0x331066B5),width: 1),
                             ),
                             child: Text(
                               "₹ ${NumberFormat('#,##,###').format(order.supplierPayment?.amount)}",
@@ -234,7 +233,7 @@ class OpenOrderController extends GetxController {
                             decoration: BoxDecoration(
                               color: Color(0xFFECFDF3),
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Color(0xFF027A48),width: 0.1),
+                              border: Border.all(color: Color(0x33027A48),width: 1),
                             ),
                             child: Text(
                               "₹ ${NumberFormat('#,##,###').format(getTotalPaymentMade(order.contractorPayment))}",//order.contractorPayment?.dueAmount)
@@ -267,7 +266,7 @@ class OpenOrderController extends GetxController {
                             decoration: BoxDecoration(
                               color: Color(0xFFFFFAEB),
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Color(0xFFB54708),width: 0.1),
+                              border: Border.all(color: Color(0x33B54708),width: 1),
                             ),
                             child: Text(
                               "₹ ${NumberFormat('#,##,###').format(order.contractorPayment?.dueAmount)}",
@@ -346,7 +345,7 @@ class OpenOrderController extends GetxController {
                                     fontStyle: FontStyle.italic,
                                     fontWeight: FontWeight.w300,
                                     fontSize: 10,
-                                    color: Color(0xCC363F72),
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -431,118 +430,119 @@ class OpenOrderController extends GetxController {
                 ),
                 const SizedBox(height: 8),
                 order.contractorPayment!.payments!.isNotEmpty ?
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: order.contractorPayment!.payments!.length,
-                          itemBuilder: (context,index){
-                            final payment = order.contractorPayment!.payments![index];
-                            return Container(
-                              margin: EdgeInsets.only(top: 8.0),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 15),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF9F7FC),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: order.contractorPayment!.payments!.length,
+                      itemBuilder: (context,index){
+                        final payment = order.contractorPayment!.payments![index];
+                        return Container(
+                          margin: EdgeInsets.only(top: 8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF9F7FC),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      Row(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Amount",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14,
-                                                  color: Color(0xFF363F72),
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                          Text(
+                                            "Amount",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              color: Color(0xFF363F72),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Spacer(), // Pushes next items to the right
+                                          Text(
+                                            "₹ ${NumberFormat('#,##,###').format(payment.amount)}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                              color: Color(0xFF363F72),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10), // Spacing between text and container
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFECFDF3),
+                                              borderRadius: BorderRadius.circular(20),
+                                              border: Border.all(color: Color(
+                                                  0x33027A48), width: 1),
+                                            ),
+                                            child: Text(
+                                              "Paid",
+                                              style: GoogleFonts.poppins(
+                                                color: Color(0xFF027A48),
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10,
                                               ),
-                                              Spacer(), // Pushes next items to the right
-                                              Text(
-                                                "₹ ${NumberFormat('#,##,###').format(payment.amount)}",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 14,
-                                                  color: Color(0xFF363F72),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10), // Spacing between text and container
-                                              Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFFECFDF3),
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  border: Border.all(color: Color(0xFF027A48), width: 0.1),
-                                                ),
-                                                child: Text(
-                                                  "Paid",
-                                                  style: GoogleFonts.poppins(
-                                                    color: Color(0xFF027A48),
-                                                    fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            DateFormat('MMM dd, yyyy').format(
+                                                DateTime.parse("${payment.createdOn}")
+                                            ),
+                                            style: GoogleFonts.poppins(
+                                              color: Color(0x99000000),
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Mode of payment: ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: 10,
+                                                    color: Color(0xCC363F72),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                DateFormat('MMM dd, yyyy, hh:mm a').format(
-                                                    DateTime.parse("${payment.createdOn}")
+                                                TextSpan(
+                                                  text: "${payment.mode}",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 10,
+                                                    color: Color(0xFF363F72),
+                                                  ),
                                                 ),
-                                                style: GoogleFonts.poppins(
-                                                  color: Color(0x99000000),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 10,
-                                                ),
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "Mode of payment: ",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.w400,
-                                                        fontSize: 10,
-                                                        color: Color(0xCC363F72),
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: "${payment.mode}",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 10,
-                                                        color: Color(0xFF363F72),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
-                            );
-                          }
-                      ),
-                    )
+                            ),
+                          ),
+                        );
+                      }
+                  ),
+                )
                     :
-                    Container()
+                Container()
                 ,
 
                 const SizedBox(height: 20),
@@ -617,11 +617,11 @@ class OpenOrderController extends GetxController {
                   // Navigator.pop(context); // Close bottom sheet
                   payAmount(context, "${order.contractorPayment?.id}", amountController.text);
                 },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF603EA4),
-                    shape:
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF603EA4),
+                  shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
                 child: Text("Submit",
                   style: GoogleFonts.poppins(
                       fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),

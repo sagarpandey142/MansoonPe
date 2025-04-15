@@ -115,11 +115,11 @@ class OpenProjectController extends GetxController {
     totalPurchases.value=orders.length;
     // for(int i=0; i< orders.length;i++){
     //   totalPurchases.value = totalPurchases.value+orders[i].cost!;
-      // if(orders[i].supplierPayment != null){
-      //   if(orders[i].supplierPayment!.status == "SENT"){
-      //     totalPurchases.value = totalPurchases.value+orders[i].supplierPayment!.amount!;
-      //   }
-      // }
+    // if(orders[i].supplierPayment != null){
+    //   if(orders[i].supplierPayment!.status == "SENT"){
+    //     totalPurchases.value = totalPurchases.value+orders[i].supplierPayment!.amount!;
+    //   }
+    // }
     // }
   }
 

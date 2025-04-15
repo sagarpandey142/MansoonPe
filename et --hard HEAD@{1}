@@ -1,0 +1,7 @@
+[33m24a347a[m[33m ([m[1;36mHEAD -> [m[1;32mmasonpe_by_vivek[m[33m, [m[1;31mmasonpe/masonpe_by_vivek[m[33m)[m HEAD@{0}: rebase (finish): returning to refs/heads/masonpe_by_vivek
+[33m24a347a[m[33m ([m[1;36mHEAD -> [m[1;32mmasonpe_by_vivek[m[33m, [m[1;31mmasonpe/masonpe_by_vivek[m[33m)[m HEAD@{1}: pull masonpe masonpe_by_vivek --rebase (start): checkout 24a347a90136e52d218a5a0bc9c0de727699a41e
+[33m6688448[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{2}: rebase (abort): returning to refs/heads/masonpe_by_vivek
+[33m24a347a[m[33m ([m[1;36mHEAD -> [m[1;32mmasonpe_by_vivek[m[33m, [m[1;31mmasonpe/masonpe_by_vivek[m[33m)[m HEAD@{3}: pull masonpe masonpe_by_vivek --rebase (start): checkout 24a347a90136e52d218a5a0bc9c0de727699a41e
+[33m6688448[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{4}: checkout: moving from masonpe_by_vivek to masonpe_by_vivek
+[33m6688448[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{5}: checkout: moving from master to masonpe_by_vivek
+[33m6688448[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{6}: commit (initial): design fix

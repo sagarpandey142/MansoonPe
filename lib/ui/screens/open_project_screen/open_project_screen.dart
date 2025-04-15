@@ -41,383 +41,399 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
         child: Obx(() {
           return controller.project.value.id != null
               ? Column(
-                  children: [
-                    // Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.chevron_left_outlined,
-                                size: 35,
-                                color: Color(0x99000000),
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: MediaQuery.of(context).size.width *
-                                      0.3, // Max width
-                                ),
-                                child: Text(
-                                  "${controller.project.value.name}",
-                                  style: GoogleFonts.poppins(
-                                    color: Color(0xCC000000),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  softWrap: false,
-                                ),
-                              ),
-                            ),
-                          ],
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.chevron_left_outlined,
+                          size: 35,
+                          color: Color(0x99000000),
                         ),
-                        TextButton(
-                          onPressed: () async {
-                            String status = controller.project.value.status
-                                .toString()
-                                .toLowerCase();
-                            debugPrint("Project Status: $status");
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width *
+                              0.3, // Max width
+                        ),
+                        child: Text(
+                          "${controller.project.value.name}",
+                          style: GoogleFonts.poppins(
+                            color: Color(0xCC000000),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      String status = controller.project.value.status
+                          .toString()
+                          .toLowerCase();
+                      print("Project Status: $status");
 
-                            if (status == "in_review") {
-                              debugPrint("Showing Popup...");
-                              OpenProjectController.showTopMessage(context,
-                                  "We are currently reviewing this project.");
-                            } else if (status == 'active') {
-                               controller.showAddMaterialPopup(
-                                  context, controller.project.value.id).then((_){
-                                    debugPrint("Bottom sheet dismissed");
-                                    controller.getOrders(widget.projectId.toString());
-                              });
-                            }
-                          },
-                          child: Text(
-                            "+ Add new material",
-                            style: GoogleFonts.poppins(
-                              color: Color(0xCC603EA4),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
+                      if (status == "in_review") {
+                        print("Showing Popup...");
+                        OpenProjectController.showTopMessage(context,
+                            "We are currently reviewing this project.");
+                      } else if (status == 'active') {
+                        controller
+                            .showAddMaterialPopup(
+                            context, controller.project.value.id)
+                            .then((_) {
+                          debugPrint("Bottom sheet dismissed");
+                          controller
+                              .getOrders(widget.projectId.toString());
+                        });
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          "+ ",
+                          style: GoogleFonts.poppins(
+                            color: Color(0xCC603EA4),
+                            fontSize: 23,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          " Add new material",
+                          style: GoogleFonts.poppins(
+                            color: Color(0xCC603EA4),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
                     ),
+                  ),
+                ],
+              ),
 
-                    Divider(color: Colors.grey.shade300, thickness: 2),
-                    // Purchase Details
-                    Obx(() {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    "Total Purchases: ${controller.totalPurchases.value}",
-                                    style: GoogleFonts.poppins(
-                                        color: Color(0xFF363F72),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    controller.downloadPDF(controller.project.value);
-                                  },
-                                  child: Text("Download Contract",
-                                      style: GoogleFonts.poppins(
-                                          color: Color(0xFF603EA4),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10)),
-                                ),
-                              ],
-                            ),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text.rich(
-                                  TextSpan(
-                                    text: "Created on: ",
-                                    style: const TextStyle(
-                                      color: Color(0x99000000),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: HomePageController.formatDate(
-                                            controller.project.value.createdOn!),
-                                        // Calling controller function
-                                        style: const TextStyle(
-                                          color: Color(0xCC000000),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  "Status: ",
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0x99000000)),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: Color(
-                                      controller.project.value.status ==
-                                              "IN_REVIEW"
-                                          ? 0xFFFFFAEB // Even lighter orange
-                                          : controller.project.value.status ==
-                                                  "ACTIVE"
-                                              ? 0xFFECFDF3 // Even lighter green
-                                              : 0xFFFEF3F2, // Even lighter red
-                                    ),
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                      width: 0.7, // Thinner border
-                                      color: Color(
-                                        controller.project.value.status ==
-                                                "IN_REVIEW"
-                                            ? 0xFFFFD699 // Lighter orange border
-                                            : controller.project.value.status ==
-                                                    "ACTIVE"
-                                                ? 0xFF027A48 // Lighter green border
-                                                : 0xFFF5A8A8, // Lighter red border
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    controller.project.value.status ==
-                                            "IN_REVIEW"
-                                        ? "In-review"
-                                        : controller.project.value.status ==
-                                                "ACTIVE"
-                                            ? "Active"
-                                            : "Inactive", // Adjust as needed
-                                    style: GoogleFonts.poppins(
-                                      color: Color(
-                                        controller.project.value.status ==
-                                                "IN_REVIEW"
-                                            ? 0xFFB54708
-                                            : controller.project.value.status ==
-                                                    "ACTIVE"
-                                                ? 0xFF28A745
-                                                : 0xFFDC3545,
-                                      ),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            SizedBox(height: 8), // Consistent spacing
-                            Text.rich(
-                              TextSpan(
-                                text: "Assigned Credit: ",
-                                style: const TextStyle(
-                                  color: Color(0x99000000),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        "₹ ${NumberFormat('#,##,###').format(controller.project.value.credit != null ? controller.project.value.credit!.credited! : 0)}",
-                                    style: const TextStyle(
-                                      color: Color(0xCC000000),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 8), // Consistent spacing
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text.rich(
-                                  TextSpan(
-                                    text: "Consumed: ",
-                                    style: const TextStyle(
-                                      color: Color(0x99000000),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            "₹ ${NumberFormat('#,##,###').format(controller.project.value.credit != null ? controller.project.value.credit!.consumed : 0)}",
-                                        style: const TextStyle(
-                                          color: Color(0xCC000000),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text.rich(
-                                  TextSpan(
-                                    text: "Credit left: ",
-                                    style: const TextStyle(
-                                      color: Color(0x99000000),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            "₹ ${controller.project.value.credit != null ? NumberFormat('#,##,###').format(controller.project.value.credit!.credited! - controller.project.value.credit!.consumed!) : NumberFormat('#,##,###').format(0)}",
-                                        style: const TextStyle(
-                                          color: Color(0xCC000000),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5),
-                          ],
-                        ),
-                      );
-                    }),
-                    Divider(thickness: 1),
-                    Expanded(
-                      child: Obx(() {
-                        return controller.orders.isEmpty
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/order_file.svg',
-                                    width: MediaQuery.of(context).size.width *
-                                        0.12,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.06,
-                                  ),
-                                  SizedBox(height: 30),
-                                  Text(
-                                    "You haven't requested any quote yet.",
-                                    style: TextStyle(
-                                      color: Color(0x66000000),
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : ListView.builder(
-                                itemCount: controller.orders.length,
-                                itemBuilder: (context, index) {
-                                  return buildOrderCard(
-                                      controller.orders[index]);
-                                },
-                              );
-                      }),
-                    ),
-                    Divider(color: Colors.grey.shade300),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
+              Divider(color: Colors.grey.shade300, thickness: 2),
+              // Purchase Details
+              Obx(() {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomePageScreen(),
+                          Text(
+                            "Total Purchases: ${controller.totalPurchases.value}",
+                            style: GoogleFonts.poppins(
+                                color: Color(0xFF363F72),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              controller
+                                  .downloadPDF(controller.project.value);
+                            },
+                            child: Text("Download Contract",
+                                style: GoogleFonts.poppins(
+                                    color: Color(0xFF603EA4),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10)),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              text: "Created on: ",
+                              style: const TextStyle(
+                                color: Color(0x99000000),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: HomePageController.formatDate(
+                                    controller.project.value.createdOn!,
                                   ),
-                                );
-                              },
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Rounded corners
+                                  style: GoogleFonts.poppins(
+                                    color: Color(0xCC000000),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                                minimumSize: const Size(double.infinity, 50),
-                                // Increased height
-                                side: BorderSide(
-                                    color: Colors.grey[300]!,
-                                    width: 1.3), // Grey border
-                              ),
-                              child: const Text(
-                                "Go to Homepage",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Color(0x99000000),
-                                ),
-                              ),
+                              ],
                             ),
                           ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                String status = controller.project.value.status
-                                    .toString()
-                                    .toLowerCase();
-                                print("Project Status: $status");
-
-                                if (status == "in_review") {
-                                  print("Showing Popup...");
-                                  OpenProjectController.showTopMessage(context,
-                                      "We are currently reviewing this project.");
-                                } else if (status == 'active') {
-                                  controller.showAddMaterialPopup(
-                                      context, controller.project.value.id).then((_){
-                                    debugPrint("Bottom sheet dismissed");
-                                    controller.getOrders(widget.projectId.toString());
-                                  });
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF603EA4),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                minimumSize: Size(double.infinity, 50),
+                          Spacer(),
+                          Text(
+                            "Status: ",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0x99000000)),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Color(
+                                controller.project.value.status ==
+                                    "IN_REVIEW"
+                                    ? 0xFFFFFAEB // Even lighter orange
+                                    : controller.project.value.status ==
+                                    "ACTIVE"
+                                    ? 0xFFECFDF3 // Even lighter green
+                                    : 0xFFFEF3F2, // Even lighter red
                               ),
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  "Add new material",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                width: 0.10, // Thinner border
+                                color: Color(
+                                  controller.project.value.status ==
+                                      "IN_REVIEW"
+                                      ? 0xFFFFD699 // Lighter orange border
+                                      : controller.project.value.status ==
+                                      "ACTIVE"
+                                      ? 0xFF027A48 // Lighter green border
+                                      : 0xFFF5A8A8, // Lighter red border
                                 ),
+                              ),
+                            ),
+                            child: Text(
+                              controller.project.value.status ==
+                                  "IN_REVIEW"
+                                  ? "In-review"
+                                  : controller.project.value.status ==
+                                  "ACTIVE"
+                                  ? "Active"
+                                  : "Inactive", // Adjust as needed
+                              style: GoogleFonts.poppins(
+                                color: Color(
+                                  controller.project.value.status ==
+                                      "IN_REVIEW"
+                                      ? 0xFFB54708
+                                      : controller.project.value.status ==
+                                      "ACTIVE"
+                                      ? 0xFF027A48
+                                      : 0xFFDC3545,
+                                ),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ],
                       ),
+
+                      SizedBox(height: 8), // Consistent spacing
+                      Text.rich(
+                        TextSpan(
+                          text: "Overall Credit: ",
+                          style: const TextStyle(
+                            color: Color(0x99000000),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          children: [
+                            TextSpan(
+                              text:
+                              "₹ ${NumberFormat('#,##,###').format(controller.project.value.credit != null ? controller.project.value.credit!.credited! : 0)}",
+                              style: const TextStyle(
+                                color: Color(0xCC000000),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 8), // Consistent spacing
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              text: "Consumed: ",
+                              style: const TextStyle(
+                                color: Color(0x99000000),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text:
+                                  "₹ ${NumberFormat('#,##,###').format(controller.project.value.credit != null ? controller.project.value.credit!.consumed : 0)}",
+                                  style: const TextStyle(
+                                    color: Color(0xCC000000),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              text: "Credit left: ",
+                              style: const TextStyle(
+                                color: Color(0x99000000),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text:
+                                  "₹ ${controller.project.value.credit != null ? NumberFormat('#,##,###').format(controller.project.value.credit!.credited! - controller.project.value.credit!.consumed!) : NumberFormat('#,##,###').format(0)}",
+                                  style: const TextStyle(
+                                    color: Color(0xCC000000),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                    ],
+                  ),
+                );
+              }),
+              Divider(thickness: 1),
+              SizedBox(height: 10),
+              Expanded(
+                child: Obx(() {
+                  return controller.orders.isEmpty
+                      ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/order_file.svg',
+                        width: MediaQuery.of(context).size.width *
+                            0.12,
+                        height: MediaQuery.of(context).size.height *
+                            0.06,
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        "You haven't requested any quote yet.",
+                        style: TextStyle(
+                          color: Color(0x66000000),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  )
+                      : ListView.builder(
+                    itemCount: controller.orders.length,
+                    itemBuilder: (context, index) {
+                      return buildOrderCard(
+                          controller.orders[index]);
+                    },
+                  );
+                }),
+              ),
+              Divider(color: Colors.grey.shade300),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomePageScreen(),
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                10), // Rounded corners
+                          ),
+                          minimumSize: const Size(double.infinity, 50),
+                          // Increased height
+                          side: BorderSide(
+                              color: Colors.grey[300]!,
+                              width: 1.3), // Grey border
+                        ),
+                        child: const Text(
+                          "Go to Homepage",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Color(0x99000000),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          String status = controller.project.value.status
+                              .toString()
+                              .toLowerCase();
+                          print("Project Status: $status");
+
+                          if (status == "in_review") {
+                            print("Showing Popup...");
+                            OpenProjectController.showTopMessage(context,
+                                "We are currently reviewing this project.");
+                          } else if (status == 'active') {
+                            controller
+                                .showAddMaterialPopup(
+                                context, controller.project.value.id)
+                                .then((_) {
+                              debugPrint("Bottom sheet dismissed");
+                              controller
+                                  .getOrders(widget.projectId.toString());
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF603EA4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          minimumSize: Size(double.infinity, 50),
+                        ),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Add new material",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
-                )
+                ),
+              ),
+            ],
+          )
               : Container();
         }),
       ),
@@ -467,11 +483,14 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                     ),
                     Chip(
                       label: Text(
-                        order.status ?? "Pending",
-                        style: TextStyle(
+                        (order.status ?? "Pending")
+                            .toLowerCase()
+                            .replaceFirstMapped(RegExp(r'^[a-z]'),
+                                (m) => m.group(0)!.toUpperCase()),
+                        style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          color: _getStatusColor(order.status ?? "Pending"),//Color(0xFF5925DC),
+                          color: _getStatusColor(order.status ?? "Pending"),
                         ),
                       ),
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -479,7 +498,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       VisualDensity(horizontal: -3, vertical: -4),
                       padding:
                       EdgeInsets.symmetric(horizontal: 4, vertical: -4),
-                      backgroundColor: _getStatusColor(order.status ?? "Pending").withAlpha(10),//Color(0xFFF2F4F7),
+                      backgroundColor:
+                      _getStatusColor(order.status ?? "Pending")
+                          .withAlpha(10), //Color(0xFFF2F4F7),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
@@ -516,8 +537,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ),
                             Text(
                               order.createdOn != null
-                                  ? DateFormat('dd-MM-yyyy hh:mm a')
+                                  ? DateFormat('dd MMM yy, hh:mm a')
                                   .format(DateTime.parse(order.createdOn!))
+                                  .toLowerCase()
                                   : "N/A",
                               style: GoogleFonts.poppins(
                                 fontStyle: FontStyle.italic,
@@ -528,7 +550,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 15),
                         RichText(
                           text: TextSpan(
                             children: [
@@ -564,7 +586,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: "₹${order.cost ?? 0}",
+                                text:
+                                "₹ ${NumberFormat('#,##0').format(order.cost ?? 0)}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -630,17 +653,17 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               // You end
               //   Mason Supplier Pay start
-              order.supplierPayment != null ?
-              Row(
+              order.supplierPayment != null
+                  ? Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 10, left: 40),
+                    padding: const EdgeInsets.only(
+                        top: 10, right: 10, left: 40),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       decoration: BoxDecoration(
@@ -653,7 +676,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "MasonPe",
@@ -664,8 +688,10 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 ),
                                 Text(
                                   order.createdOn != null
-                                      ? DateFormat('dd-MM-yyyy hh:mm a')
-                                      .format(DateTime.parse(order.supplierPayment!.createdOn!))
+                                      ? DateFormat('dd MMM yy, hh:mm a')
+                                      .format(DateTime.parse(
+                                      order.createdOn!))
+                                      .toLowerCase()
                                       : "N/A",
                                   style: GoogleFonts.poppins(
                                     fontStyle: FontStyle.italic,
@@ -676,12 +702,12 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5),
+                            SizedBox(height: 15),
                             RichText(
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: "Supplier payment status: ",
+                                    text: "Status: ",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
@@ -712,7 +738,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: "₹${order.supplierPayment!.amount ?? 0}",
+                                    text:
+                                    "₹ ${order.supplierPayment!.amount ?? 0}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
@@ -737,7 +764,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                   TextSpan(
                                     text: order.dueDate != null
                                         ? DateFormat('dd MMM, yyyy')
-                                        .format(DateTime.parse(order.supplierPayment!.updatedOn!))
+                                        .format(DateTime.parse(order
+                                        .supplierPayment!
+                                        .updatedOn!))
                                         : "N/A",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -754,17 +783,19 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                     ),
                   ),
                 ],
-              ) :
-              Container(),
-              order.supplierPayment != null ?
-              SizedBox(
-                height: 10,
-              ) : Container(),
+              )
+                  : Container(),
+              order.supplierPayment != null
+                  ? SizedBox(
+                height: 20,
+              )
+                  : Container(),
               //   Mason Supplier Pay end
               //   Contractor Pay start
-              order.contractorPayment != null ?
-              Padding(
-                padding: const EdgeInsets.only(top: 8, right: 40, left: 10),
+              order.contractorPayment != null
+                  ? Padding(
+                padding:
+                const EdgeInsets.only(top: 10, right: 40, left: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFF7F5F9),
@@ -776,7 +807,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "You",
@@ -786,9 +818,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                   color: Color(0x66363F72)),
                             ),
                             Text(
-                              order.contractorPayment!.createdOn != null
-                                  ? DateFormat('dd-MM-yyyy hh:mm a')
-                                  .format(DateTime.parse(order.contractorPayment!.createdOn!))
+                              order.createdOn != null
+                                  ? DateFormat('dd MMM yy, hh:mm a')
+                                  .format(DateTime.parse(
+                                  order.createdOn!))
+                                  .toLowerCase()
                                   : "N/A",
                               style: GoogleFonts.poppins(
                                 fontStyle: FontStyle.italic,
@@ -813,9 +847,11 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: order.contractorPayment!.dueDate != null
-                                    ? DateFormat('dd MMM, yyyy')
-                                    .format(DateTime.parse(order.contractorPayment!.dueDate!))
+                                text: order.contractorPayment!.dueDate !=
+                                    null
+                                    ? DateFormat('dd MMM, yyyy').format(
+                                    DateTime.parse(order
+                                        .contractorPayment!.dueDate!))
                                     : "N/A",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -838,7 +874,8 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: "₹${order.contractorPayment!.dueAmount ?? 0}",
+                                text:
+                                "₹ ${order.contractorPayment!.dueAmount ?? 0}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -848,70 +885,57 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ],
                           ),
                         ),
-                        order.contractorPayment!.dueAmount! <= 0 ?
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            "😎 Yayyyy! No pending amount ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Color(0xFF027A48),
-                            ),
-                          ),
-                        ) : Container(),
-
-                        if (order.contractorPayment!.dueAmount! > 0 ) ...[
+                        if (order.contractorPayment!.dueAmount! > 0) ...[
                           SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
-                            height: 45,
+                            height: 40,
                             child: ElevatedButton(
                               onPressed: () {
-                                all_order.Orders mOrder= all_order.Orders(
-                                    id:order.id,
-                                    material:order.material,
-                                    cost:order.cost,
-                                    dueDate:order.dueDate,
-                                    quoteFile:order.quoteFile,
-                                    status:order.status,
-                                    user:null,
-                                    project:all_order.Project(
-                                        id:controller.project.value.id,
-                                        name:controller.project.value.name,
-                                        location:controller.project.value.location,
-                                        contractFile:controller.project.value.contractFile,
-                                        budget:controller.project.value.budget,
-                                        status:controller.project.value.status,
-                                        createdOn:controller.project.value.createdOn,
-                                        updatedOn:controller.project.value.updatedOn
-                                    ),
-                                    supplierPayment:all_order.SupplierPayment(
-                                        id:order.supplierPayment?.id,
-                                        amount:order.supplierPayment?.amount,
-                                        status:order.supplierPayment?.status,
-                                        createdOn:order.supplierPayment?.createdOn,
-                                        updatedOn:order.supplierPayment?.updatedOn
-                                    ),
-                                    contractorPayment:all_order.ContractorPayment(
-                                        id:order.contractorPayment?.id,
-                                        dueAmount:order.contractorPayment?.dueAmount,
-                                        dueDate:order.contractorPayment?.dueDate,
-                                        payments:order.contractorPayment?.payments,
-                                        createdOn:order.contractorPayment?.createdOn,
-                                        updatedOn:order.contractorPayment?.updatedOn
-                                    ),
-                                    createdOn:order.createdOn,
-                                    updatedOn:order.updatedOn
+                                all_order.Orders mOrder = all_order.Orders(
+                                    id: order.id,
+                                    material: order.material,
+                                    cost: order.cost,
+                                    dueDate: order.dueDate,
+                                    quoteFile: order.quoteFile,
+                                    status: order.status,
+                                    user: null,
+                                    project: all_order.Project(
+                                        id: controller.project.value.id,
+                                        name:
+                                        controller.project.value.name,
+                                        location: controller
+                                            .project.value.location,
+                                        contractFile: controller
+                                            .project.value.contractFile,
+                                        budget: controller
+                                            .project.value.budget,
+                                        status: controller
+                                            .project.value.status,
+                                        createdOn: controller
+                                            .project.value.createdOn,
+                                        updatedOn: controller
+                                            .project.value.updatedOn),
+                                    supplierPayment: all_order.SupplierPayment(
+                                        id: order.supplierPayment?.id,
+                                        amount:
+                                        order.supplierPayment?.amount,
+                                        status:
+                                        order.supplierPayment?.status,
+                                        createdOn: order
+                                            .supplierPayment?.createdOn,
+                                        updatedOn: order.supplierPayment?.updatedOn),
+                                    contractorPayment: all_order.ContractorPayment(id: order.contractorPayment?.id, dueAmount: order.contractorPayment?.dueAmount, dueDate: order.contractorPayment?.dueDate, payments: order.contractorPayment?.payments, createdOn: order.contractorPayment?.createdOn, updatedOn: order.contractorPayment?.updatedOn),
+                                    createdOn: order.createdOn,
+                                    updatedOn: order.updatedOn);
 
-                                );
-
-
-                                OpenOrderController().showPaymentDialog(context,mOrder).then((_){
+                                OpenOrderController()
+                                    .showPaymentDialog(context, mOrder)
+                                    .then((_) {
                                   debugPrint("Bottom sheet dismissed");
                                   // getAllOrders();
-                                  controller.getOrders(widget.projectId.toString());
+                                  controller.getOrders(
+                                      widget.projectId.toString());
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -936,8 +960,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                   ),
                 ),
               )
-                  :
-              Container(),
+                  : Container(),
               //   Contractor Pay end
             ],
           ),
@@ -1156,6 +1179,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //   ),
     // );
   }
+
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case "in_review":
