@@ -158,7 +158,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           Text.rich(
                             TextSpan(
                               text: "Created on: ",
-                              style: const TextStyle(
+                              style:  GoogleFonts.poppins(
                                 color: Color(0x99000000),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -180,7 +180,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           Spacer(),
                           Text(
                             "Status: ",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0x99000000)),
@@ -242,7 +242,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       Text.rich(
                         TextSpan(
                           text: "Overall Credit: ",
-                          style: const TextStyle(
+                          style:  GoogleFonts.poppins(
                             color: Color(0x99000000),
                             fontSize: 10,
                             fontWeight: FontWeight.w400,
@@ -251,7 +251,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             TextSpan(
                               text:
                               "₹ ${NumberFormat('#,##,###').format(controller.project.value.credit != null ? controller.project.value.credit!.credited! : 0)}",
-                              style: const TextStyle(
+                              style:  GoogleFonts.poppins(
                                 color: Color(0xCC000000),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -268,7 +268,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           Text.rich(
                             TextSpan(
                               text: "Consumed: ",
-                              style: const TextStyle(
+                              style:  GoogleFonts.poppins(
                                 color: Color(0x99000000),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -277,7 +277,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 TextSpan(
                                   text:
                                   "₹ ${NumberFormat('#,##,###').format(controller.project.value.credit != null ? controller.project.value.credit!.consumed : 0)}",
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.poppins(
                                     color: Color(0xCC000000),
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -289,7 +289,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           Text.rich(
                             TextSpan(
                               text: "Credit left: ",
-                              style: const TextStyle(
+                              style:  GoogleFonts.poppins(
                                 color: Color(0x99000000),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -298,7 +298,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 TextSpan(
                                   text:
                                   "₹ ${controller.project.value.credit != null ? NumberFormat('#,##,###').format(controller.project.value.credit!.credited! - controller.project.value.credit!.consumed!) : NumberFormat('#,##,###').format(0)}",
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.poppins(
                                     color: Color(0xCC000000),
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -332,7 +332,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                       SizedBox(height: 30),
                       Text(
                         "You haven't requested any quote yet.",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Color(0x66000000),
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
@@ -375,9 +375,9 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               color: Colors.grey[300]!,
                               width: 1.3), // Grey border
                         ),
-                        child: const Text(
+                        child:  Text(
                           "Go to Homepage",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                             color: Color(0x99000000),
@@ -420,7 +420,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           fit: BoxFit.scaleDown,
                           child: Text(
                             "Add new material",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -472,7 +472,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                         child: Center(
                           child: Text(
                             "Order ID: ${order.id ?? 'N/A'}",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 10,
                               fontWeight: FontWeight.w400,
                               color: Color(0xFF363F72),
@@ -530,7 +530,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           children: [
                             Text(
                               "You",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0x66363F72)),
@@ -556,7 +556,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             children: [
                               TextSpan(
                                 text: "Material Name: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -564,7 +564,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               ),
                               TextSpan(
                                 text: order.material ?? "N/A",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -579,7 +579,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             children: [
                               TextSpan(
                                 text: "Cost of material: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -588,7 +588,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               TextSpan(
                                 text:
                                 "₹ ${NumberFormat('#,##0').format(order.cost ?? 0)}",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -603,7 +603,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             children: [
                               TextSpan(
                                 text: "Requested payment due date: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -614,7 +614,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                     ? DateFormat('dd MMM, yyyy')
                                     .format(DateTime.parse(order.dueDate!))
                                     : "N/A",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -681,7 +681,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               children: [
                                 Text(
                                   "MasonPe",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0x66363F72)),
@@ -708,7 +708,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Status: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xCC363F72),
@@ -716,7 +716,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                   ),
                                   TextSpan(
                                     text: order.supplierPayment!.status!,
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -731,7 +731,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Sent Amount: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xCC363F72),
@@ -740,7 +740,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                   TextSpan(
                                     text:
                                     "₹ ${order.supplierPayment!.amount ?? 0}",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -755,7 +755,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Date of payment: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xCC363F72),
@@ -768,7 +768,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                         .supplierPayment!
                                         .updatedOn!))
                                         : "N/A",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -812,7 +812,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                           children: [
                             Text(
                               "You",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0x66363F72)),
@@ -840,7 +840,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             children: [
                               TextSpan(
                                 text: "Last date of payment: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -853,7 +853,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                                     DateTime.parse(order
                                         .contractorPayment!.dueDate!))
                                     : "N/A",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -862,12 +862,13 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 5),
                         RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
                                 text: "Due Amount: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -876,7 +877,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                               TextSpan(
                                 text:
                                 "₹ ${order.contractorPayment!.dueAmount ?? 0}",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -885,6 +886,19 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
                             ],
                           ),
                         ),
+                        order.contractorPayment!.dueAmount! <= 0
+                            ? Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "😎 Yayyyy! No pending amount ",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Color(0xFF027A48),
+                            ),
+                          ),
+                        )
+                            : Container(),
                         if (order.contractorPayment!.dueAmount! > 0) ...[
                           SizedBox(height: 12),
                           SizedBox(
@@ -998,7 +1012,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                     child: Center(
     //                       child: Text(
     //                         "Order ID: ${order.id ?? 'N/A'}",
-    //                         style: TextStyle(
+    //                         style: GoogleFonts.poppins(
     //                           fontSize: 10,
     //                           fontWeight: FontWeight.w400,
     //                           color: Color(0xFF363F72),
@@ -1010,7 +1024,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                 Chip(
     //                   label: Text(
     //                     order.status ?? "Pending",
-    //                     style: TextStyle(
+    //                     style: GoogleFonts.poppins(
     //                       fontSize: 10,
     //                       fontWeight: FontWeight.w500,
     //                       color: Color(0xFF5925DC),
@@ -1050,7 +1064,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                       children: [
     //                         Text(
     //                           "You",
-    //                           style: TextStyle(
+    //                           style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w400,
     //                               fontSize: 12,
     //                               color: Color(0x66363F72)),
@@ -1075,7 +1089,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                         children: [
     //                           TextSpan(
     //                             text: "Material Name: ",
-    //                             style: TextStyle(
+    //                             style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w400,
     //                               fontSize: 12,
     //                               color: Color(0xCC363F72),
@@ -1083,7 +1097,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                           ),
     //                           TextSpan(
     //                             text: order.material ?? "N/A",
-    //                             style: TextStyle(
+    //                             style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w600,
     //                               fontSize: 12,
     //                               color: Color(0xFF363F72),
@@ -1098,7 +1112,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                         children: [
     //                           TextSpan(
     //                             text: "Cost of material: ",
-    //                             style: TextStyle(
+    //                             style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w400,
     //                               fontSize: 12,
     //                               color: Color(0xCC363F72),
@@ -1106,7 +1120,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                           ),
     //                           TextSpan(
     //                             text: "₹${order.cost ?? 0}",
-    //                             style: TextStyle(
+    //                             style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w600,
     //                               fontSize: 12,
     //                               color: Color(0xFF363F72),
@@ -1121,7 +1135,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                         children: [
     //                           TextSpan(
     //                             text: "Requested payment due date: ",
-    //                             style: TextStyle(
+    //                             style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w400,
     //                               fontSize: 12,
     //                               color: Color(0xCC363F72),
@@ -1132,7 +1146,7 @@ class _OpenProjectScreenState extends State<OpenProjectScreen> {
     //                                 ? DateFormat('dd MMM, yyyy')
     //                                     .format(DateTime.parse(order.dueDate!))
     //                                 : "N/A",
-    //                             style: TextStyle(
+    //                             style: GoogleFonts.poppins(
     //                               fontWeight: FontWeight.w600,
     //                               fontSize: 12,
     //                               color: Color(0xFF363F72),

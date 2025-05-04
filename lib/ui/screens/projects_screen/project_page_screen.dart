@@ -19,7 +19,7 @@ class ProjectPageScreen extends StatefulWidget {
 class _ProjectPageScreenState extends State<ProjectPageScreen> {
   final ProjectPageController controller = Get.put(ProjectPageController());
   int _currentIndex = 1;
-  String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
+  // String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
 
   @override
   void initState() {
@@ -75,317 +75,324 @@ class _ProjectPageScreenState extends State<ProjectPageScreen> {
           Divider(color: Colors.grey.shade200, thickness: 2),
           const SizedBox(height: 10),
           Expanded(
-            child: Obx(() => ListView.builder(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 8),
-              itemCount: controller.projects.length,
-              itemBuilder: (context, index) {
-                final project = controller.projects[index];
-                return Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: Colors.grey.shade200, width: 1.1),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          var controller =
-                          Get.find<ProjectPageController>();
-                          var selectedProject = controller
-                              .projects[index]; // Ensure it's not null
-                          Get.to(() => OpenProjectScreen(
-                              projectId: selectedProject.id.toString(),
-                              projectStatus:
-                              selectedProject.status.toString()));
-                        },
-                        child: Row(
-                          children: [
-                            Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Image.asset(
-                                    "assets/images/proj_img_2.png",
-                                    width: 120, // Increased width
-                                    height: 180, // Increased height
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 2, // Moved further down
-                                  right: 0,
-                                  child: Container(
-                                    height: 32, // Increased height
-                                    width: 32, // Increased width
-                                    decoration: BoxDecoration(
-                                      color: Color(0x66000000),
-                                      borderRadius:
-                                      BorderRadius.circular(5),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        controller.downloadPDF(project);
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/images/save_button.svg',
-                                        height:
-                                        14, // Adjusted for better scaling
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: 1.5,
-                              height: 180, // Adjust height as needed
-                              color: Colors.grey.shade100,
-                              margin: EdgeInsets.symmetric(horizontal: 4),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+            child: Obx(() =>
+                RefreshIndicator(
+                  onRefresh: ()async {
+                    controller.getProjects();
+                  },
+                  child: ListView.builder(
+                                padding: const EdgeInsets.only(left: 15, right: 15, top: 8),
+                                itemCount: controller.projects.length,
+                                itemBuilder: (context, index) {
+                  final project = controller.projects[index];
+                  return Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: Colors.grey.shade200, width: 1.1),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            var controller =
+                            Get.find<ProjectPageController>();
+                            var selectedProject = controller
+                                .projects[index]; // Ensure it's not null
+                            Get.to(() => OpenProjectScreen(
+                                projectId: selectedProject.id.toString(),
+                                projectStatus:
+                                selectedProject.status.toString()));
+                          },
+                          child: Row(
+                            children: [
+                              Stack(
                                 children: [
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    '${project.name!} , ${project.location!}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Image.asset(
+                                      "assets/images/proj_img_2.png",
+                                      width: 120, // Increased width
+                                      height: 180, // Increased height
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text.rich(
-                                    TextSpan(
-                                      text: "Date: ",
-                                      style: GoogleFonts.poppins(
-                                        color: Color(0xCC363F72),
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
+                                  Positioned(
+                                    bottom: 2, // Moved further down
+                                    right: 0,
+                                    child: Container(
+                                      height: 32, // Increased height
+                                      width: 32, // Increased width
+                                      decoration: BoxDecoration(
+                                        color: Color(0x66000000),
+                                        borderRadius:
+                                        BorderRadius.circular(5),
                                       ),
-                                      children: [
-                                        TextSpan(
-                                          text: HomePageController.formatDate(
-                                              createdOn), // Calling controller function
-                                          style: GoogleFonts.poppins(
-                                            color: Color(0xE6363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text.rich(
-                                    TextSpan(
-                                      text: "Project Cost: ",
-                                      style: const TextStyle(
-                                        color: Color(0xCC363F72),
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          "₹ ${NumberFormat('#,##,###').format(project.budget)}",
-                                          style: const TextStyle(
-                                            color: Color(0xFF363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text.rich(
-                                    TextSpan(
-                                      text:
-                                      "Consumption: ",
-                                      style: const TextStyle(
-                                        color: Color(0xCC363F72),
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "₹ ${NumberFormat('#,##,###').format(project.credit != null ? project.credit!.consumed : 0)} ",
-                                          style: const TextStyle(
-                                            color: Color(0xFF363F72),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Color(
-                                        project.status == "IN_REVIEW"
-                                            ? 0xFFFFFAEB // Even lighter orange
-                                            : project.status == "ACTIVE"
-                                            ? 0xFFECFDF3 // Even lighter green
-                                            : 0xFFFEF3F2, // Even lighter red
-                                      ),
-                                      borderRadius:
-                                      BorderRadius.circular(15),
-                                      border: Border.all(
-                                        width: 0.7, // Thinner border
-                                        color: Color(
-                                          project.status == "IN_REVIEW"
-                                              ? 0xFFFFD699 // Lighter orange border
-                                              : project.status == "ACTIVE"
-                                              ? 0xFFA8E6B5 // Lighter green border
-                                              : 0xFFF5A8A8, // Lighter red border
+                                      child: InkWell(
+                                        onTap: () {
+                                          controller.downloadPDF(project);
+                                        },
+                                        child: SvgPicture.asset(
+                                          'assets/images/save_button.svg',
+                                          height:
+                                          14, // Adjusted for better scaling
+                                          fit: BoxFit.scaleDown,
                                         ),
                                       ),
                                     ),
-                                    child: Text(
-                                      project.status == "IN_REVIEW"
-                                          ? "In-review"
-                                          : project.status == "ACTIVE"
-                                          ? "Active"
-                                          : "Inactive", // Adjust as needed
-                                      style: GoogleFonts.poppins(
-                                        color: Color(
-                                          project.status == "IN_REVIEW"
-                                              ? 0xFFB54708
-                                              : project.status == "ACTIVE"
-                                              ? 0xFF027A48
-                                              : 0xFFB42318,
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: 1.5,
+                                height: 180, // Adjust height as needed
+                                color: Colors.grey.shade100,
+                                margin: EdgeInsets.symmetric(horizontal: 4),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      '${project.name!} , ${project.location!}',
+                                      style:  GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: "Date: ",
+                                        style: GoogleFonts.poppins(
+                                          color: Color(0xCC363F72),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
                                         ),
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Padding(padding: EdgeInsets.only(right: 13),
-                                    child: Text(
-                                      "- - - - - - - - - - - - - - - - - - - - - -",
-                                      style: TextStyle(
-                                        color: Color(0xFFEDEBF4),
-                                        fontSize: 20,
-                                      ),
-                                      overflow: TextOverflow.clip,
-                                      softWrap: false,
-                                      textHeightBehavior: TextHeightBehavior(
-                                        applyHeightToFirstAscent: false,
-                                        applyHeightToLastDescent: false,
-                                      ),
-                                    ),
-                                  ),
-
-                                  if (("${project.status}" == "ACTIVE") && (controller.getDueAmount(project.orders) > 0)) ...[
-                                    Padding(
-                                      padding:
-                                      const EdgeInsets.only(right: 15),
-                                      child: Row(
                                         children: [
-                                          Text.rich(
-                                            TextSpan(
-                                              text: "Pending: ",
-                                              style: GoogleFonts.poppins(
-                                                color: Color(0xFF363F72),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                  "\$${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}", // $ साइन जोड़ दिया गया
-                                                  style:
-                                                  GoogleFonts.poppins(
-                                                    color:
-                                                    Color(0xFFB42318),
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                    FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              var controller = Get.find<ProjectPageController>();
-                                              var selectedProject = controller.projects[index];
-                                              Get.to(() => OpenProjectScreen(
-                                                projectId: selectedProject.id.toString(),
-                                                projectStatus: selectedProject.status.toString(),
-                                              ));
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              minimumSize: Size(0, 20), //Lower this value to reduce height
-                                              backgroundColor: Colors.transparent,
-                                              side: BorderSide(color: Color(0xFF603EA4), width: 0.5),
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-                                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                              visualDensity: VisualDensity.compact,
-                                            ),
-                                            child: Text(
-                                              "Pay Now",
-                                              style: TextStyle(
-                                                color: Color(0xFF603EA4),
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 10,
-                                              ),
+                                          TextSpan(
+                                            text: project.createdOn != null ? HomePageController.formatDate(
+                                                project.createdOn!) : "", // Calling controller function
+                                            style: GoogleFonts.poppins(
+                                              color: Color(0xE6363F72),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 10),
-                                  ] else ...[
-                                    Text(
-                                      "${project.status}" == "IN_REVIEW"
-                                          ? "Please wait while we are reviewing it"
-                                          : "${project.status}" == "ACTIVE" ? ""
-                                          : "This project is not approved yet",
-                                      style: TextStyle(
-                                        color: Color(0xFF363F72),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 10,
+                                    const SizedBox(height: 2),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: "Project Cost: ",
+                                        style:  GoogleFonts.poppins(
+                                          color: Color(0xCC363F72),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text:
+                                            "₹ ${NumberFormat('#,##,###').format(project.budget)}",
+                                            style:  GoogleFonts.poppins(
+                                              color: Color(0xFF363F72),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
+                                    const SizedBox(height: 2),
+                                    Text.rich(
+                                      TextSpan(
+                                        text:
+                                        "Consumption: ",
+                                        style:  GoogleFonts.poppins(
+                                          color: Color(0xCC363F72),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: "₹ ${NumberFormat('#,##,###').format(project.credit != null ? project.credit!.consumed : 0)} ",
+                                            style:  GoogleFonts.poppins(
+                                              color: Color(0xFF363F72),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Color(
+                                          project.status == "IN_REVIEW"
+                                              ? 0xFFFFFAEB // Even lighter orange
+                                              : project.status == "ACTIVE"
+                                              ? 0xFFECFDF3 // Even lighter green
+                                              : 0xFFFEF3F2, // Even lighter red
+                                        ),
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        border: Border.all(
+                                          width: 0.7, // Thinner border
+                                          color: Color(
+                                            project.status == "IN_REVIEW"
+                                                ? 0xFFFFD699 // Lighter orange border
+                                                : project.status == "ACTIVE"
+                                                ? 0xFFA8E6B5 // Lighter green border
+                                                : 0xFFF5A8A8, // Lighter red border
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        project.status == "IN_REVIEW"
+                                            ? "In-review"
+                                            : project.status == "ACTIVE"
+                                            ? "Active"
+                                            : "Inactive", // Adjust as needed
+                                        style: GoogleFonts.poppins(
+                                          color: Color(
+                                            project.status == "IN_REVIEW"
+                                                ? 0xFFB54708
+                                                : project.status == "ACTIVE"
+                                                ? 0xFF027A48
+                                                : 0xFFB42318,
+                                          ),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+
+                                    Padding(padding: EdgeInsets.only(right: 13),
+                                      child: Text(
+                                        "- - - - - - - - - - - - - - - - - - - - - -",
+                                        style: GoogleFonts.poppins(
+                                          color: Color(0xFFEDEBF4),
+                                          fontSize: 20,
+                                        ),
+                                        overflow: TextOverflow.clip,
+                                        softWrap: false,
+                                        textHeightBehavior: TextHeightBehavior(
+                                          applyHeightToFirstAscent: false,
+                                          applyHeightToLastDescent: false,
+                                        ),
+                                      ),
+                                    ),
+
+                                    if (("${project.status}" == "ACTIVE") && (controller.getDueAmount(project.orders) > 0)) ...[
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.only(right: 15),
+                                        child: Row(
+                                          children: [
+                                            Text.rich(
+                                              TextSpan(
+                                                text: "Pending: ",
+                                                style: GoogleFonts.poppins(
+                                                  color: Color(0xFF363F72),
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                    "₹ ${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}", // $ साइन जोड़ दिया गया
+                                                    style:
+                                                    GoogleFonts.poppins(
+                                                      color:
+                                                      Color(0xFFB42318),
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                      FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                var controller = Get.find<ProjectPageController>();
+                                                var selectedProject = controller.projects[index];
+                                                Get.to(() => OpenProjectScreen(
+                                                  projectId: selectedProject.id.toString(),
+                                                  projectStatus: selectedProject.status.toString(),
+                                                ));
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: Size(0, 20), //Lower this value to reduce height
+                                                backgroundColor: Colors.transparent,
+                                                side: BorderSide(color: Color(0xFF603EA4), width: 0.5),
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+                                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                visualDensity: VisualDensity.compact,
+                                              ),
+                                              child: Text(
+                                                "Pay Now",
+                                                style: GoogleFonts.poppins(
+                                                  color: Color(0xFF603EA4),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 10,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                    ] else ...[
+                                      Text(
+                                        "${project.status}" == "IN_REVIEW"
+                                            ? "Please wait while we are reviewing it"
+                                            : "${project.status}" == "ACTIVE" ? ""
+                                            : "This project is not approved yet",
+                                        style: GoogleFonts.poppins(
+                                          color: Color(0xFF363F72),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                        height: 20), // Space added between containers
-                  ],
-                );
-              },
-            )),
+                      const SizedBox(
+                          height: 20), // Space added between containers
+                    ],
+                  );
+                                },
+                              ),
+                )
+            ),
           ),
         ],
       ),
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 80, // Keep the height same
+          height: MediaQuery.of(context).size.height*0.105, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

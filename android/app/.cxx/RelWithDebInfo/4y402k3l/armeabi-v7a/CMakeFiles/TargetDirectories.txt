@@ -1,0 +1,2 @@
+/Users/hemant.sharma/Documents/vivek/VK-Demo/MansoonPe/android/app/.cxx/RelWithDebInfo/4y402k3l/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/hemant.sharma/Documents/vivek/VK-Demo/MansoonPe/android/app/.cxx/RelWithDebInfo/4y402k3l/armeabi-v7a/CMakeFiles/rebuild_cache.dir

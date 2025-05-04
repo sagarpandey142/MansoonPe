@@ -75,7 +75,7 @@ class ProfilePageController extends GetxController {
                   Center(
                     child: Text(
                       "Do you Want to log out?",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF1B0202),
@@ -86,7 +86,7 @@ class ProfilePageController extends GetxController {
                   Center(
                     child: Text(
                       "You will be logged out of this device",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Color(0x99000000),

@@ -1,0 +1,2 @@
+keyalias=key
+password=android

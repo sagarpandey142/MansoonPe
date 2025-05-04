@@ -267,7 +267,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 80, // Keep the height same
+          height: MediaQuery.of(context).size.height*0.105, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(
@@ -328,13 +328,13 @@ class InfoRow extends StatelessWidget {
               children: [
                 TextSpan(
                   text: ' $label ',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
                       color: labelColor), // Use labelColor here
                 ),
                 TextSpan(
                   text: value,
-                  style: TextStyle(color: Color(0xFF363F72)),
+                  style: GoogleFonts.poppins(color: Color(0xFF363F72)),
                 ),
               ],
             ),

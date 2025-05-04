@@ -130,35 +130,35 @@ class _RegisterPageScreenState extends State<RegisterPageScreen> {
                           child: Text.rich(
                             TextSpan(
                               text: "By continuing, you agree to our ",
-                              style: const TextStyle(
+                              style:  GoogleFonts.poppins(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                   color: Color(0x99000000)),
                               children: [
                                 TextSpan(
                                   text: "Terms of Service, ",
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.poppins(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xFF603EA4)),
                                 ),
                                 TextSpan(
                                   text: "Privacy Policy ",
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.poppins(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xFF603EA4)),
                                 ),
                                 TextSpan(
                                   text: "and ",
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.poppins(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black54),
                                 ),
                                 TextSpan(
                                   text: "Cookie Policy.",
-                                  style: const TextStyle(
+                                  style:  GoogleFonts.poppins(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xFF603EA4)),
@@ -216,7 +216,7 @@ class _RegisterPageScreenState extends State<RegisterPageScreen> {
         int? maxLength,
       }) {
     return Obx(() => TextField(
-      style: const TextStyle(height: 2.5),
+      style:  GoogleFonts.poppins(height: 2.5),
       controller: controller,
       textCapitalization:
       isUpperCase ? TextCapitalization.characters : TextCapitalization.none,
@@ -237,7 +237,7 @@ class _RegisterPageScreenState extends State<RegisterPageScreen> {
       decoration: InputDecoration(
         labelText: label,
         counterText: "", // Hides the character count display
-        labelStyle: const TextStyle(
+        labelStyle:  GoogleFonts.poppins(
             fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black54),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

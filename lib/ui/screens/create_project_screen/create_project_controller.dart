@@ -112,7 +112,7 @@ class CreateProjectController extends ChangeNotifier {
                                 SizedBox(width: 5),
                                 Text(
                                   "Upload Contract",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Color(0xFF603EA4),
@@ -290,7 +290,7 @@ class CreateProjectController extends ChangeNotifier {
             ),
             child: Text(
               message,
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.poppins(color: Colors.white),
             ),
           ),
         ),
@@ -362,19 +362,19 @@ class CreateProjectController extends ChangeNotifier {
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(color: Colors.red),
           ),
-          labelStyle: TextStyle(
+          labelStyle: GoogleFonts.poppins(
             color: Color(0x99000000),
             fontWeight: FontWeight.w400,
             fontSize: 12,
           ),
           prefixText: prefixText,
-          prefixStyle: TextStyle(
+          prefixStyle: GoogleFonts.poppins(
             color: Colors.black87,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
         ),
-        style: TextStyle(
+        style: GoogleFonts.poppins(
           color: Color(0xCC000000),
           fontWeight: FontWeight.w400,
           fontSize: 16,

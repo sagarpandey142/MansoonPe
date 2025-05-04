@@ -119,7 +119,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 80, // Keep the height same
+          height: MediaQuery.of(context).size.height*0.105, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

@@ -39,11 +39,17 @@ class SplashPageScreen extends StatelessWidget {
                   child: child,
                 );
               },
-              child: SvgPicture.asset(
-                'assets/images/truck_splash_screen_logo1.svg',
+              child:Image.asset(
+                "assets/images/mason_pe_logo.png",
                 width: 300,
                 height: 300,
               ),
+
+              // SvgPicture.asset(
+              //   'assets/images/truck_splash_screen_logo1.svg',
+              //   width: 300,
+              //   height: 300,
+              // ),
             ),
           ),
         ],

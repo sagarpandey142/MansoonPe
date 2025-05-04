@@ -1,0 +1,2 @@
+/Users/hemant.sharma/Documents/vivek/VK-Demo/MansoonPe/android/app/.cxx/Debug/734t2r33/x86/CMakeFiles/edit_cache.dir
+/Users/hemant.sharma/Documents/vivek/VK-Demo/MansoonPe/android/app/.cxx/Debug/734t2r33/x86/CMakeFiles/rebuild_cache.dir

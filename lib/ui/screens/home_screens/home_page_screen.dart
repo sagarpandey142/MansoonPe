@@ -28,14 +28,13 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageScreenState extends State<HomePageScreen> {
   final ProjectPageController controller = Get.put(ProjectPageController());
-  String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
+  // String createdOn = "2025-02-25T05:07:14.337787"; // Sample Date
   int _currentIndex = 0;
   List<Projects> projects = [];
   List<Orders> orders = [];
   String businessName = "Business Name";
   int totalCredits = 0;
   int totalSpends = 0;
-  int totalApprovedCredits = 0;
 
   @override
   void initState() {
@@ -102,7 +101,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       if (res.status == 200) {
         setState(() {
           projects = res.data!.projects!;
-          getApprovedCredit();
+          // getApprovedCredit();
         });
       }
     } catch (e) {
@@ -114,24 +113,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
     }
   }
 
-  getApprovedCredit() {
-    if (projects.isNotEmpty) {
-      for (int i = 0; i < projects.length; i++) {
-        try {
-          if (projects[i].orders != null && projects[i].orders!.isNotEmpty) {
-            for (int j = 0; j < projects[i].orders!.length; j++) {
-              if ((projects[i].orders![j].supplierPayment != null) &&
-                  (projects[i].orders![j].supplierPayment!.status == 'SENT')) {
-                totalApprovedCredits = totalApprovedCredits +
-                    projects[i].orders![j].supplierPayment!.amount!;
-                debugPrint("totalApprovedCredits:>>>$totalApprovedCredits");
-              }
-            }
-          }
-        } catch (e) {}
-      }
-    }
-  }
+  // getApprovedCredit() {
+  //   if (projects.isNotEmpty) {
+  //     for (int i = 0; i < projects.length; i++) {
+  //       try {
+  //         if (projects[i].orders != null && projects[i].orders!.isNotEmpty) {
+  //           for (int j = 0; j < projects[i].orders!.length; j++) {
+  //             if ((projects[i].orders![j].supplierPayment != null) &&
+  //                 (projects[i].orders![j].supplierPayment!.status == 'SENT')) {
+  //               totalApprovedCredits = totalApprovedCredits +
+  //                   projects[i].orders![j].supplierPayment!.amount!;
+  //               debugPrint("totalApprovedCredits:>>>$totalApprovedCredits");
+  //             }
+  //           }
+  //         }
+  //       } catch (e) {}
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -156,14 +155,19 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         ],
                       ).createShader(bounds);
                     },
-                    child: Text(
-                      "MasonPe.",
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                    child: Image.asset(
+                      'assets/images/logo_text.png',
+                      fit: BoxFit.contain,
+                      width: 100,
                     ),
+                    // Text(
+                    //   "MasonPe.",
+                    //   style: GoogleFonts.poppins(
+                    //     fontSize: 24,
+                    //     fontWeight: FontWeight.w600,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(
@@ -216,7 +220,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     Expanded(
                       child: Text(
                         "We will allot credit limit in 24-48 hrs post profile evaluation",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Color(0xFF1E40AF),
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
@@ -264,8 +268,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                     fontWeight: FontWeight.w400)),
                             SizedBox(height: 5),
                             Text(
-                              "₹ ${totalApprovedCredits > 0 && totalSpends > 0 ? NumberFormat('#,##,###').format(totalApprovedCredits - totalSpends) : 0}",
-                              style: TextStyle(
+                              "₹ ${totalCredits > 0 && totalSpends > 0 ? NumberFormat('#,##,###').format(totalCredits - totalSpends) : 0}",
+                              style: GoogleFonts.poppins(
                                 color: Color(0xFFFFFFFF),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -282,7 +286,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           ],
                         ),
 
-                        totalApprovedCredits > 0 && totalSpends > 0
+                        totalCredits > 0 && totalSpends > 0
                             ?
                         // progressbar start
                         Padding(
@@ -293,11 +297,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             lineWidth: 6.0,
                             animation: true,
                             percent:
-                            totalSpends / totalApprovedCredits > 1
+                            totalSpends / totalCredits > 1
                                 ? 1
-                                : totalSpends / totalApprovedCredits,
+                                : totalSpends / totalCredits,
                             center: Text(
-                              "${(((totalSpends / totalApprovedCredits) * 100) * 10).roundToDouble() / 10}%",
+                              "${(((totalSpends / totalCredits) * 100) * 10).roundToDouble() / 10}%",
                               style: GoogleFonts.inter(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white,
@@ -343,7 +347,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                       )
-                                    // TextStyle(
+                                    // GoogleFonts.poppins(
                                     //   color: Color(0xFFFFFFFF),
                                     //   fontSize: 12,
                                     //   fontWeight: FontWeight.w400,
@@ -351,8 +355,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   ),
                                   TextSpan(
                                     text:
-                                    " ₹ ${NumberFormat('#,##,###').format(totalApprovedCredits)}",
-                                    style: TextStyle(
+                                    " ₹ ${NumberFormat('#,##,###').format(totalCredits)}",
+                                    style: GoogleFonts.poppins(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -361,14 +365,22 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 ],
                               ),
                             ),
-                            Text(
-                              "MasonPe.",
-                              style: TextStyle(
-                                color: Color(0xFFFFFFFF),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
+
+                            Image.asset(
+                              'assets/images/logo_bg.png',
+                              fit: BoxFit.contain,
+                              width: 80,
                             ),
+
+                            // Text(
+                            //   "MasonPe.",
+                            //   style: GoogleFonts.poppins(
+                            //     color: Color(0xFFFFFFFF),
+                            //     fontSize: 18,
+                            //     fontWeight: FontWeight.w600,
+                            //   ),
+                            // ),
+
                           ],
                         ),
                       ],
@@ -488,7 +500,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       const SizedBox(height: 6),
                                       Text(
                                         '${project.name!} , ${project.location!}',
-                                        style: const TextStyle(
+                                        style:  GoogleFonts.poppins(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 12,
                                         ),
@@ -497,15 +509,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       Text.rich(
                                         TextSpan(
                                           text: "Date: ",
-                                          style: const TextStyle(
+                                          style:  GoogleFonts.poppins(
                                             color: Color(0xCC363F72),
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
                                           ),
                                           children: [
                                             TextSpan(
-                                              text: HomePageController.formatDate(
-                                                  createdOn), // Calling controller function
+                                              text:project.createdOn != null ? HomePageController.formatDate(
+                                                  project.createdOn!) : "", // Calling controller function
                                               style: GoogleFonts.poppins(
                                                 color: Color(0xE6363F72),
                                                 fontSize: 10,
@@ -521,7 +533,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       Text.rich(
                                         TextSpan(
                                           text: "Project Cost: ",
-                                          style: const TextStyle(
+                                          style:  GoogleFonts.poppins(
                                             color: Color(0xFF363F72),
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
@@ -530,7 +542,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             TextSpan(
                                               text:
                                               "₹ ${NumberFormat('#,##,###').format(project.budget)}",
-                                              style: const TextStyle(
+                                              style:  GoogleFonts.poppins(
                                                 color: Color(0xFF363F72),
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w600,
@@ -545,7 +557,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       Text.rich(
                                         TextSpan(
                                           text: "Consumption: ",
-                                          style: const TextStyle(
+                                          style:  GoogleFonts.poppins(
                                             color: Color(0xCC363F72),
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
@@ -554,7 +566,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             TextSpan(
                                               text:
                                               "₹ ${NumberFormat('#,##,###').format(project.credit != null ? project.credit!.consumed : 0)}",
-                                              style: const TextStyle(
+                                              style:  GoogleFonts.poppins(
                                                 color: Color(0xFF363F72),
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w600,
@@ -613,7 +625,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                         const EdgeInsets.only(right: 10),
                                         child: Text(
                                           "- - - - - - - - - - - - - - - - - - - - - -",
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                             color: Color(0xFFEDEBF4),
                                             fontSize: 20,
                                           ),
@@ -637,7 +649,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                               Text.rich(
                                                 TextSpan(
                                                   text: "Pending: ",
-                                                  style: const TextStyle(
+                                                  style:  GoogleFonts.poppins(
                                                     color: Color(0xFF363F72),
                                                     fontSize: 10,
                                                     fontWeight:
@@ -646,7 +658,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                   children: [
                                                     TextSpan(
                                                       text:
-                                                      "\$${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}",
+                                                      "₹ ${NumberFormat('#,##,###').format(controller.getDueAmount(project.orders))}",
                                                       style:
                                                       GoogleFonts.poppins(
                                                         color:
@@ -685,7 +697,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                                 ),
                                                 child: Text(
                                                   "Pay Now",
-                                                  style: const TextStyle(
+                                                  style:  GoogleFonts.poppins(
                                                     color: Color(0xFF603EA4),
                                                     fontWeight:
                                                     FontWeight.w500,
@@ -705,7 +717,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                               "ACTIVE"
                                               ? ""
                                               : "This project is not approved yet",
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                             color: Color(0xFF363F72),
                                             fontWeight: FontWeight.w400,
                                             fontSize: 10,
@@ -741,7 +753,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     Text(
                       "You haven't create any project yet.\nCreate your first project to start with",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Colors.black45,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -803,7 +815,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 80, // Keep the height same
+          height: MediaQuery.of(context).size.height*0.105,  // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

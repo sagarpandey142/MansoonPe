@@ -25,7 +25,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
   final OpenOrderController openOrderController =
   Get.put(OpenOrderController());
   final ProjectPageController projectPageController =
-  Get.find<ProjectPageController>();
+  Get.put(ProjectPageController());
   int _currentIndex = 2;
   List<all_order.Orders> orders = [];
   List<all_order.Orders> originalOrders = [];
@@ -260,22 +260,22 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   // final project = filteredProjects.isNotEmpty ? filteredProjects[0] : null;
                   // return
                   child: RichText(
+                    overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                       children: [
                         TextSpan(
                           text: "Project name: ",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             color: Color(0xCC363F72),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+
                         TextSpan(
                           text:
-                          ('${filteredProjects[0].name ?? "N/A"}, ${filteredProjects[0].location ?? "N/A"}')
-                              .substring(0, 18) +
-                              '...',
-                          style: const TextStyle(
+                          '${filteredProjects[0].name ?? "N/A"}, ${filteredProjects[0].location ?? "N/A"}',
+                          style:  GoogleFonts.poppins(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
                             color: Color(0xFF363F72),
@@ -302,7 +302,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                 Text(
                   OpenOrderController.formatDate(
                       filteredProjects[0].createdOn.toString()),
-                  style: const TextStyle(
+                  style:  GoogleFonts.poppins(
                     color: Color(0xE6363F72),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -314,11 +314,29 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
               : Container(),
 
           Expanded(
-            child: ListView.builder(
-              itemCount: orders.length,
-              itemBuilder: (context, index) {
-                return buildOrderCard(orders[index]);
+            // flex: 1,
+            child: RefreshIndicator(
+              onRefresh: ()async  {
+                setState(() {
+                  orders = [];
+                  originalOrders = [];
+                  projects = [];
+                  proOptList = [];
+                  filteredProjects = [];
+                  selectedProject = "All";
+                  selectedStatus = "Status";
+                  selectedDate = "Date";
+                });
+                await getProjects();
+                await getAllOrders();
               },
+              child: ListView.builder(
+                padding: EdgeInsets.only(top: 12),
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  return buildOrderCard(orders[index]);
+                },
+              ),
             ),
           ),
         ],
@@ -326,7 +344,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent,
         child: Container(
-          height: 80,
+          height: MediaQuery.of(context).size.height*0.105,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -397,7 +415,8 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                         child: Center(
                           child: Text(
                             "Order ID: ${order.id ?? 'N/A'}",
-                            style: TextStyle(
+                            style:
+                            GoogleFonts.poppins(
                               fontSize: 10,
                               fontWeight: FontWeight.w400,
                               color: Color(0xFF363F72),
@@ -460,7 +479,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             children: [
                               TextSpan(
                                 text: "Project name: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Color(0xCC363F72),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -469,7 +488,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               TextSpan(
                                 text:
                                 '${order.project!.name ?? "N/A"}, ${order.project!.location ?? "N/A"}',
-                                style: const TextStyle(
+                                style:  GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
                                   color: Color(0xFF363F72),
@@ -493,7 +512,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                   children: [
                     Text(
                       "Date: ${OpenOrderController.formatDate(order.project!.createdOn.toString())}",
-                      style: const TextStyle(
+                      style:  GoogleFonts.poppins(
                         color: Color(0xE6363F72),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -522,7 +541,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           children: [
                             Text(
                               "You",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0x66363F72)),
@@ -548,7 +567,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             children: [
                               TextSpan(
                                 text: "Material Name: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -556,7 +575,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               ),
                               TextSpan(
                                 text: order.material ?? "N/A",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -571,7 +590,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             children: [
                               TextSpan(
                                 text: "Cost of material: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -580,7 +599,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               TextSpan(
                                 text:
                                 "₹ ${NumberFormat('#,##,###').format(order.cost ?? 0)}",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -595,7 +614,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             children: [
                               TextSpan(
                                 text: "Requested payment due date: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -606,7 +625,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                     ? DateFormat('dd MMM, yyyy')
                                     .format(DateTime.parse(order.dueDate!))
                                     : "N/A",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -673,7 +692,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               children: [
                                 Text(
                                   "MasonPe",
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0x66363F72)),
@@ -700,7 +719,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Status: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xCC363F72),
@@ -714,7 +733,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                         ? "Payment Sent to supplier"
                                         : order.supplierPayment!.status!
                                         .toString(),
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -729,7 +748,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Sent Amount: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xCC363F72),
@@ -738,7 +757,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                   TextSpan(
                                     text:
                                     "₹ ${NumberFormat('#,##,###').format(order.supplierPayment?.amount ?? 0)}",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -753,7 +772,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                 children: [
                                   TextSpan(
                                     text: "Date of payment: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xCC363F72),
@@ -766,7 +785,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                         .supplierPayment!
                                         .updatedOn!))
                                         : "N/A",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -810,7 +829,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           children: [
                             Text(
                               "You",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0x66363F72)),
@@ -837,7 +856,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             children: [
                               TextSpan(
                                 text: "Last date of payment: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -850,7 +869,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                                     DateTime.parse(order
                                         .contractorPayment!.dueDate!))
                                     : "N/A",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -865,7 +884,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                             children: [
                               TextSpan(
                                 text: "Due Amount: ",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   color: Color(0xCC363F72),
@@ -874,7 +893,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                               TextSpan(
                                 text:
                                 "₹${order.contractorPayment!.dueAmount ?? 0}",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Color(0xFF363F72),
@@ -888,7 +907,7 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             "😎 Yayyyy! No pending amount ",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: 12,
                               color: Color(0xFF027A48),
@@ -1089,12 +1108,16 @@ class _OpenOrderScreenState extends State<OpenOrderScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              selectedStatus,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
+            SizedBox(
+              width: 60,
+              child: Text(
+                overflow: TextOverflow.ellipsis,
+                selectedStatus,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
               ),
             ),
             SizedBox(width: 5),

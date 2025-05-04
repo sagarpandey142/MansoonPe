@@ -96,15 +96,15 @@ class RegisterPageController extends GetxController {
             const SizedBox(height: 10),
             const Icon(Icons.check_circle, size: 50, color: Color(0xFF00A460)),
             const SizedBox(height: 25),
-            const Text(
+             Text(
               "You have registered successfully",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
-            const Text(
+             Text(
               "You can now submit your first project",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: Color(0x99000000),

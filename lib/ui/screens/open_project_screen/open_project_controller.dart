@@ -54,7 +54,7 @@ class OpenProjectController extends GetxController {
             child: Center(
               child: Text(
                 message,
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -277,7 +277,7 @@ class OpenProjectController extends GetxController {
           Expanded(
             child: Text(
               "Inclusive of GST and shipping charges",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                   color: Color(0xFF1E40AF),
                   fontSize: 10,
                   fontWeight: FontWeight.w400),
@@ -307,7 +307,7 @@ class OpenProjectController extends GetxController {
             SizedBox(width: 5),
             Text(
               "Upload Supplier Quote",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFF603EA4)),
@@ -417,13 +417,13 @@ class OpenProjectController extends GetxController {
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(color: Colors.grey.shade300),
           ),
-          labelStyle: TextStyle(
+          labelStyle: GoogleFonts.poppins(
             color: Color(0x99000000),
             fontWeight: FontWeight.w400,
             fontSize: 10,
           ),
         ),
-        style: TextStyle(
+        style: GoogleFonts.poppins(
           color: Colors.black,
           fontSize: 14,
           fontWeight: FontWeight.w400,

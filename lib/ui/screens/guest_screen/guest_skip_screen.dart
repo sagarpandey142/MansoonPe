@@ -65,7 +65,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
                   height: 200,
-                  width: 610,
+                  width: MediaQuery.of(context).size.width,//610,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -223,7 +223,7 @@ class _GuestSkipScreenState extends State<GuestSkipScreen> {
       bottomNavigationBar: Material(
         color: Colors.transparent, // Avoid default material color
         child: Container(
-          height: 80, // Keep the height same
+          height: MediaQuery.of(context).size.height*0.105, // Keep the height same
           decoration: BoxDecoration(
             color: Colors.white, // Ensure white background
             borderRadius: BorderRadius.only(

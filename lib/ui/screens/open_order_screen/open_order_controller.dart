@@ -83,7 +83,7 @@ class OpenOrderController extends GetxController {
                             child: Center(
                               child: Text(
                                 "Order ID: ${order.id}",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: Color(0xFF363F72)),
@@ -124,26 +124,28 @@ class OpenOrderController extends GetxController {
                     children: [
                       Row(
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Project Name: ",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: Color(0xCC363F72),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Project Name: ",
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Color(0xCC363F72),
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: "${order.project?.name}, ${order.project?.location}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    color: Color(0xFF363F72),
+                                  TextSpan(
+                                    text: "${order.project?.name}, ${order.project?.location}",
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Color(0xFF363F72),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -162,7 +164,7 @@ class OpenOrderController extends GetxController {
                           children: [
                             TextSpan(
                               text: "Material Name: ",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
                                 color: Color(0xCC363F72),
@@ -170,7 +172,7 @@ class OpenOrderController extends GetxController {
                             ),
                             TextSpan(
                               text: "${order.material}",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
                                 color: Color(0xFF363F72),
@@ -188,7 +190,7 @@ class OpenOrderController extends GetxController {
                         children: [
                           Text(
                             "Total Payment Received by you: ",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: Color(0xCC363F72),
@@ -221,7 +223,7 @@ class OpenOrderController extends GetxController {
                         children: [
                           Text(
                             "Total Payment made: ",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: Color(0xCC363F72),
@@ -254,7 +256,7 @@ class OpenOrderController extends GetxController {
                         children: [
                           Text(
                             "Payment left: ",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: Color(0xCC363F72),
@@ -287,7 +289,7 @@ class OpenOrderController extends GetxController {
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: Text(
                     "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.grey.shade300,
                       fontSize: 23,
                     ),
@@ -356,7 +358,7 @@ class OpenOrderController extends GetxController {
                                 children: [
                                   TextSpan(
                                     text: "Last date of payment: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xFFB54708),
@@ -366,7 +368,7 @@ class OpenOrderController extends GetxController {
                                     text: order.contractorPayment?.dueDate != null ? DateFormat('dd MMM ,yyyy').format(
                                         DateTime.parse("${order.contractorPayment?.dueDate}")
                                     ) : "",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -381,7 +383,7 @@ class OpenOrderController extends GetxController {
                                 children: [
                                   TextSpan(
                                     text: "Due Amount: ",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
                                       color: Color(0xFFB54708),
@@ -389,7 +391,7 @@ class OpenOrderController extends GetxController {
                                   ),
                                   TextSpan(
                                     text: "₹ ${NumberFormat('#,##,###').format(order.contractorPayment?.dueAmount)}",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Color(0xFF363F72),
@@ -467,7 +469,7 @@ class OpenOrderController extends GetxController {
                                           Spacer(), // Pushes next items to the right
                                           Text(
                                             "₹ ${NumberFormat('#,##,###').format(payment.amount)}",
-                                            style: TextStyle(
+                                            style: GoogleFonts.poppins(
                                               fontWeight: FontWeight.w700,
                                               fontSize: 14,
                                               color: Color(0xFF363F72),
@@ -512,7 +514,7 @@ class OpenOrderController extends GetxController {
                                               children: [
                                                 TextSpan(
                                                   text: "Mode of payment: ",
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 10,
                                                     color: Color(0xCC363F72),
@@ -520,7 +522,7 @@ class OpenOrderController extends GetxController {
                                                 ),
                                                 TextSpan(
                                                   text: "${payment.mode}",
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 10,
                                                     color: Color(0xFF363F72),
@@ -545,12 +547,12 @@ class OpenOrderController extends GetxController {
                 Container()
                 ,
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 2),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  padding: const EdgeInsets.only(left: 15, right: 15,bottom: 10),
                   child: SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 48,
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
@@ -572,7 +574,7 @@ class OpenOrderController extends GetxController {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 8),
               ],
             ),
           ),
@@ -691,7 +693,7 @@ class OpenOrderController extends GetxController {
             child: Center(
               child: Text(
                 message,
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),
